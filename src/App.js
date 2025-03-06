@@ -5,14 +5,16 @@ import axios from 'axios';
 import Login from './page/Login';
 import Home from './page/home/Home';
 import Notice from './page/home/Notice';
+import Start from'./page/join/Start';
 
 function App() {
     return (
         <div className="w-100 h-100">
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Login />} />
                 <Route path="/notice" element={<Notice />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/start" element={<Start />} />
             </Routes>
         </div>
     );

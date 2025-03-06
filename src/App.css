@@ -43,3 +43,137 @@ html, body, #root {
     width: 30px; 
     height: 30px;
 }
+.content-container{
+    display: flex;
+    justify-content: center;
+}
+.TextBox{
+    text-align: center;
+    margin-top:130px;
+
+}
+.leaf{
+    font-size: 35px;
+    font-weight: bold;
+    color: #5ab173;
+ 
+}
+.month{
+    font-size: 35px;
+    font-weight: bold;
+    color: #4B9460;
+ 
+}
+.container{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.TextBox2, .TextBox3{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+}
+.text{
+    color:black;
+    font-size: 15px;
+    font-weight: bolder;
+}
+.text2{
+    color:black;
+    font-weight: bolder;
+    font-size: 20px;
+}
+.text3{
+    color: gray;
+    font-size: 14px;
+    font-weight: bold;
+}
+.container2{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #A2D39C;
+    height: 50vh;
+}
+.image-section{
+    margin-top:100px;
+}
+/*notice*/
+.notice-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    height: 100vh;
+}
+
+.notice-description {
+    text-align: center;
+    color: gray;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.notice-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #F8F8F8;
+    padding: 15px;
+    border-radius: 10px;
+    width: 90%;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.notice-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap:10px;
+}
+
+.check-box {
+    width: 20px; /* 고정 크기 */
+    height: 20px; /* 고정 크기 */
+    border: 2px solid #000; /* 체크박스 스타일 */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.check-box.checked {
+    background-color: green; /* 체크 시 색상 변경 */
+}
+
+.notice-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.arrow-icon {
+    font-size: 20px;
+    color: gray;
+    cursor: pointer;
+    margin-left: auto; /* 오른쪽 끝으로 이동 */
+    flex-shrink: 0; /* 크기 유지 */
+}
+
+.arrow-icon:hover {
+    color: black;
+}
+
+button:disabled {
+    background: lightgray;
+    cursor: not-allowed;
+}
