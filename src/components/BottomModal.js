@@ -66,7 +66,7 @@ const BottomModal = React.forwardRef((props, ref) => {
                 onClose={toggleDrawer(false)}
                 onOpen={toggleDrawer(true)}
                 swipeAreaWidth={drawerBleeding}
-                disableSwipeToOpen={false}
+                disableSwipeToOpen={true}
                 keepMounted
             >
                 <StyledBox sx={{ position: 'relative', pt: 6, pb: 3 }}>

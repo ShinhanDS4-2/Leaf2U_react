@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
+import BottomModal from "../../components/BottomModal";
 
-const Content = () => {
+const NoticeContent = () => {
+
     const navigate = useNavigate();
+    const modalRef = useRef();
     
     // 체크박스 상태 관리
     const [checkedItems, setCheckedItems] = useState({
@@ -20,6 +23,22 @@ const Content = () => {
 
     // 모든 항목이 체크되었는지 확인
     const allChecked = Object.values(checkedItems).every(Boolean);
+
+    // 버튼 클릭 이벤트 핸들러
+    const handleNextClick = () => {
+        
+        console.log("handleNextClikc 함수 실행됨");
+        if (allChecked) {
+            if (modalRef.current) {
+                modalRef.current.openModal();
+            }
+
+            // navigate('/next-step'); // 모든 체크박스가 선택되었을 때만 이동
+            //modalRef.current?.openModal();
+        } else {
+            alert("모든 약관에 동의해야 다음 단계로 진행할 수 있습니다.");
+        }
+    };
 
     return (
         <div>
@@ -89,11 +108,22 @@ const Content = () => {
                 </div>
             </div>
             <Button 
-                text={'다음ㄴㄴ'} 
-                onClick={() => navigate('/next-step')} 
+                text={'다음'} 
+                onClick={handleNextClick} 
             />
+
+            <BottomModal ref={modalRef}>
+                <div className="agree-item-modal">
+                    <p className="agree-item">상품 중요사항을 충분히 이해하고 확인하셨나요?</p>
+                    <Button 
+                        text={'확인했습니다'} 
+                        onClick={() => navigate('/payment')}
+                    />
+                </div>
+                
+            </BottomModal>
         </div>
     );
 };
 
-export default Content;
+export default NoticeContent;

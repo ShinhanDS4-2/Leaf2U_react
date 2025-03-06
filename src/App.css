@@ -101,7 +101,11 @@ body,
     align-items: center;
     justify-content: flex-start;
     background-color: #a2d39c;
-    height: 50vh;
+    height: 60vh;
+}
+.button-container{
+
+    padding-top:45px;
 }
 .image-section {
     margin-top: 100px;
@@ -111,7 +115,7 @@ body,
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding-top: 80px;
     background-color: white;
     height: 100%;
 }
@@ -156,7 +160,7 @@ body,
 }
 
 .check-box.checked {
-    background-color: green; /* 체크 시 색상 변경 */
+    background-color: rgb(43, 223, 43); /* 체크 시 색상 변경 */
 }
 
 .notice-header h3 {
@@ -180,4 +184,46 @@ body,
 button:disabled {
     background: lightgray;
     cursor: not-allowed;
+}
+.agree-item-modal{
+    padding-top: 40px;
+}
+
+.agree-item{
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 70px;
+    padding-left:60px;
+    padding-right: 60px;
+    
+}
+
+/*paymentAmount*/
+.payment{
+
+    padding-top: 150px;
+    text-align: center;
+}
+.payment-info{
+    padding-top: 15px;
+    padding-left: 50px;
+    text-align: center;
+    font-size: 10px;
+    color: gray;
+}
+.payment-input{
+
+    width: 120px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border:none;
+    border-bottom: 1px solid black;
+    outline:none;
+    margin:0 5px;
+}
+.payment-input::placeholder {
+    color: lightgray; 
+    opacity: 0.5;                   /* 투명도 조절 (0.1 ~ 1) */
+    font-size: 25px;
 }
