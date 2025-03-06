@@ -8,6 +8,12 @@ import Notice from './page/home/Notice';
 import Start from './page/join/Start';
 import Payment from './page/home/Payment';
 
+import OrganizationList from './page/donation/OrganizationList';
+import HistoryList from './page/donation/HistoryList';
+import OrganizationDetail from './page/donation/OrganizationDetail';
+import HistoryDetail from './page/donation/HistoryDetail';
+import ManageAccount from './page/account/ManageAccount';
+
 function App() {
     return (
         <div className="w-100 h-100">
@@ -16,7 +22,16 @@ function App() {
                 <Route path="/notice" element={<Notice />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/start" element={<Start />} />
-                <Route path="/payment" element={<Payment/>} />
+                <Route path="/payment" element={<Payment />} />
+
+                {/* 시온 페이지 START */}
+                <Route path="/organizationList" element={<OrganizationList />} />
+                <Route path="/organizationDetail" element={<OrganizationDetail />} />
+                <Route path="/historyList" element={<HistoryList />} />
+                <Route path="/historyDetail" element={<HistoryDetail />} />
+                <Route path="/manageAccount" element={<ManageAccount />} />
+
+                {/* 시온 페이지 END */}
             </Routes>
         </div>
     );

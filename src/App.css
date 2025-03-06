@@ -48,6 +48,7 @@ body,
     width: 30px;
     height: 30px;
 }
+/* path="/" element={<Login />} css 시작 */
 .content-container {
     display: flex;
     justify-content: center;
@@ -103,9 +104,8 @@ body,
     background-color: #a2d39c;
     height: 60vh;
 }
-.button-container{
-
-    padding-top:45px;
+.button-container {
+    padding-top: 45px;
 }
 .image-section {
     margin-top: 100px;
@@ -185,45 +185,42 @@ button:disabled {
     background: lightgray;
     cursor: not-allowed;
 }
-.agree-item-modal{
+.agree-item-modal {
     padding-top: 40px;
 }
 
-.agree-item{
+.agree-item {
     font-size: 25px;
     font-weight: bold;
     margin-bottom: 70px;
-    padding-left:60px;
+    padding-left: 60px;
     padding-right: 60px;
-    
 }
 
 /*paymentAmount*/
-.payment{
-
+.payment {
     padding-top: 150px;
     text-align: center;
 }
-.payment-info{
+.payment-info {
     padding-top: 15px;
     padding-left: 50px;
     text-align: center;
     font-size: 10px;
     color: gray;
 }
-.payment-input{
-
+.payment-input {
     width: 120px;
     font-size: 18px;
     font-weight: bold;
     text-align: center;
-    border:none;
+    border: none;
     border-bottom: 1px solid black;
-    outline:none;
-    margin:0 5px;
+    outline: none;
+    margin: 0 5px;
 }
 .payment-input::placeholder {
-    color: lightgray; 
-    opacity: 0.5;                   /* 투명도 조절 (0.1 ~ 1) */
+    color: lightgray;
+    opacity: 0.5; /* 투명도 조절 (0.1 ~ 1) */
     font-size: 25px;
 }
