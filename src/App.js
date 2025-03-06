@@ -9,7 +9,7 @@ import Start from './page/join/Start';
 
 function App() {
     return (
-        <div className="">
+        <div className="w-100 h-100">
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/notice" element={<Notice />} />
