@@ -1,4 +1,6 @@
-html, body, #root {
+html,
+body,
+#root {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -6,7 +8,7 @@ html, body, #root {
 
 /* 배경 */
 .bg-green {
-    background-color: #A2D39C;
+    background-color: #a2d39c;
 }
 
 /* 로그인 화면 */
@@ -18,89 +20,91 @@ html, body, #root {
     bottom: 100px;
 }
 
-.kakao-logo { 
-    width: 30px; 
-    height: 30px; 
-    margin-right: 10px; 
+.kakao-logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
 }
-
 
 /* 헤더 */
 .header {
-    position: sticky;
+    position: fixed;
     top: 0;
     align-items: center;
+    width: 100%;
+    z-index: 100;
 }
 
 /* 푸터 */
 .footer {
-    position: sticky;
+    position: fixed;
     bottom: 0;
+    width: 100%;
+    z-index: 100;
 }
 
 .footerIcon {
-    color: #4B9460;
-    width: 30px; 
+    color: #4b9460;
+    width: 30px;
     height: 30px;
 }
-.content-container{
+.content-container {
     display: flex;
     justify-content: center;
 }
-.TextBox{
+.TextBox {
     text-align: center;
-    margin-top:130px;
-
+    padding-top: 90px;
 }
-.leaf{
+.leaf {
     font-size: 35px;
     font-weight: bold;
     color: #5ab173;
- 
 }
-.month{
+.month {
     font-size: 35px;
     font-weight: bold;
-    color: #4B9460;
- 
+    color: #4b9460;
 }
-.container{
+
+.container {
     display: flex;
     justify-content: space-between;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
-.TextBox2, .TextBox3{
+.TextBox2,
+.TextBox3 {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 50%;
 }
-.text{
-    color:black;
+.text {
+    color: black;
     font-size: 15px;
     font-weight: bolder;
 }
-.text2{
-    color:black;
+.text2 {
+    color: black;
     font-weight: bolder;
     font-size: 20px;
 }
-.text3{
+.text3 {
     color: gray;
     font-size: 14px;
     font-weight: bold;
 }
-.container2{
+.container2 {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    background-color: #A2D39C;
+    background-color: #a2d39c;
     height: 50vh;
 }
-.image-section{
-    margin-top:100px;
+.image-section {
+    margin-top: 100px;
 }
 /*notice*/
 .notice-container {
@@ -109,7 +113,7 @@ html, body, #root {
     align-items: center;
     padding: 20px;
     background-color: white;
-    height: 100vh;
+    height: 100%;
 }
 
 .notice-description {
@@ -123,7 +127,7 @@ html, body, #root {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #F8F8F8;
+    background: #f8f8f8;
     padding: 15px;
     border-radius: 10px;
     width: 90%;
@@ -136,7 +140,7 @@ html, body, #root {
     display: flex;
     align-items: center;
     width: 100%;
-    gap:10px;
+    gap: 10px;
 }
 
 .check-box {

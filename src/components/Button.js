@@ -14,7 +14,7 @@ import { Button as MuiButton } from '@mui/material';
  * @param {() => void} props.onClick - 버튼 클릭 이벤트 핸들러
  * @returns {JSX.Element} 스타일이 적용된 버튼 컴포넌트
  */
-const Button = ({ text, onClick }) => {
+const Button = ({ text, bgColor = '#5DB075', textColor = 'white', onClick }) => {
     return (
         <div className="p-3">
             <MuiButton
@@ -22,7 +22,8 @@ const Button = ({ text, onClick }) => {
                 disableElevation
                 onClick={onClick}
                 sx={{
-                    backgroundColor: '#5DB075',
+                    backgroundColor: bgColor,
+                    color: textColor,
                     borderRadius: '30px',
                     fontSize: '16px',
                     fontWeight: 'bold',

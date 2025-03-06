@@ -1,10 +1,9 @@
-import Button from "../../components/Button";
+import Button from '../../components/Button';
 import mainImg from '../../image/새싹-하양.png';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const Start = () => {
-
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -26,17 +25,19 @@ const Start = () => {
             </div>
             <div className="container2">
                 <div className="image-section">
-                    <img src={mainImg} alt="Login Icon" sizes="2"/>
+                    <img src={mainImg} alt="Login Icon" sizes="2" />
+                </div>
+                <div className="button-container w-100">
+                    <Button
+                        text={'한달적금 시작하기'}
+                        bgColor={'white'}
+                        textColor={'#5DB075'}
+                        onClick={() => navigate('/notice')}
+                    />
                 </div>
             </div>
-            <div className="button-container w-100">
-                <Button
-                        text={'한달적금 시작하기'}
-                        onClick={() => navigate('/notice')}
-                />
-            </div>
         </div>
-    )
-}
+    );
+};
 
 export default Start;

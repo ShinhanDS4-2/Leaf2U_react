@@ -5,11 +5,11 @@ import axios from 'axios';
 import Login from './page/Login';
 import Home from './page/home/Home';
 import Notice from './page/home/Notice';
-import Start from'./page/join/Start';
+import Start from './page/join/Start';
 
 function App() {
     return (
-        <div className="w-100 h-100">
+        <div className="">
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/notice" element={<Notice />} />
