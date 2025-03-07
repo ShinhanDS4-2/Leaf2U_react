@@ -13,6 +13,7 @@ import HistoryList from './page/donation/HistoryList';
 import OrganizationDetail from './page/donation/OrganizationDetail';
 import HistoryDetail from './page/donation/HistoryDetail';
 import ManageAccount from './page/account/ManageAccount';
+import Termination from './page/account/Termination';
 
 function App() {
     return (
@@ -30,6 +31,7 @@ function App() {
                 <Route path="/historyList" element={<HistoryList />} />
                 <Route path="/historyDetail" element={<HistoryDetail />} />
                 <Route path="/manageAccount" element={<ManageAccount />} />
+                <Route path="/termination" element={<Termination />} />
 
                 {/* 시온 페이지 END */}
             </Routes>

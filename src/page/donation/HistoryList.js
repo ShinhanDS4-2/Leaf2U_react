@@ -66,18 +66,23 @@ const HistoryList = () => {
     //
 
     return (
-        <Box sx={{ padding: 2 }}>
+        <Box sx={{ padding: 2, backgroundColor: '#FAFAFA' }}>
             {/* 상단 정보 */}
             <Box
                 sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    marginBottom: 2,
+                    marginBottom: 1,
                 }}
             >
                 <Typography variant="body1">총 {donations.length}건</Typography>
-                <Button variant="text" onClick={handleClick}>
+                <Button
+                    variant="text"
+                    color="#5DB075"
+                    onClick={handleClick}
+                    sx={{ color: '#388E3C', fontSize: 15 }}
+                >
                     3개월 ▼
                 </Button>
                 <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
@@ -89,7 +94,11 @@ const HistoryList = () => {
 
             {/* 기부 내역 리스트 */}
             {donations.map((donation, index) => (
-                <Card key={index} variant="outlined" sx={{ borderRadius: 2, marginBottom: 1 }}>
+                <Card
+                    key={index}
+                    variant="outlined" // 카드위에 마우스 올리면 elevation로 변하게 해도 좋을듯
+                    sx={{ borderRadius: 2, marginBottom: 1, height: 'auto' }}
+                >
                     <CardContent>
                         {/* 제목 + 화살표 아이콘 */}
                         <Box
@@ -108,7 +117,7 @@ const HistoryList = () => {
                         </Box>
 
                         {/* 제목 아래 연한 구분선 */}
-                        <Divider sx={{ marginY: 1 }} />
+                        <Divider sx={{ marginY: 1, borderColor: 'black' }} />
 
                         {/* 내용 부분 (항목명과 값이 한 줄에 표시되도록 수정) */}
                         <Box sx={{ marginTop: 1 }}>
