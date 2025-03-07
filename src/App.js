@@ -4,9 +4,10 @@ import React, { useState, useRef, useReducer, useEffect } from 'react';
 import axios from 'axios';
 import Login from './page/Login';
 import Home from './page/home/Home';
-import Notice from './page/home/Notice';
+import Notice from './page/join/Notice';
 import Start from './page/join/Start';
-import Payment from './page/home/Payment';
+import Payment from './page/join/PaymentContent';
+import CardHome from './page/Card/CardHome';
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/start" element={<Start />} />
                 <Route path="/payment" element={<Payment/>} />
+                <Route path="/cardHome" element={<CardHome/>} />
             </Routes>
         </div>
     );
