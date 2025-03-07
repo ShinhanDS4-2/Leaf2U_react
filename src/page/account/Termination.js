@@ -11,11 +11,9 @@ import {
     Divider,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header';
 import Content from '../../components/Content';
 import BottomModal from '../../components/BottomModal';
 import Button2 from '../../components/Button';
-import Footer from '../../components/Footer';
 
 const Termination = () => {
     const navigate = useNavigate(); // useNavigate훅: React Router에서 제공하는 훅으로, 페이지 이동을 위한 함수
@@ -28,6 +26,23 @@ const Termination = () => {
     };
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    // 🟢 모달 참조용 ref 생성
+    const modalRef = useRef();
+
+    // 모달 open
+    const handleOpenModal = () => {
+        if (modalRef.current) {
+            modalRef.current.openModal();
+        }
+    };
+
+    // 모달 close
+    const handleCloseModal = () => {
+        if (modalRef.current) {
+            modalRef.current.closeModal();
+        }
     };
 
     //
@@ -329,21 +344,44 @@ const Termination = () => {
                                 360,295원
                             </Typography>
                         </Box>
+
+                        {/* 하단 주의 문구들 */}
+                        <Typography
+                            variant="caption"
+                            display="block"
+                            color="text.secondary"
+                            sx={{ marginBottom: 0.5 }}
+                        >
+                            * 중도해지 시 우대금리가 적용되지 않습니다.
+                        </Typography>
+                        <Typography variant="caption" display="block" color="text.secondary">
+                            * 적금 해지 시, 원금과 이자가 연계카드로 입금됩니다.
+                        </Typography>
                     </CardContent>
                 </Card>
-                {/* 하단 주의 문구들 */}
-                <Typography
-                    variant="caption"
-                    display="block"
-                    color="text.secondary"
-                    sx={{ marginBottom: 0.5 }}
-                >
-                    * 중도해지 시 우대금리가 적용되지 않습니다.
-                </Typography>
-                <Typography variant="caption" display="block" color="text.secondary">
-                    * 적금 해지 시, 원금과 이자가 연계카드로 입금됩니다.
-                </Typography>
             </Box>
+            <div>
+                <Content />
+                <div className="border m-2 p-4" onClick={handleOpenModal}>
+                    클릭 시 이벤트 발생
+                </div>
+                <BottomModal ref={modalRef}>
+                    <div>
+                        <Typography variant="h6" className="fw-bold mb-2" color="primary">
+                            🎉 축하합니다! 출석 완료 🎉
+                        </Typography>
+                        <p style={{ color: 'gray', marginBottom: '16px' }}>
+                            지금까지 총 5일 연속 출석했어요!
+                        </p>
+                        <Button2
+                            text="확인"
+                            onClick={(e) => {
+                                handleCloseModal();
+                            }}
+                        />
+                    </div>
+                </BottomModal>
+            </div>
         </>
     );
 };

@@ -79,7 +79,7 @@ const HistoryList = () => {
                 <Typography variant="body1">총 {donations.length}건</Typography>
                 <Button
                     variant="text"
-                    color="#5DB075"
+                    // color="#5DB075" 더 연한 연두색
                     onClick={handleClick}
                     sx={{ color: '#388E3C', fontSize: 15 }}
                 >

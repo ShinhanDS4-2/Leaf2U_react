@@ -1,5 +1,4 @@
 import Content from '../../components/Content';
-import Header from '../../components/Header';
 import React, { useRef } from 'react';
 import BottomModal from '../../components/BottomModal';
 import Typography from '@mui/material/Typography';
