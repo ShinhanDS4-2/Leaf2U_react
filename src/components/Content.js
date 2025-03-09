@@ -1,6 +1,8 @@
-const Content = () => {
+const Content = ({children}) => {
     return (
-        <div></div>
+        <div className="content">
+            {children}
+        </div>
     )
 }
 

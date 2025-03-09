@@ -25,10 +25,11 @@ function Home() {
 
     return (
         <div>
-            <Content />
-            <div className="border m-2 p-4" onClick={handleOpenModal}>
-                클릭 시 이벤트 발생
-            </div>
+            <Content>
+                <div className="border m-2 p-4" onClick={handleOpenModal}>
+                    클릭 시 이벤트 발생
+                </div>
+            </Content>
             <BottomModal ref={modalRef}>
                 <div>
                     <Typography variant="h6" className="fw-bold mb-2" color="primary">

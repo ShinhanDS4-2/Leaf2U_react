@@ -34,6 +34,7 @@ function App() {
                 <Route path="/manageAccount" element={<ManageAccount />} />
                 <Route path="/termination" element={<Termination />} />
                 <Route path="/aaa" element={<Aaa />} />
+                <Route path="/notice" element={<Notice />} />
 
                 {/* 시온 페이지 END */}
             </Routes>

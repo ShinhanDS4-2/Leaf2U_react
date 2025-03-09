@@ -23,16 +23,13 @@ const Header = ({
     },
 }) => {
     return (
-        <div className="w-100 ps-2 pe-2 pt-4 pb-4 header">
-            <div className="row text-center">
-                <div className="col-2" onClick={onClick}>
-                    {back && <Icon icon="majesticons:arrow-left-line" width="25" height="25" />}
+        <div className="header">
+            {back && (
+                <div className="back-icon" onClick={onClick}>
+                    <Icon icon="majesticons:arrow-left-line" width="25" height="25" />
                 </div>
-                <div className="col-8">
-                    <b>{title}</b>
-                </div>
-                <div className="col-2"></div>
-            </div>
+            )}
+            <div className="header-title">{title}</div>
         </div>
     );
 };
