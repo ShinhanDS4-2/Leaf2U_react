@@ -70,7 +70,7 @@ const AlertModal = React.forwardRef(({ title="알림", text="알림 내용", onC
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-slide-description" className='p-2'>
-                    <div 
+                    <span 
                         dangerouslySetInnerHTML={{ __html: text }} 
                         style={{ whiteSpace: 'pre-line' }}
                     />

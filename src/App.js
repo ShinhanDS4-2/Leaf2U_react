@@ -1,7 +1,5 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import React, { useState, useRef, useReducer, useEffect } from 'react';
-import axios from 'axios';
 import Login from './page/Login';
 import Home from './page/home/Home';
 import Notice from './page/home/Notice';
@@ -15,6 +13,7 @@ import HistoryDetail from './page/donation/HistoryDetail';
 import ManageAccount from './page/account/ManageAccount';
 import Termination from './page/account/Termination';
 import Aaa from './page/account/Aaa';
+import Example from './page/Example';
 
 function App() {
     return (
@@ -34,9 +33,11 @@ function App() {
                 <Route path="/manageAccount" element={<ManageAccount />} />
                 <Route path="/termination" element={<Termination />} />
                 <Route path="/aaa" element={<Aaa />} />
-                <Route path="/notice" element={<Notice />} />
 
                 {/* 시온 페이지 END */}
+                
+                <Route path="/example" element={<Example />} />
+
             </Routes>
         </div>
     );

@@ -1,6 +1,6 @@
-const Content = ({children}) => {
+const Content = ({children, bgColor = '#fafafa'}) => {
     return (
-        <div className="content">
+        <div className='content' style={{backgroundColor: bgColor}}>
             {children}
         </div>
     )

@@ -40,6 +40,26 @@ body,
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
+.home-header {
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 16px; 
+    text-align: right;
+    vertical-align: middle;
+}
+
+.home-div {
+    display: inline-block;
+    margin: 10px;
+}
+
+.header-icon {
+    color: #fafafa;
+    width: 30px;
+    height: 30px;
+}
+
 .back-icon {
     position: absolute;
     left: 16px;
@@ -50,6 +70,68 @@ body,
     text-align: center;
     font-weight: bold;
     font-size: 16px;
+}
+
+.backgrung-img {
+    background-image: url("./image/background.png");
+    background-size: cover;
+    background-repeat: no-repeat; 
+    /* height: 100vh;  */
+}
+
+.tree-div {
+    text-align: center;
+    position: relative;
+    height: 780px;
+    z-index: 10;
+    background-color: transparent;
+}
+
+.tree-img {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 100px;
+}
+
+/* 구름 */
+.cloud1 {
+    position: fixed;
+    top: 100px;                  
+    left: -250px;
+    width: 250px; 
+    height: 150px;
+    background-image: url('./image/cloud.png');
+    background-repeat: repeat-x;
+    background-size: contain;
+    animation: cloud-slide 15s linear infinite; 
+    z-index: 1;
+}
+
+.cloud2 {
+    position: fixed;
+    top: 200px;                  
+    left: -250px;
+    width: 250px; 
+    height: 150px;
+    background-image: url('./image/cloud.png');
+    background-repeat: repeat-x;
+    background-size: contain;
+    animation: cloud-slide2 20s linear infinite; 
+    z-index: 1;
+}
+
+/* 구름이 슬라이드 되는 애니메이션 */
+@keyframes cloud-slide {
+    from { left: -250px; }
+    to { left: 100vh; }
+}
+
+@keyframes cloud-slide2 {
+    from { left: -500px; }
+    to { left: 100vh; }
 }
 
 /* 콘텐츠 */
@@ -91,7 +173,7 @@ body,
     text-align: center;
 }
 
-.footerIcon {
+.footer-icon {
     color: #4b9460;
     width: 30px;
     height: 30px;

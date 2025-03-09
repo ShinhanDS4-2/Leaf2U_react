@@ -12,27 +12,27 @@ const Footer = () => {
             <div className="row">
                 <div className="col">
                     <a href="/">
-                        <Icon icon="majesticons:home" className="footerIcon" />
+                        <Icon icon="majesticons:home" className="footer-icon" />
                     </a>
                 </div>
                 <div className="col">
                     <a href="/card">
-                        <Icon icon="majesticons:creditcard" className="footerIcon" />
+                        <Icon icon="majesticons:creditcard" className="footer-icon" />
                     </a>
                 </div>
                 <div className="col">
                     <a href="/point">
-                        <Icon icon="mingcute:parking-fill" className="footerIcon" />
+                        <Icon icon="mingcute:parking-fill" className="footer-icon" />
                     </a>
                 </div>
                 <div className="col">
                     <a href="/topic">
-                        <Icon icon="majesticons:textbox" className="footerIcon" />
+                        <Icon icon="majesticons:textbox" className="footer-icon" />
                     </a>
                 </div>
                 <div className="col">
                     <a href="/leafboard">
-                        <Icon icon="majesticons:leaf-3-angled" className="footerIcon" />
+                        <Icon icon="majesticons:leaf-3-angled" className="footer-icon" />
                     </a>
                 </div>
             </div>
