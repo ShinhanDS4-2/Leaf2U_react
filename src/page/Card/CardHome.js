@@ -1,19 +1,17 @@
 import { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Button from '../../components/Button';
-import Header from '../../components/Header';
-import BottomModal from '../../components/BottomModal';
+import Button from '../../components/button/Button';
+import Header from '../../components/header/Header';
+import BottomModal from '../../components/modal/BottomModal';
 import mainImg from '../../image/leaf2u-card.png';
 
 const CardHome = () => {
-
     const location = useLocation();
-    const navigate=useNavigate();
-    const modalRef=useRef();
+    const navigate = useNavigate();
+    const modalRef = useRef();
 
     const cardYn = location.state?.cardYn || 'Y';
-    const [amount, setAmount] = useState(location.state?.amount || "10,000");
-
+    const [amount, setAmount] = useState(location.state?.amount || '10,000');
 
     useEffect(() => {
         if (cardYn === 'N') {
@@ -22,21 +20,22 @@ const CardHome = () => {
     }, [cardYn]);
 
     const handleCloseModal = () => {
-        modalRef.current?.closeModal(); 
+        modalRef.current?.closeModal();
     };
 
     return (
         <div className="card-container">
-            
             <Header title={'한달적금 개설'} />
 
             <div className="payment">
                 <h3>
-                    매일 
-                    <input type="text" className="payment-input" value={amount} readOnly /> 
+                    매일
+                    <input type="text" className="payment-input" value={amount} readOnly />
                     원씩 납입
                 </h3>
-                <p className="card-info"><span>30일 후 {(amount * 30).toLocaleString()}원 저축</span></p>
+                <p className="card-info">
+                    <span>30일 후 {(amount * 30).toLocaleString()}원 저축</span>
+                </p>
             </div>
 
             {/* 카드 연결 */}
@@ -52,30 +51,45 @@ const CardHome = () => {
             <div className="eco-card">
                 <div className="eco-card-in">
                     <input type="checkbox" className="checkbox" />
-                    <label htmlFor="donation" className="checkbox-label">기후 동행 카드</label>
+                    <label htmlFor="donation" className="checkbox-label">
+                        기후 동행 카드
+                    </label>
                     <ul className="eco-benefits">
                         <li>기존 보유하신 Leaf2U 카드 등록 시 우대금리 연 +2.00%</li>
                         <li>후불 기후동행카드 등록 시 우대금리 연 +1.00%</li>
-                    </ul>   
+                    </ul>
                 </div>
             </div>
 
             {/* 적금 정보 요약 */}
             <div className="summary-card">
                 <div className="summary">
-                    <p>매일 납입 금액 <span>{amount}원</span></p>
-                    <p>적금기간 <span>30일</span></p>
-                    <p>적금방식 <span>1일 1회 입금</span></p>
-                    <p>최고 적용금리 <span>연 9.00%</span></p>                 
-                    <p>만기설정 <span>만기 시 자동 해지</span></p>
+                    <p>
+                        매일 납입 금액 <span>{amount}원</span>
+                    </p>
+                    <p>
+                        적금기간 <span>30일</span>
+                    </p>
+                    <p>
+                        적금방식 <span>1일 1회 입금</span>
+                    </p>
+                    <p>
+                        최고 적용금리 <span>연 9.00%</span>
+                    </p>
+                    <p>
+                        만기설정 <span>만기 시 자동 해지</span>
+                    </p>
                 </div>
             </div>
             <div className="explain-card">
                 <ul className="explain">
-                    <li>최고 적용금리 6.00% = 기본금리 1.00% + 30일 성공 시 3.00% + 연속 보너스 2.00% + 최초 가입 2.00</li>
-                </ul> 
+                    <li>
+                        최고 적용금리 6.00% = 기본금리 1.00% + 30일 성공 시 3.00% + 연속 보너스
+                        2.00% + 최초 가입 2.00
+                    </li>
+                </ul>
             </div>
-            
+
             <Button text="다음" />
 
             <BottomModal ref={modalRef} maxHeight="70%">
@@ -95,12 +109,15 @@ const CardHome = () => {
                         스타벅스 5% 캐시백
                     </p>
                     <div className="button2-container">
-                        <Button text={'예'} onClick={() => navigate('/leaf')}/>
-                        <Button text={'아니오'} onClick={handleCloseModal} className="gray-button" />
+                        <Button text={'예'} onClick={() => navigate('/leaf')} />
+                        <Button
+                            text={'아니오'}
+                            onClick={handleCloseModal}
+                            className="gray-button"
+                        />
                     </div>
                 </div>
             </BottomModal>
-
         </div>
     );
 };

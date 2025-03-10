@@ -1,0 +1,31 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 100;
+    background-color: #fafafa;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.footer .row {
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.footer .col {
+    flex: 1;
+    text-align: center;
+}
+
+.footer-icon {
+    color: #4b9460;
+    width: 30px;
+    height: 30px;
+}
