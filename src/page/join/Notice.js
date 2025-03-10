@@ -112,7 +112,7 @@ const Notice = () => {
                 onClick={handleNextClick} 
             />
 
-            <BottomModal ref={modalRef}>
+            <BottomModal ref={modalRef} maxHeight="50%">
                 <div className="agree-item-modal">
                     <p className="agree-item">상품 중요사항을 충분히 이해하고 확인하셨나요?</p>
                     <Button 

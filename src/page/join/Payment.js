@@ -63,7 +63,8 @@ const Payment = () => {
             const data = await response.json();
             console.log("서버 응답:", data);
 
-            navigate("/cardHome",{state:{cardYn:data.cardYn}});
+            //navigate("/cardHome",{state:{cardYn:data.cardYn}});
+            navigate("/cardHome",{state:{cardYn:data.cardYn,amount:numAmount}});
         }
         catch(error){
             console.error("API 요청 실패: ",error);

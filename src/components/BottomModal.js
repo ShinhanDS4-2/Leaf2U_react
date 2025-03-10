@@ -29,8 +29,8 @@ const Puller = styled('div')(() => ({
     left: 'calc(50% - 15px)',
 }));
 
-const BottomModal = React.forwardRef((props, ref) => {  
-    const { window } = props;
+const BottomModal = React.forwardRef(({ window, maxHeight = '50%', children }, ref) => {  
+
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen) => () => {
@@ -52,7 +52,7 @@ const BottomModal = React.forwardRef((props, ref) => {
                 styles={{
                     '.MuiDrawer-root > .MuiPaper-root': {
                         height: `auto`,
-                        maxHeight: '50%',
+                        maxHeight: maxHeight,
                         borderTopLeftRadius: 16,
                         borderTopRightRadius: 16,
                         overflow: 'visible',
@@ -71,7 +71,7 @@ const BottomModal = React.forwardRef((props, ref) => {
             >
                 <StyledBox sx={{ position: 'relative', pt: 6, pb: 3 }}>
                     <Puller />
-                    {props.children}
+                    {children}
                 </StyledBox>
             </SwipeableDrawer>
         </Root>
