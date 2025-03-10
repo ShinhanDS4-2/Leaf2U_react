@@ -1,4 +1,4 @@
-import { Icon } from "@iconify/react";
+import { Icon } from '@iconify/react';
 
 const HomeHeader = () => {
     return (
@@ -9,11 +9,13 @@ const HomeHeader = () => {
             <div className="home-div">
                 <Icon icon="majesticons:calendar" className="header-icon" />
             </div>
-            <div className="home-div">
-                <Icon icon="f7:bell-fill" className="header-icon" />
-            </div>
+            <a href="/notice">
+                <div className="home-div">
+                    <Icon icon="f7:bell-fill" className="header-icon" />
+                </div>
+            </a>
         </div>
-    )
-}
+    );
+};
 
 export default HomeHeader;

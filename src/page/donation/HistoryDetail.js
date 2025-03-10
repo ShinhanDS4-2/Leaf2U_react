@@ -11,11 +11,11 @@ import {
     Divider,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header';
-import Content from '../../components/Content';
-import BottomModal from '../../components/BottomModal';
-import Button2 from '../../components/Button';
-import Footer from '../../components/Footer';
+import Header from '../../components/header/Header';
+import Content from '../../components/content/Content';
+import BottomModal from '../../components/modal/BottomModal';
+import Button2 from '../../components/button/Button';
+import Footer from '../../components/footer/Footer';
 
 const HistoryDetail = () => {
     const navigate = useNavigate(); // useNavigate훅: React Router에서 제공하는 훅으로, 페이지 이동을 위한 함수

@@ -1,0 +1,10 @@
+.content {
+    background-color: #fafafa;
+    padding: 20px;
+    overflow-y: auto;
+    position: fixed;
+    top: 60px;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+}

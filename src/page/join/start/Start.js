@@ -1,4 +1,4 @@
-import Button from '../../../components/Button';
+import Button from '../../../components/button/Button';
 import mainImg from '../../../image/새싹-하양.png';
 import { useNavigate } from 'react-router-dom';
 import './Start.css';
