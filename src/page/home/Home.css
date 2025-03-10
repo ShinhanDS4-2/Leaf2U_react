@@ -67,3 +67,37 @@
         left: 100vh;
     }
 }
+
+.watering-img {
+    width: 40%;
+    position: absolute;
+    bottom: 0; 
+    right: 0;  
+    z-index: 2;
+    transform: translate(-20%, -110%);
+}
+
+.bottom-text {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.diff-div {
+    background-color: #FEE500;
+    border-radius: 10px;
+}
+
+.diff {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.info-rate {
+    color: #5DB075;
+    font-weight: bold;
+}
+
+.info-balance{
+    font-weight: bold;
+    font-size: 23px;
+}
