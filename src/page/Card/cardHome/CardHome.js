@@ -1,9 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Button from '../../components/Button';
-import Header from '../../components/Header';
-import BottomModal from '../../components/BottomModal';
-import mainImg from '../../image/leaf2u-card.png';
+import mainImg from '../../../image/leaf2u-card.png';
+import Header from '../../../components/Header';
+import Button from '../../../components/Button';
+import BottomModal from '../../../components/BottomModal';
+import './CardHome.css';
 
 const CardHome = () => {
 

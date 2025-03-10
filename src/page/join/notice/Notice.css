@@ -1,0 +1,87 @@
+/*notice*/
+.notice-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
+    background-color: white;
+    height: 100%;
+}
+
+.notice-description {
+    text-align: center;
+    color: gray;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.notice-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f8f8;
+    padding: 15px;
+    border-radius: 10px;
+    width: 90%;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.notice-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.check-box {
+    width: 20px; /* 고정 크기 */
+    height: 20px; /* 고정 크기 */
+    border: 2px solid #000; /* 체크박스 스타일 */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.check-box.checked {
+    background-color:#5DB075 /* 체크 시 색상 변경 */
+}
+
+.notice-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.arrow-icon {
+    font-size: 20px;
+    color: gray;
+    cursor: pointer;
+    margin-left: auto; /* 오른쪽 끝으로 이동 */
+    flex-shrink: 0; /* 크기 유지 */
+}
+
+.arrow-icon:hover {
+    color: black;
+}
+
+button:disabled {
+    background: lightgray;
+    cursor: not-allowed;
+}
+.agree-item-modal {
+    padding-top: 40px;
+}
+
+.agree-item {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 70px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-top: 20px;
+}

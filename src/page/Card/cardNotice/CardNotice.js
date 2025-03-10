@@ -1,8 +1,9 @@
 import React, { useState,useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/Button";
-import Header from "../../components/Header";
-import mainImg from '../../image/leaf2u-card.png';
+import mainImg from '../../../image/leaf2u-card.png';
+import Button from "../../../components/Button";
+import Header from "../../../components/Header";
+import './CardNotice.css';
 
 const CardNotice = () => {
 

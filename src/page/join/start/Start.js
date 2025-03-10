@@ -1,6 +1,7 @@
-import Button from '../../components/Button';
-import mainImg from '../../image/새싹-하양.png';
+import Button from '../../../components/Button';
+import mainImg from '../../../image/새싹-하양.png';
 import { useNavigate } from 'react-router-dom';
+import './Start.css';
 
 const Start = () => {
     const navigate = useNavigate();

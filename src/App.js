@@ -1,11 +1,13 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import Login from './page/Login';
+import Login from './page/join/login/Login';
 import Home from './page/home/Home';
-import Notice from './page/join/Notice';
-import Start from './page/join/Start';
-import Payment from './page/join/Payment';
-import CardHome from './page/Card/CardHome';
+import Start from './page/join/start/Start';
+import Notice from './page/join/notice/Notice';
+import Payment from './page/join/payment/Payment';
+import CardHome from './page/Card/cardHome/CardHome';
+import CardNotice from './page/Card/cardNotice/CardNotice';
+import CardJoin from './page/Card/cardJoin/CardJoin';
 
 import OrganizationList from './page/donation/OrganizationList';
 import HistoryList from './page/donation/HistoryList';
@@ -14,8 +16,6 @@ import HistoryDetail from './page/donation/HistoryDetail';
 import ManageAccount from './page/account/ManageAccount';
 import Termination from './page/account/Termination';
 import Aaa from './page/account/Aaa';
-import CardNotice from './page/Card/CardNotice';
-import CardJoin from './page/Card/CardJoin';
 
 import Example from './page/Example';
 

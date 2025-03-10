@@ -1,0 +1,30 @@
+/*카드 가입 약관*/
+.notice-container2 {
+    padding: 0 20px;
+}
+.card-image-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding-top: 50px;
+}
+
+.all-agree-container {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    padding-top: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    justify-content: center;
+
+    margin-top: 10px;
+}
+
+.all-agree-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2F9D27;
+    margin-left: 10px;
+}
