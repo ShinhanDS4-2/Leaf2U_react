@@ -1,11 +1,10 @@
 import React, { useRef } from 'react';
 import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header';
-import Content from '../../components/Content';
-import Footer from '../../components/Footer';
-import BottomModal from '../../components/BottomModal';
-import Button from '../../components/Button';
+
+import Content from '../../components/content/Content';
+import BottomModal from '../../components/modal/BottomModal';
+import Button2 from '../../components/button/Button';
 
 const Termination = () => {
     const navigate = useNavigate(); // useNavigate훅: React Router에서 제공하는 훅으로, 페이지 이동을 위한 함수

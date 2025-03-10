@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import Header from '../../components/Header';
+import Header from '../../components/header/Header';
 import React, { useState } from 'react';
 import { Tabs, Tab, Box, Card, CardContent, Typography, Button } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.min.css';

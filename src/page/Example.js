@@ -1,10 +1,10 @@
-import Content from '../components/Content';
 import React, { useRef } from 'react';
-import BottomModal from '../components/BottomModal';
 import Typography from '@mui/material/Typography';
-import Button from '../components/Button';
-import Footer from '../components/Footer';
-import AlertModal from  '../components/AlertModal';
+import Content from '../components/content/Content';
+import Footer from '../components/footer/Footer';
+import Button from '../components/button/Button';
+import BottomModal from '../components/modal/BottomModal';
+import AlertModal from '../components/modal/AlertModal';
 
 function Home() {
     // 🟢 모달 참조용 ref 생성
@@ -55,14 +55,18 @@ function Home() {
                         지금까지 총 5일 연속 출석했어요!
                     </p>
                     <Button
-                        text='확인'
+                        text="확인"
                         onClick={(e) => {
                             handleCloseModal();
                         }}
                     />
                 </div>
             </BottomModal>
-            <AlertModal ref={alertRef} text={'<span>Alert 알림 내용 작성<br>Alert 알림 내용 작성</span>'} onClick={() => {}}/>
+            <AlertModal
+                ref={alertRef}
+                text={'<span>Alert 알림 내용 작성<br>Alert 알림 내용 작성</span>'}
+                onClick={() => {}}
+            />
             <Footer />
         </div>
     );

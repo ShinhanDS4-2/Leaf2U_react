@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react';
+import './Header.css';
 
 /**
  * 헤더 컴포넌트

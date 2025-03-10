@@ -1,4 +1,5 @@
-import { Icon } from "@iconify/react";
+import { Icon } from '@iconify/react';
+import './Footer.css';
 
 /**
  * 푸터 컴포넌트
@@ -39,6 +40,5 @@ const Footer = () => {
         </div>
     );
 };
-
 
 export default Footer;
