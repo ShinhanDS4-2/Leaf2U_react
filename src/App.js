@@ -17,13 +17,6 @@ import Aaa from './page/account/Aaa';
 import CardNotice from './page/Card/CardNotice';
 import CardJoin from './page/Card/CardJoin';
 
-import OrganizationList from './page/donation/OrganizationList';
-import HistoryList from './page/donation/HistoryList';
-import OrganizationDetail from './page/donation/OrganizationDetail';
-import HistoryDetail from './page/donation/HistoryDetail';
-import ManageAccount from './page/account/ManageAccount';
-import Termination from './page/account/Termination';
-import Aaa from './page/account/Aaa';
 import Example from './page/Example';
 
 function App() {
