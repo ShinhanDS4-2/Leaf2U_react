@@ -1,0 +1,57 @@
+.challenge-container {
+    padding: 1.5rem;
+    background-color: #f3f4f6;
+    min-height: 100vh;
+    padding-bottom: 4rem;
+}
+
+.challenge-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.challenge-description {
+    font-size: 0.875rem;
+    color: #4b5563;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.challenge-card {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+.card-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.card-image {
+    width: 4rem;
+    height: 4rem;
+    margin-right: 1rem;
+    border-radius: 0.5rem;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.card-text {
+    font-size: 0.875rem;
+    color: #4b5563;
+}
+
+.highlight {
+    color: #499d40;
+    font-weight: bold;
+}

@@ -1,47 +1,8 @@
 import React from 'react';
+import './Deposit.css';
 import TumblrImg from '../../image/Tumblr.jpg';
 import BicycleImg from '../../image/Bicycle.jpg';
 import ReceiptImg from '../../image/Receipt.jpg';
-
-const styles = {
-    container: {
-        padding: '1.5rem',
-        backgroundColor: '#f3f4f6',
-        minHeight: '100vh',
-        paddingBottom: '4rem',
-    },
-    title: {
-        fontSize: '1.25rem',
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-    description: {
-        fontSize: '0.875rem',
-        color: '#4b5563',
-        textAlign: 'center',
-        marginBottom: '1.5rem',
-    },
-    card: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: 'white',
-        padding: '1rem',
-        borderRadius: '0.5rem',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-        marginBottom: '1rem',
-    },
-    cardImage: {
-        width: '4rem',
-        height: '4rem',
-        marginRight: '1rem',
-        borderRadius: '0.5rem',
-    },
-    highlight: {
-        color: '#499D40',
-        fontWeight: 'bold',
-    },
-};
 
 const challenges = [
     {
@@ -62,12 +23,12 @@ const challenges = [
 ];
 
 const ChallengeCard = ({ img, title, description }) => (
-    <div style={styles.card}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img src={img} alt={title} style={styles.cardImage} />
+    <div className="challenge-card">
+        <div className="card-content">
+            <img src={img} alt={title} className="card-image" />
             <div>
-                <h3 style={{ fontSize: '1rem', fontWeight: '600' }}>{title}</h3>
-                <p style={styles.text} dangerouslySetInnerHTML={{ __html: description }} />
+                <h3 className="card-title">{title}</h3>
+                <p className="card-text" dangerouslySetInnerHTML={{ __html: description }} />
             </div>
         </div>
     </div>
@@ -75,9 +36,9 @@ const ChallengeCard = ({ img, title, description }) => (
 
 const ChallengeList = () => {
     return (
-        <div style={styles.container}>
-            <h2 style={styles.title}>오늘의 챌린지</h2>
-            <p style={styles.description}>
+        <div className="challenge-container">
+            <h2 className="challenge-title">오늘의 챌린지</h2>
+            <p className="challenge-description">
                 챌린지를 선택해 주세요.
                 <br />
                 인증 및 확인 후 납입이 완료됩니다.
