@@ -1,6 +1,7 @@
 /*카드 가입 약관*/
 .notice-container2 {
-    padding: 0 20px;
+    padding-right: 5px;
+    padding-left: 40px;
 }
 .card-image-container {
     display: flex;
@@ -12,13 +13,12 @@
 .all-agree-container {
     display: flex;
     align-items: center;
-    padding: 15px;
-    padding-top: 20px;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     border-radius: 10px;
     cursor: pointer;
     margin-bottom: 20px;
-    justify-content: center;
-
     margin-top: 10px;
 }
 
