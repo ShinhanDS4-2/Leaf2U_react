@@ -2,8 +2,9 @@ import React, { useState,useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import BottomModal from "../../components/BottomModal";
+import Header from "../../components/Header";
 
-const NoticeContent = () => {
+const Notice = () => {
 
     const navigate = useNavigate();
     const modalRef = useRef();
@@ -27,21 +28,20 @@ const NoticeContent = () => {
     // 버튼 클릭 이벤트 핸들러
     const handleNextClick = () => {
         
-        console.log("handleNextClikc 함수 실행됨");
         if (allChecked) {
             if (modalRef.current) {
                 modalRef.current.openModal();
             }
-
-            // navigate('/next-step'); // 모든 체크박스가 선택되었을 때만 이동
-            //modalRef.current?.openModal();
-        } else {
+        } 
+        else {
             alert("모든 약관에 동의해야 다음 단계로 진행할 수 있습니다.");
         }
     };
 
     return (
         <div>
+            <Header title={'한달적금 개설'}/>
+            
             <div className="notice-container">
                 <p className="notice-description">
                     한달적금 개설을 위해 <br />
@@ -112,7 +112,7 @@ const NoticeContent = () => {
                 onClick={handleNextClick} 
             />
 
-            <BottomModal ref={modalRef}>
+            <BottomModal ref={modalRef} maxHeight="50%">
                 <div className="agree-item-modal">
                     <p className="agree-item">상품 중요사항을 충분히 이해하고 확인하셨나요?</p>
                     <Button 
@@ -126,4 +126,4 @@ const NoticeContent = () => {
     );
 };
 
-export default NoticeContent;
+export default Notice;
