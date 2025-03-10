@@ -1,0 +1,23 @@
+.notice-field {
+    margin-bottom: 40px;
+}
+
+.notice-field:last-child {
+    margin-bottom: 0px;
+}
+
+.notice-box {
+    background-color: #e8e8e8;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.notice-content {
+    margin-top: 10px;
+}
+
+.notice-time {
+    font-size: small;
+    color: gray;
+}

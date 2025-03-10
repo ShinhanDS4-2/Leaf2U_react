@@ -2,6 +2,8 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Login from './page/join/login/Login';
 import Home from './page/home/Home';
+import HomeNotice from './page/home/Notice';
+
 import Start from './page/join/start/Start';
 import Notice from './page/join/notice/Notice';
 import Payment from './page/join/payment/Payment';
@@ -26,6 +28,7 @@ function App() {
         <div className="w-100 h-100">
             <Routes>
                 <Route path="/home" element={<Home />} />
+                <Route path="/home/notice" element={<HomeNotice />} />
 
                 {/* 현욱 페이지 START */}
                 <Route path="/" element={<Login />} />
@@ -48,8 +51,11 @@ function App() {
 
                 {/* 시온 페이지 END */}
 
+<<<<<<< HEAD
                 <Route path="/deposit" element={<Deposit />} />
 
+=======
+>>>>>>> develop
                 <Route path="/example" element={<Example />} />
             </Routes>
         </div>

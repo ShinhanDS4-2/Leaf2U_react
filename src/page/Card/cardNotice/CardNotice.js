@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../../components/button/Button';
 import Header from '../../../components/header/Header';
 import mainImg from '../../../image/leaf2u-card.png';
+import AlertModal from '../../../components/modal/AlertModal';
 
 const CardNotice = () => {
     const navigate = useNavigate();
     const modalRef = useRef();
+    const alertRef=useRef();
 
     // 체크박스 상태 관리
     const [checkedItems, setCheckedItems] = useState({
@@ -39,7 +41,9 @@ const CardNotice = () => {
         if (allChecked) {
             navigate('/cardjoin');
         } else {
-            alert('모든 약관에 동의해야 다음 단계로 진행할 수 있습니다.');
+            if(alertRef.current){
+                alertRef.current.openModal();
+            }
         }
     };
 
@@ -107,6 +111,8 @@ const CardNotice = () => {
                 </div>
             </div>
             <Button text={'다음'} onClick={handleNextClick} />
+
+            <AlertModal ref={alertRef} text={'모든 약관에 동의해야 다음 단계로 진행할 수 있습니다.'}/>
         </div>
     );
 };

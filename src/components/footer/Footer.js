@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 /**
@@ -12,29 +13,29 @@ const Footer = () => {
         <div className="footer">
             <div className="row">
                 <div className="col">
-                    <a href="/">
+                    <Link to="/">
                         <Icon icon="majesticons:home" className="footer-icon" />
-                    </a>
+                    </Link>
                 </div>
                 <div className="col">
-                    <a href="/card">
+                    <Link to="/card">
                         <Icon icon="majesticons:creditcard" className="footer-icon" />
-                    </a>
+                    </Link>
                 </div>
                 <div className="col">
-                    <a href="/point">
+                    <Link to="/point">
                         <Icon icon="mingcute:parking-fill" className="footer-icon" />
-                    </a>
+                    </Link>
                 </div>
                 <div className="col">
-                    <a href="/topic">
+                    <Link to="/topic">
                         <Icon icon="majesticons:textbox" className="footer-icon" />
-                    </a>
+                    </Link>
                 </div>
                 <div className="col">
-                    <a href="/leafboard">
+                    <Link to="/leafboard">
                         <Icon icon="majesticons:leaf-3-angled" className="footer-icon" />
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

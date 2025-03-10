@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../../components/button/Button';
 import BottomModal from '../../../components/modal/BottomModal';
 import Header from '../../../components/header/Header';
+import AlertModal from '../../../components/modal/AlertModal';
 
 const Notice = () => {
     const navigate = useNavigate();
     const modalRef = useRef();
+    const alertRef=useRef();
 
     // 체크박스 상태 관리
     const [checkedItems, setCheckedItems] = useState({
@@ -32,7 +34,9 @@ const Notice = () => {
                 modalRef.current.openModal();
             }
         } else {
-            alert('모든 약관에 동의해야 다음 단계로 진행할 수 있습니다.');
+            if(alertRef.current){
+                alertRef.current.openModal();
+            }
         }
     };
 
@@ -132,6 +136,8 @@ const Notice = () => {
                     <Button text={'확인했습니다'} onClick={() => navigate('/payment')} />
                 </div>
             </BottomModal>
+
+            <AlertModal ref={alertRef} text={'모든 약관에 동의해야 다음 단계로 진행할 수 있습니다.'}/>
         </div>
     );
 };
