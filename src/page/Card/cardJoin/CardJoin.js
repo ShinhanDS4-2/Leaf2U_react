@@ -1,22 +1,22 @@
-import React, { useState,useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import Button from "../../components/Button";
-import Header from "../../components/Header";
+import './CardJoin.css';
+import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Button from '../../../components/button/Button';
+import Header from '../../../components/header/Header';
 
 const CardJoin = () => {
-
     const navigate = useNavigate();
 
     // 입력값 상태 관리
     const [form, setForm] = useState({
-        name: "",
-        lastName: "",
-        firstName: "",
-        idNumber: "",
-        phone: "",
-        address: "",
-        detailAddress: "",
-        zipCode: "",
+        name: '',
+        lastName: '',
+        firstName: '',
+        idNumber: '',
+        phone: '',
+        address: '',
+        detailAddress: '',
+        zipCode: '',
     });
 
     // 에러 메시지 상태
@@ -30,7 +30,7 @@ const CardJoin = () => {
         setForm((prev) => ({ ...prev, [name]: value }));
 
         // 입력 시 에러 메시지 제거
-        if (name === "name" && value.trim() !== "") {
+        if (name === 'name' && value.trim() !== '') {
             setErrors((prev) => ({ ...prev, name: false }));
         }
     };
@@ -42,20 +42,18 @@ const CardJoin = () => {
             return;
         }
         // 다음 페이지로 이동
-        navigate("/next-step");
+        navigate('/next-step');
     };
-
-    
 
     return (
         <div>
-            <Header title={'카드 가입'}/>
+            <Header title={'카드 가입'} />
 
             <div className="join-container">
                 <h3 className="section-title">가입 정보 입력</h3>
 
                 {/* 이름 입력 */}
-                <div className={"input-container"}>
+                <div className={'input-container'}>
                     <label>이름</label>
                     <input
                         type="text"
@@ -102,8 +100,7 @@ const CardJoin = () => {
                     />
                 </div>
 
-
-                {/*계좌*/}  
+                {/*계좌*/}
                 <div className="input-container">
                     <label>계좌 입력</label>
                     <select className="card-select">
@@ -114,14 +111,11 @@ const CardJoin = () => {
                 <div className="explain-card">
                     <ul className="explain2">
                         <li>카드와 연결할 계좌를 입력해주세요.</li>
-                    </ul> 
+                    </ul>
                 </div>
             </div>
 
-            
-            <Button 
-                text={'다음'} 
-            />
+            <Button text={'다음'} />
         </div>
     );
 };
