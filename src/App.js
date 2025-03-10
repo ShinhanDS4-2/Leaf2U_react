@@ -16,6 +16,8 @@ import ManageAccount from './page/account/ManageAccount';
 import Termination from './page/account/Termination';
 import Aaa from './page/account/Aaa';
 
+import Deposit from './page/deposit/Deposit';
+
 function App() {
     return (
         <div className="w-100 h-100">
@@ -36,6 +38,8 @@ function App() {
                 <Route path="/aaa" element={<Aaa />} />
 
                 {/* 시온 페이지 END */}
+
+                <Route path="/deposit" element={<Deposit />} />
             </Routes>
         </div>
     );
