@@ -3,7 +3,7 @@ import { Button as MuiButton } from '@mui/material';
 import { Icon } from "@iconify/react";
 import { useNavigate,useLocation } from 'react-router-dom';
 import axios from 'axios';
-import mainImg from '../image/새싹-하양.png';
+import mainImg from '../../../image/새싹-하양.png';
 
 function Login() {
 

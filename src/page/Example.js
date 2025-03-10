@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import Content from '../components/content/Content';
 import Footer from '../components/footer/Footer';
 import Button from '../components/button/Button';
+import DoubleButton from '../components/button/DoubleButton';
 import BottomModal from '../components/modal/BottomModal';
 import AlertModal from '../components/modal/AlertModal';
 
@@ -54,9 +55,11 @@ function Home() {
                     <p style={{ color: 'gray', marginBottom: '16px' }}>
                         지금까지 총 5일 연속 출석했어요!
                     </p>
-                    <Button
-                        text="확인"
-                        onClick={(e) => {
+                    <DoubleButton
+                        confirmOnClick={() => {
+                            handleCloseModal();
+                        }}
+                        cancelOnClick={() => {
                             handleCloseModal();
                         }}
                     />

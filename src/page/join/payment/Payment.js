@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../../components/button/Button';
-import Keypad from '../../components/Keypad';
-import Header from '../../components/header/Header';
+import './Payment.css';
+import Button from '../../../components/button/Button';
+import Keypad from '../../../components/Keypad';
+import Header from '../../../components/header/Header';
 
 const Payment = () => {
     const navigate = useNavigate();

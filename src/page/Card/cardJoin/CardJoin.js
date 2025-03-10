@@ -1,7 +1,8 @@
+import './CardJoin.css';
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from '../../components/button/Button';
-import Header from '../../components/header/Header';
+import Button from '../../../components/button/Button';
+import Header from '../../../components/header/Header';
 
 const CardJoin = () => {
     const navigate = useNavigate();
