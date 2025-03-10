@@ -56,11 +56,7 @@ const Termination = () => {
             <Header title="계좌 해지" />
             <Content>
                 {/* 안내 문구 */}
-                <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ margin: 3, textAlign: 'center' }}
-                >
+                <Typography variant="body2" color="text.secondary" className="mb-3 text-center">
                     중도해지 시 아래와 같이 <br />
                     오늘까지 발생한 이자와 원금이 입금됩니다.
                 </Typography>

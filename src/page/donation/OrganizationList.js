@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import axios from 'axios';
 import {
     Tabs,
     Tab,
@@ -7,10 +8,13 @@ import {
     CardContent,
     Typography,
     Button,
-    Menu,
-    MenuItem,
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    IconButton,
     Divider,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
@@ -51,7 +55,82 @@ const TabPanel = ({ children, value, index }) => {
     return value === index ? <div>{children}</div> : null;
 };
 
+const OrganizationDetailModal = ({ open, onClose }) => {
+    return (
+        // open 속성에 true가 전달되면 모달이 표시됨. open 속성이 false이면 모달이 숨겨짐.
+        <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
+            <DialogTitle
+                sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+            >
+                상세 정보
+                <IconButton onClick={onClose} size="small">
+                    <CloseIcon color="" />
+                </IconButton>
+            </DialogTitle>
+            <Divider sx={{ borderColor: 'black' }} />
+            <DialogContent>
+                <Card variant="outlined" sx={{ borderRadius: 2 }}>
+                    <CardContent>
+                        {/* 이자 상세 항목들 */}
+                        <Box
+                            sx={{
+                                marginBottom: 1,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <Typography variant="body2" color="text.secondary">
+                                기관명
+                            </Typography>
+                            <Typography variant="body2">생명의 숲</Typography>
+                        </Box>
+                        <Box
+                            sx={{
+                                marginBottom: 1,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <Typography variant="body2" color="text.secondary">
+                                연락처
+                            </Typography>
+                            <Typography variant="body2">010-7737-6314</Typography>
+                        </Box>
+                        <Box
+                            sx={{
+                                marginBottom: 3,
+                            }}
+                        >
+                            <Typography variant="body2" color="text.secondary" className="mb-2">
+                                기관설명
+                            </Typography>
+                            <Typography variant="body2">
+                                설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명
+                            </Typography>
+                        </Box>
+                    </CardContent>
+                </Card>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
 const Tap1Page = () => {
+    const [open, setOpen] = useState(false); // open: 모달의 열림/닫힘 상태를 관리하는 상태 변수, setOpen함수: open 값을 변경하는 역할
+    const [donations, setDonations] = useState([]); // 후원기관 데이터 저장
+
+    useEffect(() => {
+        // API 호출
+        axios
+            .get('http://localhost:8090/api/donation/organizationList') // 백엔드 엔드포인트 수정
+            .then((response) => {
+                setDonations(response.data); // 데이터 저장
+            })
+            .catch((error) => {
+                console.error('데이터 불러오기 실패: ', error);
+            });
+    }, []);
+
     return (
         <>
             <Box className="p-0 mt-4">
@@ -83,131 +162,16 @@ const Tap1Page = () => {
             </Box>
 
             {/* 이자내역 카드 START */}
-            <Card
-                variant="outlined"
-                sx={{
-                    borderRadius: 2,
-                    margin: 1,
-                    height: 'auto',
-                    padding: 0,
-                }}
-            >
-                <CardContent>
-                    {/* 상단 제목 */}
-                    <Box sx={{ marginBottom: 2 }}>
-                        <Typography variant="h6" fontWeight="bold">
-                            이자
-                        </Typography>
-                    </Box>
+            <div>
+                {/* 모달 오픈 버튼 */}
+                {/* 버튼 클릭 시 onClick={() => setOpen(true)}가 실행됨 -> setOpen(true)로 상태가 true로 변경되면서 모달이 열림 */}
+                <Button variant="outlined" onClick={() => setOpen(true)}>
+                    홈페이지 바로가기
+                </Button>
 
-                    {/* 이자 상세 항목들 */}
-                    <Box
-                        sx={{
-                            marginBottom: 1,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Typography variant="body2" color="text.secondary">
-                            이자 계산 기간
-                        </Typography>
-                        <Typography variant="body2">2025-02-01 ~ 2025-03-13</Typography>
-                    </Box>
-                    <Box
-                        sx={{
-                            marginBottom: 1,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Typography variant="body2" color="text.secondary">
-                            기본 금리
-                        </Typography>
-                        <Typography variant="body2">1.0 %</Typography>
-                    </Box>
-                    <Box
-                        sx={{
-                            marginBottom: 1,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Typography variant="body2" color="text.secondary">
-                            원금
-                        </Typography>
-                        <Typography variant="body2" fontWeight="bold">
-                            360,000원
-                        </Typography>
-                    </Box>
-                    <Box
-                        sx={{
-                            marginBottom: 1,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Typography variant="body2" color="text.secondary">
-                            이자(세전)
-                        </Typography>
-                        <Typography variant="body2">295원</Typography>
-                    </Box>
-                    <Box
-                        sx={{
-                            marginBottom: 1,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Typography variant="body2" color="text.secondary">
-                            세금
-                        </Typography>
-                        <Typography variant="body2">0원</Typography>
-                    </Box>
-                    <Box
-                        sx={{
-                            marginBottom: 2,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Typography variant="body2" color="text.secondary">
-                            과세구분
-                        </Typography>
-                        <Typography variant="body2">일반과세</Typography>
-                    </Box>
-
-                    {/* 실제 이자 및 최종 수령액 */}
-                    <Box
-                        sx={{
-                            marginBottom: 2,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Typography variant="body" color="text.secondary" fontWeight="bold">
-                            이자
-                        </Typography>
-                        <Typography variant="body" fontWeight="bold">
-                            295원
-                        </Typography>
-                    </Box>
-                    <Divider sx={{ marginY: 1, borderColor: 'black', marginBottom: 2 }} />
-
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Typography variant="h6" color="text.secondary" fontWeight="bold">
-                            받으실금액
-                        </Typography>
-                        <Typography variant="h5" color="#5DB075" fontWeight="bold">
-                            360,295원
-                        </Typography>
-                    </Box>
-                </CardContent>
-            </Card>
+                {/* 후원기관 상세 모달 컴포넌트 */}
+                <OrganizationDetailModal open={open} onClose={() => setOpen(false)} />
+            </div>
         </>
     );
 };
