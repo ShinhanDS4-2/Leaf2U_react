@@ -102,12 +102,13 @@ const CardJoin = () => {
 
                 {/*계좌*/}
                 <div className="input-container">
-                    <label>계좌 입력</label>
+                    <label className="card-label">카드 연결</label>
                     <select className="card-select">
                         <option>선택</option>
                     </select>
-                    <input type="text" placeholder="카드번호 (- 없이 숫자만)" />
+                    <input type="text" className="card-input" placeholder="카드번호 (- 없이 숫자만)" />
                 </div>
+
                 <div className="explain-card">
                     <ul className="explain2">
                         <li>카드와 연결할 계좌를 입력해주세요.</li>

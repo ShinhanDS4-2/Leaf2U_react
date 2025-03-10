@@ -22,6 +22,21 @@
 .footer .col {
     flex: 1;
     text-align: center;
+    position: relative;
+}
+
+.footer .col:last-child {
+    border-right: none;
+}
+
+.footer .col:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0%; /* 위쪽 여백 조정 */
+    bottom: 0%; /* 아래쪽 여백 조정 */
+    width: 1px;
+    background-color: #4b9460;
 }
 
 .footer-icon {

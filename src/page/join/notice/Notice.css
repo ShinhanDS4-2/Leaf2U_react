@@ -30,7 +30,6 @@
 
 .notice-header {
     display: flex;
-    align-items: center;
     width: 100%;
     gap: 10px;
 }
@@ -80,8 +79,8 @@ button:disabled {
 .agree-item {
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 50px;
     padding-left: 60px;
     padding-right: 60px;
-    padding-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 30px;
 }
