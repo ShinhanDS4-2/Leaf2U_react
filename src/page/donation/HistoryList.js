@@ -13,9 +13,9 @@ import {
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header/Header';
 import Content from '../../components/content/Content';
+import Footer from '../../components/footer/Footer';
 import BottomModal from '../../components/modal/BottomModal';
 import Button2 from '../../components/button/Button';
-import Footer from '../../components/footer/Footer';
 
 const donations = [
     {
@@ -63,108 +63,110 @@ const HistoryList = () => {
         setAnchorEl(null);
     };
 
-    //
-
     return (
-        <Box sx={{ padding: 2, backgroundColor: '#FAFAFA' }}>
-            {/* 상단 정보 */}
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: 1,
-                }}
-            >
-                <Typography variant="body1">총 {donations.length}건</Typography>
-                <Button
-                    variant="text"
-                    // color="#5DB075" 더 연한 연두색
-                    onClick={handleClick}
-                    sx={{ color: '#388E3C', fontSize: 15 }}
+        <>
+            <Header title="후원 내역" />
+            <Content>
+                {/* 상단 정보 */}
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: 1,
+                    }}
                 >
-                    3개월 ▼
-                </Button>
-                <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                    <MenuItem onClick={handleClose}>1개월</MenuItem>
-                    <MenuItem onClick={handleClose}>3개월</MenuItem>
-                    <MenuItem onClick={handleClose}>6개월</MenuItem>
-                </Menu>
-            </Box>
+                    <Typography variant="body1">총 {donations.length}건</Typography>
+                    <Button
+                        variant="text"
+                        // color="#5DB075" 더 연한 연두색
+                        onClick={handleClick}
+                        sx={{ color: '#388E3C', fontSize: 15 }}
+                    >
+                        3개월 ▼
+                    </Button>
+                    <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                        <MenuItem onClick={handleClose}>1개월</MenuItem>
+                        <MenuItem onClick={handleClose}>3개월</MenuItem>
+                        <MenuItem onClick={handleClose}>6개월</MenuItem>
+                    </Menu>
+                </Box>
 
-            {/* 기부 내역 리스트 */}
-            {donations.map((donation, index) => (
-                <Card
-                    key={index}
-                    variant="outlined" // 카드위에 마우스 올리면 elevation로 변하게 해도 좋을듯
-                    sx={{ borderRadius: 2, marginBottom: 1, height: 'auto' }}
-                >
-                    <CardContent>
-                        {/* 제목 + 화살표 아이콘 */}
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Typography variant="h6" fontWeight="bold">
-                                {donation.title}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                &gt;
-                            </Typography>
-                        </Box>
-
-                        {/* 제목 아래 연한 구분선 */}
-                        <Divider sx={{ marginY: 1, borderColor: 'black' }} />
-
-                        {/* 내용 부분 (항목명과 값이 한 줄에 표시되도록 수정) */}
-                        <Box sx={{ marginTop: 1 }}>
+                {/* 기부 내역 리스트 */}
+                {donations.map((donation, index) => (
+                    <Card
+                        key={index}
+                        variant="outlined" // 카드위에 마우스 올리면 elevation로 변하게 해도 좋을듯
+                        sx={{ borderRadius: 2, marginBottom: 1, height: 'auto' }}
+                    >
+                        <CardContent>
+                            {/* 제목 + 화살표 아이콘 */}
                             <Box
                                 sx={{
                                     display: 'flex',
                                     justifyContent: 'space-between',
-                                    marginBottom: 1,
+                                    alignItems: 'center',
                                 }}
                             >
-                                <Typography variant="body2" color="text.secondary">
-                                    계좌정보
+                                <Typography variant="h6" fontWeight="bold">
+                                    {donation.title}
                                 </Typography>
-                                <Typography variant="body2">{donation.account}</Typography>
-                            </Box>
-
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    marginBottom: 1,
-                                }}
-                            >
                                 <Typography variant="body2" color="text.secondary">
-                                    기부금액
-                                </Typography>
-                                <Typography variant="body2" fontWeight="bold">
-                                    {donation.amount}
+                                    &gt;
                                 </Typography>
                             </Box>
 
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <Typography variant="body2" color="text.secondary">
-                                    기부일자
-                                </Typography>
-                                <Typography variant="body2">{donation.date}</Typography>
+                            {/* 제목 아래 연한 구분선 */}
+                            <Divider sx={{ marginY: 1, borderColor: 'black' }} />
+
+                            {/* 내용 부분 (항목명과 값이 한 줄에 표시되도록 수정) */}
+                            <Box sx={{ marginTop: 1 }}>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        marginBottom: 1,
+                                    }}
+                                >
+                                    <Typography variant="body2" color="text.secondary">
+                                        계좌정보
+                                    </Typography>
+                                    <Typography variant="body2">{donation.account}</Typography>
+                                </Box>
+
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        marginBottom: 1,
+                                    }}
+                                >
+                                    <Typography variant="body2" color="text.secondary">
+                                        기부금액
+                                    </Typography>
+                                    <Typography variant="body2" fontWeight="bold">
+                                        {donation.amount}
+                                    </Typography>
+                                </Box>
+
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                    }}
+                                >
+                                    <Typography variant="body2" color="text.secondary">
+                                        기부일자
+                                    </Typography>
+                                    <Typography variant="body2">{donation.date}</Typography>
+                                </Box>
                             </Box>
-                        </Box>
-                    </CardContent>
-                </Card>
-            ))}
-        </Box>
+                        </CardContent>
+                    </Card>
+                ))}
+            </Content>
+            <Footer />
+        </>
     );
 };
 

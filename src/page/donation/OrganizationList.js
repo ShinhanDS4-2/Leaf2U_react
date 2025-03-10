@@ -15,31 +15,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 import Header from '../../components/header/Header';
-
-const TabPanel = ({ value, index, children }) => {
-    return (
-        <div role="tabpanel" hidden={value !== index} style={{ padding: '20px' }}>
-            {value === index && <>{children}</>}
-        </div>
-    );
-};
-
-const CardInfoPage = () => {
-    return (
-        <Card variant="outlined">
-            <CardContent>
-                <Typography variant="h6" gutterBottom>
-                    신한카드 Leaf2U
-                </Typography>
-                <Typography variant="body2">카드 번호: 110-123-456789</Typography>
-                <Typography variant="body2" color="text.secondary">
-                    적금 입금 시, 연결카드에서 출금되며 해지할 경우 원금과 이자가 연결카드로
-                    입금됩니다.
-                </Typography>
-            </CardContent>
-        </Card>
-    );
-};
 const donations = [
     {
         title: '생명의 숲',
@@ -72,68 +47,18 @@ const donations = [
         date: '2025.02.25',
     },
 ];
-const AccountInfoPage = () => {
-    return (
-        <Card variant="outlined">
-            <CardContent>
-                <Typography variant="h6" gutterBottom>
-                    리프적금
-                </Typography>
-                <Typography variant="body2">계좌번호: 235-987-654321</Typography>
-                <Typography variant="body2">잔액: 360,000원</Typography>
-                <Typography variant="body2">기본금리: 1.00% / 우대금리: 5.40%</Typography>
-                <Box mt={2}>
-                    <Button variant="contained" color="primary" fullWidth>
-                        납입금액 설정 (매일 30,000원)
-                    </Button>
-                </Box>
-            </CardContent>
-        </Card>
-    );
+const TabPanel = ({ children, value, index }) => {
+    return value === index ? <div>{children}</div> : null;
 };
 
-const OrganizationList = () => {
-    //
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    const [tabIndex, setTabIndex] = useState(0);
-
+const Tap1Page = () => {
     return (
         <>
-            <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                <Tabs
-                    value={tabIndex}
-                    onChange={(e, newIndex) => setTabIndex(newIndex)}
-                    centered
-                    indicatorColor="primary"
-                    textColor="primary"
-                >
-                    <Tab label="후원 기관 리스트" />
-                    <Tab label="기여도" />
-                </Tabs>
-
-                <TabPanel value={tabIndex} index={0}>
-                    <CardInfoPage />
-                </TabPanel>
-                <TabPanel value={tabIndex} index={1}>
-                    <AccountInfoPage />
-                </TabPanel>
-            </Box>
-
-            <Header title="리프보드" back="true" />
-            <Content>
-                {/* 후원 기관 리스트 */}
+            <Box className="p-0 mt-4">
                 {donations.map((donation, index) => (
                     <Card
                         key={index}
-                        variant="outlined" // 카드위에 마우스 올리면 elevation로 변하게 해도 좋을듯
+                        variant="outlined" // 카드위에 마우스 올리면 elevation으로 변하게 해도 좋을듯
                         sx={{ borderRadius: 2, marginBottom: 1, height: 'auto' }}
                     >
                         <CardContent>
@@ -145,62 +70,185 @@ const OrganizationList = () => {
                                     alignItems: 'center',
                                 }}
                             >
-                                <Typography variant="h6" fontWeight="bold">
+                                <Typography variant="h6" fontWeight="bold" marginTop={1}>
                                     {donation.title}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography variant="h6" color="text.secondary">
                                     &gt;
                                 </Typography>
-                            </Box>
-
-                            {/* 제목 아래 연한 구분선 */}
-                            <Divider sx={{ marginY: 1, borderColor: 'black' }} />
-
-                            {/* 내용 부분 (항목명과 값이 한 줄에 표시되도록 수정) */}
-                            <Box sx={{ marginTop: 1 }}>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        marginBottom: 1,
-                                    }}
-                                >
-                                    <Typography variant="body2" color="text.secondary">
-                                        계좌정보
-                                    </Typography>
-                                    <Typography variant="body2">{donation.account}</Typography>
-                                </Box>
-
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        marginBottom: 1,
-                                    }}
-                                >
-                                    <Typography variant="body2" color="text.secondary">
-                                        기부금액
-                                    </Typography>
-                                    <Typography variant="body2" fontWeight="bold">
-                                        {donation.amount}
-                                    </Typography>
-                                </Box>
-
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Typography variant="body2" color="text.secondary">
-                                        기부일자
-                                    </Typography>
-                                    <Typography variant="body2">{donation.date}</Typography>
-                                </Box>
                             </Box>
                         </CardContent>
                     </Card>
                 ))}
+            </Box>
+
+            {/* 이자내역 카드 START */}
+            <Card
+                variant="outlined"
+                sx={{
+                    borderRadius: 2,
+                    margin: 1,
+                    height: 'auto',
+                    padding: 0,
+                }}
+            >
+                <CardContent>
+                    {/* 상단 제목 */}
+                    <Box sx={{ marginBottom: 2 }}>
+                        <Typography variant="h6" fontWeight="bold">
+                            이자
+                        </Typography>
+                    </Box>
+
+                    {/* 이자 상세 항목들 */}
+                    <Box
+                        sx={{
+                            marginBottom: 1,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Typography variant="body2" color="text.secondary">
+                            이자 계산 기간
+                        </Typography>
+                        <Typography variant="body2">2025-02-01 ~ 2025-03-13</Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            marginBottom: 1,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Typography variant="body2" color="text.secondary">
+                            기본 금리
+                        </Typography>
+                        <Typography variant="body2">1.0 %</Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            marginBottom: 1,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Typography variant="body2" color="text.secondary">
+                            원금
+                        </Typography>
+                        <Typography variant="body2" fontWeight="bold">
+                            360,000원
+                        </Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            marginBottom: 1,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Typography variant="body2" color="text.secondary">
+                            이자(세전)
+                        </Typography>
+                        <Typography variant="body2">295원</Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            marginBottom: 1,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Typography variant="body2" color="text.secondary">
+                            세금
+                        </Typography>
+                        <Typography variant="body2">0원</Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            marginBottom: 2,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Typography variant="body2" color="text.secondary">
+                            과세구분
+                        </Typography>
+                        <Typography variant="body2">일반과세</Typography>
+                    </Box>
+
+                    {/* 실제 이자 및 최종 수령액 */}
+                    <Box
+                        sx={{
+                            marginBottom: 2,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Typography variant="body" color="text.secondary" fontWeight="bold">
+                            이자
+                        </Typography>
+                        <Typography variant="body" fontWeight="bold">
+                            295원
+                        </Typography>
+                    </Box>
+                    <Divider sx={{ marginY: 1, borderColor: 'black', marginBottom: 2 }} />
+
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Typography variant="h6" color="text.secondary" fontWeight="bold">
+                            받으실금액
+                        </Typography>
+                        <Typography variant="h5" color="#5DB075" fontWeight="bold">
+                            360,295원
+                        </Typography>
+                    </Box>
+                </CardContent>
+            </Card>
+        </>
+    );
+};
+const Tap2Page = () => {
+    return (
+        <Card variant="outlined" className="p-0 m-2">
+            <CardContent>
+                <Typography variant="h6" gutterBottom>
+                    기여도 탭 들어올 부분
+                </Typography>
+            </CardContent>
+        </Card>
+    );
+};
+
+const OrganizationList = () => {
+    const [tabIndex, setTabIndex] = useState(0);
+
+    return (
+        <>
+            {/* 뒤로가기 아이콘 없는 헤더 */}
+            <Header title="리프보드" back={false} />
+            <Content>
+                <Tabs
+                    value={tabIndex}
+                    onChange={(e, newIndex) => setTabIndex(newIndex)}
+                    centered
+                    indicatorColor="primary"
+                    textColor="primary"
+                >
+                    <Tab label="후원 기관 리스트" />
+                    <Tab label="기여도" />
+                </Tabs>
+
+                {/* TabPanel은 value와 index를 props로 받아, value와 index가 같을 때 해당 내용을 보여줌 */}
+                <TabPanel value={tabIndex} index={0}>
+                    <Tap1Page />
+                </TabPanel>
+                <TabPanel value={tabIndex} index={1}>
+                    <Tap2Page />
+                </TabPanel>
             </Content>
             <Footer />
         </>

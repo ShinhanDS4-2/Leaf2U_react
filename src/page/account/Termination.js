@@ -6,6 +6,7 @@ import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 import BottomModal from '../../components/modal/BottomModal';
 import Button from '../../components/button/Button';
+import DoubleButton from '../../components/button/DoubleButton';
 
 const Termination = () => {
     // 🟢 모달 참조용 ref 생성
@@ -204,7 +205,7 @@ const Termination = () => {
                 <div>
                     <Button
                         text="해지하기"
-                        onClick={(e) => {
+                        onClick={() => {
                             OpenterminateModal();
                         }}
                     />
@@ -217,26 +218,25 @@ const Termination = () => {
                             <Typography variant="caption" display="block" color="text.secondary">
                                 만기일까지 18일 남았습니다.
                             </Typography>
-                            <Typography variant="caption" display="block" color="error">
+                            <Typography
+                                variant="caption"
+                                display="block"
+                                color="error"
+                                className="mb-4"
+                            >
                                 중도해지 시 우대금리가 적용되지 않습니다.
                             </Typography>
-
-                            <div className="d-flex justify-content-between">
-                                <Button
-                                    text="아니요"
-                                    bgColor="#A2A5A7"
-                                    onClick={(e) => {
-                                        CloseterminateModal();
-                                    }}
-                                />
-                                <Button
-                                    text="확인"
-                                    onClick={(e) => {
-                                        CloseterminateModal();
-                                        OpenPwdInputModal();
-                                    }}
-                                />
-                            </div>
+                            <DoubleButton
+                                cancelText="아니요"
+                                confirmText="예"
+                                cancelOnClick={() => {
+                                    CloseterminateModal();
+                                }}
+                                confirmOnClick={() => {
+                                    CloseterminateModal();
+                                    OpenPwdInputModal();
+                                }}
+                            />
                         </div>
                     </BottomModal>
                     <BottomModal ref={pwdInputModalRef}>
