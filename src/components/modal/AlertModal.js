@@ -38,60 +38,66 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const AlertModal = React.forwardRef(({ title="알림", text="알림 내용", onClick=() => {} }, ref) => {
-    const [open, setOpen] = React.useState(false);
+const AlertModal = React.forwardRef(
+    ({ title = '알림', text = '알림 내용', onClick = () => {} }, ref) => {
+        const [open, setOpen] = React.useState(false);
 
-    React.useImperativeHandle(ref, () => ({
+        React.useImperativeHandle(ref, () => ({
             openModal() {
                 setOpen(true);
             },
             closeModal() {
                 setOpen(false);
             },
-    }));
+        }));
 
-    const handleClose = () => {
-        onClick();
-        setOpen(false);
-    };
+        const handleClose = () => {
+            onClick();
+            setOpen(false);
+        };
 
-    return (
-        <Dialog
-            open={open}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleClose}
-            aria-describedby="alert-dialog-slide-description"
-            fullWidth 
-            maxWidth={false}
-            sx={{
-            }}
-        >
-            <DialogTitle>{title}</DialogTitle>
-            <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description" className='p-2'>
-                    <span 
-                        dangerouslySetInnerHTML={{ __html: text }} 
-                        style={{ whiteSpace: 'pre-line' }}
-                    />
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose} 
-                    fullWidth
-                    sx={{ 
-                        backgroundColor: '#5DB075',  
-                        color: 'white',   
-                        borderRadius: '30px',
-                        fontSize: '16px',
-                        fontWeight: 'bold',         
-                    }}
-                >
-                    확인
-                </Button>
-            </DialogActions>
-        </Dialog>
-    );
-});
+        return (
+            <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-slide-description"
+                fullWidth
+                maxWidth={false}
+                PaperProps={{
+                    sx: {
+                        borderRadius: '25px',
+                    },
+                }}
+            >
+                <DialogTitle>{title}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description" className="p-2">
+                        <span
+                            dangerouslySetInnerHTML={{ __html: text }}
+                            style={{ whiteSpace: 'pre-line' }}
+                        />
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={handleClose}
+                        fullWidth
+                        sx={{
+                            backgroundColor: '#5DB075',
+                            color: 'white',
+                            borderRadius: '30px',
+                            fontSize: '16px',
+                            fontWeight: 'bold',
+                        }}
+                    >
+                        확인
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        );
+    },
+);
 
 export default AlertModal;

@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react';
+import { Link } from 'react-router-dom';
 
 const HomeHeader = () => {
     return (
@@ -9,11 +10,11 @@ const HomeHeader = () => {
             <div className="home-div">
                 <Icon icon="majesticons:calendar" className="header-icon" />
             </div>
-            <a href="/notice">
+            <Link to="/notice">
                 <div className="home-div">
                     <Icon icon="f7:bell-fill" className="header-icon" />
                 </div>
-            </a>
+            </Link>
         </div>
     );
 };
