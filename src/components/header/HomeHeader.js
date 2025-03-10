@@ -10,7 +10,7 @@ const HomeHeader = () => {
             <div className="home-div">
                 <Icon icon="majesticons:calendar" className="header-icon" />
             </div>
-            <Link to="/notice">
+            <Link to="/home/notice">
                 <div className="home-div">
                     <Icon icon="f7:bell-fill" className="header-icon" />
                 </div>

@@ -2,6 +2,8 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Login from './page/join/login/Login';
 import Home from './page/home/Home';
+import HomeNotice from './page/home/Notice';
+
 import Start from './page/join/start/Start';
 import Notice from './page/join/notice/Notice';
 import Payment from './page/join/payment/Payment';
@@ -23,16 +25,16 @@ function App() {
     return (
         <div className="w-100 h-100">
             <Routes>
-
                 <Route path="/home" element={<Home />} />
+                <Route path="/home/notice" element={<HomeNotice />} />
 
                 {/* 현욱 페이지 START */}
                 <Route path="/" element={<Login />} />
                 <Route path="/start" element={<Start />} />
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/notice" element={<Notice />} />
-                <Route path="/payment" element={<Payment/>} />
-                <Route path="/cardHome" element={<CardHome/>} />
+                <Route path="/payment" element={<Payment />} />
+                <Route path="/cardHome" element={<CardHome />} />
                 <Route path="/leaf" element={<CardNotice />} />
                 <Route path="/cardjoin" element={<CardJoin />} />
 
@@ -46,7 +48,7 @@ function App() {
                 <Route path="/aaa" element={<Aaa />} />
 
                 {/* 시온 페이지 END */}
-                
+
                 <Route path="/example" element={<Example />} />
             </Routes>
         </div>
