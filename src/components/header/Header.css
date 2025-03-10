@@ -7,7 +7,7 @@
     background-color: #fafafa;
     display: flex;
     align-items: center;
-    /* padding: 16px; */
+    padding: 16px;
     height: 60px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
