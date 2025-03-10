@@ -1,38 +1,51 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 
+import Header from '../../components/header/Header';
 import Content from '../../components/content/Content';
+import Footer from '../../components/footer/Footer';
 import BottomModal from '../../components/modal/BottomModal';
-import Button2 from '../../components/button/Button';
+import Button from '../../components/button/Button';
 
 const Termination = () => {
-    const navigate = useNavigate(); // useNavigate훅: React Router에서 제공하는 훅으로, 페이지 이동을 위한 함수
-    //
-    const [anchorEl, setAnchorEl] = React.useState(null); // useState 훅을 사용하여 anchorEl이라는 상태 변수를 선언하고 초기값을 null로 설정
-    const open = Boolean(anchorEl);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
     // 🟢 모달 참조용 ref 생성
-    const modalRef = useRef();
+    const terminateModalRef = useRef(); // 해지하기 모달 ref
+    const pwdInputModalRef = useRef(); // 비밀번호 입력 모달 ref
+    const completeModalRef = useRef(); // 해지 완료 모달 ref
 
-    // 모달 open
-    const handleOpenModal = () => {
-        if (modalRef.current) {
-            modalRef.current.openModal();
+    // 해지모달 open
+    const OpenterminateModal = () => {
+        if (terminateModalRef.current) {
+            terminateModalRef.current.openModal();
         }
     };
-
-    // 모달 close
-    const handleCloseModal = () => {
-        if (modalRef.current) {
-            modalRef.current.closeModal();
+    // 해지모달 close
+    const CloseterminateModal = () => {
+        if (terminateModalRef.current) {
+            terminateModalRef.current.closeModal();
+        }
+    };
+    // 비밀번호 입력 모달 open
+    const OpenPwdInputModal = () => {
+        if (pwdInputModalRef.current) {
+            pwdInputModalRef.current.openModal();
+        }
+    };
+    // 비밀번호 입력 모달 close
+    const ClosePwdInputModal = () => {
+        if (pwdInputModalRef.current) {
+            pwdInputModalRef.current.closeModal();
+        }
+    };
+    // 해지 완료 모달 open
+    const OpenCompleteModal = () => {
+        if (completeModalRef.current) {
+            completeModalRef.current.openModal();
+        }
+    };
+    const CloseCompleteModal = () => {
+        if (completeModalRef.current) {
+            completeModalRef.current.closeModal();
         }
     };
 
@@ -192,24 +205,19 @@ const Termination = () => {
                     <Button
                         text="해지하기"
                         onClick={(e) => {
-                            handleOpenModal();
+                            OpenterminateModal();
                         }}
                     />
 
-                    <BottomModal ref={modalRef}>
+                    <BottomModal ref={terminateModalRef}>
                         <div>
-                            <h5 className="fw-bold mb-2">
+                            <Typography variant="h5" className="fw-bold mb-2">
                                 정말 적금 해지를 <br /> 신청하시겠습니까?
-                            </h5>
+                            </Typography>
                             <Typography variant="caption" display="block" color="text.secondary">
                                 만기일까지 18일 남았습니다.
                             </Typography>
-                            <Typography
-                                variant="caption"
-                                display="block"
-                                color="error"
-                                className="mb-2"
-                            >
+                            <Typography variant="caption" display="block" color="error">
                                 중도해지 시 우대금리가 적용되지 않습니다.
                             </Typography>
 
@@ -218,17 +226,46 @@ const Termination = () => {
                                     text="아니요"
                                     bgColor="#A2A5A7"
                                     onClick={(e) => {
-                                        handleCloseModal();
+                                        CloseterminateModal();
                                     }}
                                 />
                                 <Button
                                     text="확인"
                                     onClick={(e) => {
-                                        handleCloseModal();
+                                        CloseterminateModal();
+                                        OpenPwdInputModal();
                                     }}
                                 />
                             </div>
                         </div>
+                    </BottomModal>
+                    <BottomModal ref={pwdInputModalRef}>
+                        <Typography
+                            variant="caption"
+                            display="block"
+                            color="error"
+                            className="mb-2"
+                        >
+                            비밀번호 입력모달
+                            <Button
+                                text="비밀번호 맞으면"
+                                onClick={(e) => {
+                                    ClosePwdInputModal();
+                                    OpenCompleteModal();
+                                }}
+                            />
+                        </Typography>
+                    </BottomModal>
+                    <BottomModal ref={completeModalRef}>
+                        <Typography variant="h6" className="fw-bold m-5">
+                            적금 해지가 완료되었습니다.
+                        </Typography>
+                        <Button
+                            text="확인 버튼 누르면 ? 페이지로 이동해야함"
+                            onClick={(e) => {
+                                CloseCompleteModal();
+                            }}
+                        />
                     </BottomModal>
                 </div>
             </Content>
