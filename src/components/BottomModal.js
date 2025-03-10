@@ -4,6 +4,46 @@ import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
+/**
+ * 하단 모달 컴포넌트
+ *
+ * @component
+ * @example
+ * const modalRef = useRef();               // 참조 ref
+ * const handleOpenAlert = () => {          // 모달 open 이벤트 핸들링
+        if (modalRef.current) {
+            modalRef.current.openModal();
+        }
+    };
+ * return (
+ *   <div>
+ *      <div onClick={handleOpenAlert}>
+            Bottom 모달 이벤트
+        </div>
+        <BottomModal ref={modalRef}>
+            <div>
+                <Typography variant="h6" className="fw-bold mb-2" color="primary">
+                    🎉 축하합니다! 출석 완료 🎉
+                </Typography>
+                <p style={{ color: 'gray', marginBottom: '16px' }}>
+                    지금까지 총 5일 연속 출석했어요!
+                </p>
+                <Button
+                    text='확인'
+                    onClick={(e) => {
+                        handleCloseModal();
+                    }}
+                />
+            </div>
+        </BottomModal>
+ *   </div>
+ * )
+ *
+ * @param {Object} props - 컴포넌트 속성
+ * @param {string} props.children - 모달 내 자식 요소
+ * @returns {JSX.Element} 하단 Modal 컴포넌트
+ */
+
 const drawerBleeding = 80;
 
 const Root = styled('div')(() => ({
@@ -29,8 +69,8 @@ const Puller = styled('div')(() => ({
     left: 'calc(50% - 15px)',
 }));
 
-const BottomModal = React.forwardRef((props, ref) => {  
-    const { window } = props;
+const BottomModal = React.forwardRef(({ window, maxHeight = '50%', children }, ref) => {  
+
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen) => () => {
@@ -52,7 +92,7 @@ const BottomModal = React.forwardRef((props, ref) => {
                 styles={{
                     '.MuiDrawer-root > .MuiPaper-root': {
                         height: `auto`,
-                        maxHeight: '50%',
+                        maxHeight: maxHeight,
                         borderTopLeftRadius: 16,
                         borderTopRightRadius: 16,
                         overflow: 'visible',
@@ -71,7 +111,7 @@ const BottomModal = React.forwardRef((props, ref) => {
             >
                 <StyledBox sx={{ position: 'relative', pt: 6, pb: 3 }}>
                     <Puller />
-                    {props.children}
+                    {children}
                 </StyledBox>
             </SwipeableDrawer>
         </Root>

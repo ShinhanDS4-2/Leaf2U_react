@@ -32,7 +32,7 @@ const Aaa = () => {
     };
 
     return (
-        <Box sx={{ padding: 2, backgroundColor: '#FAFAFA' }}>
+        <Box sx={{ paddingTop:5, backgroundColor: '#FAFAFA' }}>
             {/* 상단 제목 */}
             <Typography variant="body1" fontWeight="bold" sx={{ marginBottom: 1 }}>
                 카드 연결
