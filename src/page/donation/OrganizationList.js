@@ -7,7 +7,6 @@ import {
     Card,
     CardContent,
     Typography,
-    Button,
     Dialog,
     DialogContent,
     DialogTitle,
@@ -15,49 +14,18 @@ import {
     Divider,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 import Header from '../../components/header/Header';
-const donations = [
-    {
-        title: '생명의 숲',
-        account: '1002-352-020202 (적금계좌번호)',
-        amount: '35,000원',
-        date: '2025.02.25',
-    },
-    {
-        title: '후원단체이름',
-        account: '1002-352-020202 (적금계좌번호)',
-        amount: '35,000원',
-        date: '2025.02.25',
-    },
-    {
-        title: '후원단체이름',
-        account: '1002-352-020202 (적금계좌번호)',
-        amount: '35,000원',
-        date: '2025.02.25',
-    },
-    {
-        title: '무럭 무럭',
-        account: '1002-352-020202 (적금계좌번호)',
-        amount: '35,000원',
-        date: '2025.02.25',
-    },
-    {
-        title: '나무의 숲',
-        account: '1002-352-020202 (적금계좌번호)',
-        amount: '35,000원',
-        date: '2025.02.25',
-    },
-];
+
 const TabPanel = ({ children, value, index }) => {
     return value === index ? <div>{children}</div> : null;
 };
 
-const OrganizationDetailModal = ({ open, onClose }) => {
+const OrganizationDetailModal = ({ open, onClose, donation }) => {
     return (
         // open 속성에 true가 전달되면 모달이 표시됨. open 속성이 false이면 모달이 숨겨짐.
+        // open={true}: 모달이 열려 있는 상태로 표시됨. open={false}: 모달이 닫혀 있는 상태로 표시됨.
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
             <DialogTitle
                 sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
@@ -69,75 +37,116 @@ const OrganizationDetailModal = ({ open, onClose }) => {
             </DialogTitle>
             <Divider sx={{ borderColor: 'black' }} />
             <DialogContent>
-                <Card variant="outlined" sx={{ borderRadius: 2 }}>
-                    <CardContent>
-                        {/* 이자 상세 항목들 */}
-                        <Box
-                            sx={{
-                                marginBottom: 1,
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                기관명
-                            </Typography>
-                            <Typography variant="body2">생명의 숲</Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                marginBottom: 1,
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                연락처
-                            </Typography>
-                            <Typography variant="body2">010-7737-6314</Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                marginBottom: 3,
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary" className="mb-2">
-                                기관설명
-                            </Typography>
-                            <Typography variant="body2">
-                                설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명
-                            </Typography>
-                        </Box>
-                    </CardContent>
-                </Card>
+                {donation && ( //  donation이 존재하는 경우에만 밑에 JSX 코드를 렌더링하겠다는 뜻
+                    <Card variant="outlined" sx={{ borderRadius: 2 }}>
+                        <CardContent>
+                            {/* 이자 상세 항목들 */}
+                            <Box
+                                sx={{
+                                    marginBottom: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary">
+                                    기관명
+                                </Typography>
+                                <Typography variant="body2">{donation.name}</Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginBottom: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary">
+                                    연락처
+                                </Typography>
+                                <Typography variant="body2">{donation.telNumber}</Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginBottom: 3,
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary" className="mb-2">
+                                    기관설명
+                                </Typography>
+                                <Typography variant="body2">{donation.description}</Typography>
+                            </Box>
+                        </CardContent>
+                    </Card>
+                )}
             </DialogContent>
         </Dialog>
     );
 };
 
 const Tap1Page = () => {
-    const [open, setOpen] = useState(false); // open: 모달의 열림/닫힘 상태를 관리하는 상태 변수, setOpen함수: open 값을 변경하는 역할
-    const [donations, setDonations] = useState([]); // 후원기관 데이터 저장
+    const [openModal, setOpenModal] = useState(false); // 모달 열기/닫기 상태
+    const [donations, setDonations] = useState([]); // donations 상태 관리
+    const [selectedDonation, setSelectedDonation] = useState(null); // 선택된 donation 데이터
 
-    useEffect(() => {
-        // API 호출
-        axios
-            .get('http://localhost:8090/api/donation/organizationList') // 백엔드 엔드포인트 수정
+    const handleOpenModal = (donation) => {
+        setSelectedDonation(donation); // 선택된 donation 저장
+        setOpenModal(true); // 모달 열기
+    };
+
+    const handleCloseModal = () => {
+        setOpenModal(false); // 모달 닫기
+        setSelectedDonation(null); // 선택된 donation 초기화
+    };
+
+    // axios 인스턴스
+    const api = axios.create({
+        baseURL: '/api', // API 기본 URL
+    });
+    // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
+    api.interceptors.request.use(
+        (config) => {
+            const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
+            console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
+
+            if (token) {
+                console.log('보내는 토큰:', token); // 🔥 확인용 로그
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        },
+    );
+
+    // 후원기관 리스트 호출 API
+    const getOrganizations = () => {
+        api.get('/donation/organizationList')
             .then((response) => {
-                setDonations(response.data); // 데이터 저장
+                const data = response.data;
+                setDonations(data);
+                console.log(data); // 🔥 확인용 로그
             })
             .catch((error) => {
-                console.error('데이터 불러오기 실패: ', error);
+                console.error(error);
             });
-    }, []);
+    };
+
+    // useEffect 이 코드의 역할은 컴포넌트가 첫 렌더링될 때 한 번만 getOrganizations() 함수를 호출하는 것
+    // 여기서 중요한 부분은 []라는 빈 의존성 배열
+    // []: 의존성 배열이라고 부르며, 이 배열 안에 값들이 변경될 때마다 useEffect 내의 코드가 실행된다. 이 배열이 비어있으면, 컴포넌트가 마운트될 때 한 번만 실행됨. 즉, 페이지가 처음 로드될 때만 getOrganizations()가 호출되는 것.
+    useEffect(() => {
+        getOrganizations(); // 컴포넌트가 처음 렌더링될 때 한 번만 실행됨
+    }, []); // 빈 배열, 의존성 배열이 비어있기 때문에 한 번만 실행 -> 만약 안에 someState라는 값이 있으면 someState 값이 변경될 때마다 실행됨
 
     return (
         <>
             <Box className="p-0 mt-4">
-                {donations.map((donation, index) => (
+                {donations.map((donation) => (
                     <Card
-                        key={index}
+                        key={donation.organizationIdx} // idx값을 사용하여 각 항목을 식별
                         variant="outlined" // 카드위에 마우스 올리면 elevation으로 변하게 해도 좋을듯
+                        onClick={() => handleOpenModal(donation)} // 카드 클릭 시 모달 열기
                         sx={{ borderRadius: 2, marginBottom: 1, height: 'auto' }}
                     >
                         <CardContent>
@@ -150,7 +159,7 @@ const Tap1Page = () => {
                                 }}
                             >
                                 <Typography variant="h6" fontWeight="bold" marginTop={1}>
-                                    {donation.title}
+                                    {donation.name}
                                 </Typography>
                                 <Typography variant="h6" color="text.secondary">
                                     &gt;
@@ -161,16 +170,13 @@ const Tap1Page = () => {
                 ))}
             </Box>
 
-            {/* 이자내역 카드 START */}
             <div>
-                {/* 모달 오픈 버튼 */}
-                {/* 버튼 클릭 시 onClick={() => setOpen(true)}가 실행됨 -> setOpen(true)로 상태가 true로 변경되면서 모달이 열림 */}
-                <Button variant="outlined" onClick={() => setOpen(true)}>
-                    홈페이지 바로가기
-                </Button>
-
                 {/* 후원기관 상세 모달 컴포넌트 */}
-                <OrganizationDetailModal open={open} onClose={() => setOpen(false)} />
+                <OrganizationDetailModal
+                    open={openModal}
+                    onClose={handleCloseModal}
+                    donation={selectedDonation}
+                />
             </div>
         </>
     );

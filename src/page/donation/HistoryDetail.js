@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header/Header';
 import Content from '../../components/content/Content';
 import BottomModal from '../../components/modal/BottomModal';
@@ -8,17 +9,11 @@ import Button from '../../components/button/Button';
 import Footer from '../../components/footer/Footer';
 
 const HistoryDetail = () => {
-    const navigate = useNavigate(); // useNavigate훅: React Router에서 제공하는 훅으로, 페이지 이동을 위한 함수
-    //
-    const [anchorEl, setAnchorEl] = React.useState(null); // useState 훅을 사용하여 anchorEl이라는 상태 변수를 선언하고 초기값을 null로 설정
-    const open = Boolean(anchorEl);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const { idx } = useParams(); // useParams()를 사용하여 URL에서 idx 값 가져오기
+    // ㄴ useParams()에서 가져오는 변수(idx)의 이름은 Route에서 지정한 :idx와 동일해야 한다.
+    console.log('useParams로 넘어오는 idx 값? ', idx); // 🔥 확인용 로그
+    const navigate = useNavigate(); // 페이지 이동을 위한 훅
+    const [data, setData] = useState([]); // API로 불러온 데이터 상태관리
 
     const modalRef = useRef(); // 모달 ref
     const OpenModal = () => {
@@ -27,7 +22,46 @@ const HistoryDetail = () => {
         }
     };
 
-    //
+    // axios 인스턴스
+    const api = axios.create({
+        baseURL: '/api', // API 기본 URL
+    });
+    // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
+    api.interceptors.request.use(
+        (config) => {
+            const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
+            console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
+
+            if (token) {
+                console.log('보내는 토큰:', token); // 🔥 확인용 로그
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        },
+    );
+
+    // 후원내역 리스트 호출 API
+    const getHistoryDetail = (idx) => {
+        api.get(`/donation/historyDetail/${idx}`)
+            .then((response) => {
+                const data = response.data; // donationHistory, donationOrganization
+                console.log('api 성공 data', data); // 🔥 확인용 로그
+                setData(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    useEffect(() => {
+        if (idx) {
+            getHistoryDetail(idx); // idx가 존재할 경우에만 API 호출
+            console.log('api 성공 data', data); // 🔥 확인용 로그
+        }
+    }, [idx]); // ✅ idx가 변경될 때마다 실행됨
     return (
         <>
             <Header title="후원 내역 조회" />

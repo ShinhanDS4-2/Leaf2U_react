@@ -42,7 +42,9 @@ function App() {
                 <Route path="/organizationList" element={<OrganizationList />} />
                 <Route path="/organizationDetail" element={<OrganizationDetail />} />
                 <Route path="/historyList" element={<HistoryList />} />
-                <Route path="/historyDetail" element={<HistoryDetail />} />
+                {/* 후원내역 상세 페이지 (동적 라우팅) */}
+                <Route path="/historyDetail/:idx" element={<HistoryDetail />} />
+
                 <Route path="/manageAccount" element={<ManageAccount />} />
                 <Route path="/termination" element={<Termination />} />
                 <Route path="/aaa" element={<Aaa />} />
