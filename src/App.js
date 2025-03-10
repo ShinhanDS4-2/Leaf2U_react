@@ -51,11 +51,8 @@ function App() {
 
                 {/* 시온 페이지 END */}
 
-<<<<<<< HEAD
                 <Route path="/deposit" element={<Deposit />} />
 
-=======
->>>>>>> develop
                 <Route path="/example" element={<Example />} />
             </Routes>
         </div>
