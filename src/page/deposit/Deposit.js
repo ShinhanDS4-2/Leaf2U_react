@@ -17,6 +17,7 @@ const challenges = [
         <span class="highlight">137gCO2 eq</span> / <span class="highlight">127gCO2 eq</span> 배출`,
         link: '/image',
         notice: '• 사물 전체가 나오도록 촬영해주시기 바랍니다.',
+        type: 'tumblr',
     },
     {
         img: BicycleImg,
@@ -24,6 +25,7 @@ const challenges = [
         description: `공공자전거 따릉이 사용으로 줄어든<br />온실가스 배출량 약 <span class="highlight">962t</span>`,
         link: '/image',
         notice: '• 오늘 날짜가 표시된 이용내역 또는 반납 알림 사진을 첨부해 주세요.',
+        type: 'bicycle',
     },
     {
         img: ReceiptImg,
@@ -31,16 +33,17 @@ const challenges = [
         description: `종이 영수증 발행을 위해<br />소모되는 원목량은 <span class="highlight">334,400</span>그루`,
         link: '/image',
         notice: '• 오늘 날짜가 표시된 전자영수증을 첨부해 주세요.',
+        type: 'receipt',
     },
 ];
 
-const ChallengeCard = ({ img, title, description, link, notice }) => {
+const ChallengeCard = ({ img, title, description, link, notice, type }) => {
     const navigate = useNavigate(); // useNavigate 훅 사용
 
     return (
         <div
             className="challenge-card"
-            onClick={() => navigate(link, { state: { notice } })}
+            onClick={() => navigate(link, { state: { notice, type } })}
             style={{ cursor: 'pointer' }}
         >
             {/* 좌측 이미지 영역 */}

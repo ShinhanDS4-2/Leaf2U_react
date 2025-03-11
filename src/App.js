@@ -28,7 +28,7 @@ import Example from './page/Example';
 
 const theme = createTheme({
     typography: {
-        fontFamily: 'Interop, sans-serif',
+        fontFamily: 'MapoPeacefull, sans-serif',
     },
 });
 
@@ -45,8 +45,8 @@ function App() {
                     <Route path="/start" element={<Start />} />
                     <Route path="/payment" element={<Payment />} />
                     <Route path="/notice" element={<Notice />} />
-                    <Route path="/payment" element={<Payment/>} />
-                    <Route path="/cardHome" element={<CardHome/>} />
+                    <Route path="/payment" element={<Payment />} />
+                    <Route path="/cardHome" element={<CardHome />} />
                     <Route path="/leaf" element={<CardNotice />} />
                     <Route path="/cardjoin" element={<CardJoin />} />
                     <Route path="/cardDetail" element={<CardDetail />} />
@@ -62,7 +62,6 @@ function App() {
                     <Route path="/historyDetail/:idx" element={<HistoryDetail />} />
                     <Route path="/interest" element={<Interest />} />
 
-                    
                     {/* 시온 페이지 END */}
 
                     {/* 동근 페이지 START */}

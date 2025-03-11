@@ -34,7 +34,6 @@ const CustomCalendar = ({ minDate, maxDate, stickerDates }) => {
         <div>
             <Calendar
                 value={value}
-                onChange={onChange}
                 formatDay={formatDay}
                 minDate={minDate}
                 maxDate={maxDate}
@@ -42,6 +41,7 @@ const CustomCalendar = ({ minDate, maxDate, stickerDates }) => {
                 next2Label={null}
                 prev2Label={null}
                 tileContent={tileContent}
+                onClickDay={(date, event) => event.preventDefault()}
             />
         </div>
     );

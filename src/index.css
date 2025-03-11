@@ -23,11 +23,13 @@
     src: url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff2')
         format('woff2'),
       url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff')
+@font-face {
+    font-family: 'MapoPeacefull';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/MapoPeacefullA.woff')
         format('woff');
     font-weight: normal;
     font-style: normal;
-    font-display: block;
-  }
+}
 
 */
 
