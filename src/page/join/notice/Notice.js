@@ -129,11 +129,11 @@ const Notice = () => {
 
             <BottomModal ref={modalRef} maxHeight="50%">
                 <div className="agree-item-modal">
-                    <p className="agree-item">상품 중요사항을 충분히<br/> 이해하고 확인하셨나요?</p>
-                    <Button 
-                        text={'확인했습니다'} 
-                        onClick={() => navigate('/payment')}
-                    />
+                    <p className="agree-item">
+                        상품 중요사항을 충분히
+                        <br /> 이해하고 확인하셨나요?
+                    </p>
+                    <Button text={'확인했습니다'} onClick={() => navigate('/payment')} />
                 </div>
             </BottomModal>
 

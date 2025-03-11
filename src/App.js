@@ -1,4 +1,5 @@
 import './App.css';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Routes, Route } from 'react-router-dom';
 import Login from './page/join/login/Login';
 import Home from './page/home/Home';
@@ -10,6 +11,7 @@ import Payment from './page/join/payment/Payment';
 import CardHome from './page/Card/cardHome/CardHome';
 import CardNotice from './page/Card/cardNotice/CardNotice';
 import CardJoin from './page/Card/cardJoin/CardJoin';
+import CardDetail from './page/Card/cardDetail/CardDetail';
 
 import OrganizationList from './page/donation/OrganizationList';
 import HistoryList from './page/donation/HistoryList';
@@ -17,41 +19,59 @@ import OrganizationDetail from './page/donation/OrganizationDetail';
 import HistoryDetail from './page/donation/HistoryDetail';
 import ManageAccount from './page/account/ManageAccount';
 import Termination from './page/account/Termination';
+import Interest from './page/account/Interest';
 import Aaa from './page/account/Aaa';
+import Deposit from './page/deposit/Deposit';
+import Image from './page/deposit/Image';
 
 import Example from './page/Example';
 
+const theme = createTheme({
+    typography: {
+        fontFamily: 'MapoPeacefull, sans-serif',
+    },
+});
+
 function App() {
     return (
-        <div className="w-100 h-100">
-            <Routes>
-                <Route path="/home" element={<Home />} />
-                <Route path="/home/notice" element={<HomeNotice />} />
+        <ThemeProvider theme={theme}>
+            <div className="w-100 h-100">
+                <Routes>
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/home/notice" element={<HomeNotice />} />
 
-                {/* 현욱 페이지 START */}
-                <Route path="/" element={<Login />} />
-                <Route path="/start" element={<Start />} />
-                <Route path="/payment" element={<Payment />} />
-                <Route path="/notice" element={<Notice />} />
-                <Route path="/payment" element={<Payment />} />
-                <Route path="/cardHome" element={<CardHome />} />
-                <Route path="/leaf" element={<CardNotice />} />
-                <Route path="/cardjoin" element={<CardJoin />} />
+                    {/* 현욱 페이지 START */}
+                    <Route path="/" element={<Login />} />
+                    <Route path="/start" element={<Start />} />
+                    <Route path="/payment" element={<Payment />} />
+                    <Route path="/notice" element={<Notice />} />
+                    <Route path="/payment" element={<Payment />} />
+                    <Route path="/cardHome" element={<CardHome />} />
+                    <Route path="/leaf" element={<CardNotice />} />
+                    <Route path="/cardjoin" element={<CardJoin />} />
+                    <Route path="/cardDetail" element={<CardDetail />} />
 
-                {/* 시온 페이지 START */}
-                <Route path="/organizationList" element={<OrganizationList />} />
-                <Route path="/organizationDetail" element={<OrganizationDetail />} />
-                <Route path="/historyList" element={<HistoryList />} />
-                <Route path="/historyDetail" element={<HistoryDetail />} />
-                <Route path="/manageAccount" element={<ManageAccount />} />
-                <Route path="/termination" element={<Termination />} />
-                <Route path="/aaa" element={<Aaa />} />
+                    {/* 시온 페이지 START */}
+                    <Route path="/organizationList" element={<OrganizationList />} />
+                    <Route path="/organizationDetail" element={<OrganizationDetail />} />
+                    <Route path="/historyList" element={<HistoryList />} />
+                    <Route path="/manageAccount" element={<ManageAccount />} />
+                    <Route path="/termination" element={<Termination />} />
+                    <Route path="/aaa" element={<Aaa />} />
+                    {/* 후원내역 상세 페이지 (동적 라우팅) */}
+                    <Route path="/historyDetail/:idx" element={<HistoryDetail />} />
+                    <Route path="/interest" element={<Interest />} />
 
-                {/* 시온 페이지 END */}
+                    {/* 시온 페이지 END */}
 
-                <Route path="/example" element={<Example />} />
-            </Routes>
-        </div>
+                    {/* 동근 페이지 START */}
+                    <Route path="/deposit" element={<Deposit />} />
+                    <Route path="/image" element={<Image />} />
+
+                    <Route path="/example" element={<Example />} />
+                </Routes>
+            </div>
+        </ThemeProvider>
     );
 }
 
