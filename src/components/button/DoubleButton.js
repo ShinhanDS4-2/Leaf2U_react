@@ -33,7 +33,7 @@ const DoubleButton = ({
     confirmColor = 'white',
     confirmOnClick = () => {},
     cancelText = '취소',
-    cancelBgColor = '#BDBDBD',
+    cancelBgColor = '#A2A5A7',
     cancelColor = 'white',
     cancelOnClick = () => {},
 }) => {
