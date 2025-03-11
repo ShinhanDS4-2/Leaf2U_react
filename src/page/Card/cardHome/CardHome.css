@@ -165,3 +165,33 @@
     color: #1a8d34;
     font-weight: bold;
 }
+.summary-table {
+    width: 100%;
+    border-top: 1px solid #ddd;
+    margin-top: 10px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.summary-label {
+    font-size: 14px;
+    color: #666;
+}
+
+.summary-value {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.modal-description {
+    font-size: 12px;
+    color: #888;
+    text-align: left;
+    margin-top: 10px;
+    line-height: 1.4;
+}
