@@ -69,8 +69,9 @@ const Puller = styled('div')(() => ({
     left: 'calc(50% - 15px)',
 }));
 
-const BottomModal = React.forwardRef(({ window, maxHeight = '50%', children }, ref) => {  
+const BottomModal = React.forwardRef(({ window, maxHeight = '100%', children }, ref) => {  
 
+    //console.log("Modal maxHeight:",maxHeight);
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen) => () => {

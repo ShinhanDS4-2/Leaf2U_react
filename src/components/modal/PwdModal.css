@@ -1,0 +1,45 @@
+.pin-modal {
+    text-align: center;
+    padding: 20px;
+}
+
+.pin-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.pin-display {
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.pin-keypad {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.keypad-row {
+    display: flex;
+    gap: 10px;
+}
+
+.keypad-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.keypad-btn:hover {
+    background-color: #f0f0f0;
+}

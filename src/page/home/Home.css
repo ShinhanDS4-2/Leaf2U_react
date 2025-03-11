@@ -71,8 +71,8 @@
 .watering-img {
     width: 40%;
     position: absolute;
-    bottom: 0; 
-    right: 0;  
+    bottom: 0;
+    right: 0;
     z-index: 2;
     transform: translate(-20%, -110%);
 }
@@ -83,7 +83,7 @@
 }
 
 .diff-div {
-    background-color: #FEE500;
+    background-color: #fee500;
     border-radius: 10px;
 }
 
@@ -93,11 +93,15 @@
 }
 
 .info-rate {
-    color: #5DB075;
+    color: #5db075;
     font-weight: bold;
 }
 
-.info-balance{
+.info-balance {
     font-weight: bold;
     font-size: 23px;
+}
+
+.card-img {
+    width: 60px;
 }

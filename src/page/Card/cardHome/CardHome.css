@@ -132,6 +132,11 @@
     padding: 20px;
 }
 
+.modal-title-box {
+    margin-top: 0px;
+    padding-bottom: 20px;
+}
+
 .modal-title {
     font-size: 20px;
     font-weight: bold;
@@ -159,11 +164,4 @@
 .highlight-text {
     color: #1a8d34;
     font-weight: bold;
-}
-
-.button2-container {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 20px;
 }

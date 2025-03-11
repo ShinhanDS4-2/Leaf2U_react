@@ -33,32 +33,13 @@ const DoubleButton = ({
     confirmColor = 'white',
     confirmOnClick = () => {},
     cancelText = '취소',
-    cancelBgColor = '#BDBDBD',
+    cancelBgColor = '#A2A5A7',
     cancelColor = 'white',
     cancelOnClick = () => {},
 }) => {
     return (
         <div>
             <div className="d-flex ps-3 pe-3 row">
-                <div className="col">
-                    <MuiButton
-                        disableElevation
-                        onClick={cancelOnClick}
-                        sx={{
-                            backgroundColor: cancelBgColor,
-                            color: cancelColor,
-                            borderRadius: '30px',
-                            fontSize: '16px',
-                            fontWeight: 'bold',
-                            height: '50px',
-                            boxShadow: 'none',
-                            width: '100%',
-                            marginRight: '0px',
-                        }}
-                    >
-                        {cancelText}
-                    </MuiButton>
-                </div>
                 <div className="col">
                     <MuiButton
                         disableElevation
@@ -76,6 +57,25 @@ const DoubleButton = ({
                         }}
                     >
                         {confirmText}
+                    </MuiButton>
+                </div>
+                <div className="col">
+                    <MuiButton
+                        disableElevation
+                        onClick={cancelOnClick}
+                        sx={{
+                            backgroundColor: cancelBgColor,
+                            color: cancelColor,
+                            borderRadius: '30px',
+                            fontSize: '16px',
+                            fontWeight: 'bold',
+                            height: '50px',
+                            boxShadow: 'none',
+                            width: '100%',
+                            marginRight: '0px',
+                        }}
+                    >
+                        {cancelText}
                     </MuiButton>
                 </div>
             </div>
