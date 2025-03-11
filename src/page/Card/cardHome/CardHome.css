@@ -158,24 +158,35 @@
 .modal-benefits {
     font-size: 14px;
     color: #555;
-    line-height: 1.5;
 }
 
 .highlight-text {
     color: #1a8d34;
     font-weight: bold;
 }
+
+/*한달 적금 개설 모달창*/
+.summary-title-container{
+    margin-top: 0px;
+}
+.summary-title{
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: -20px;
+}
+
 .summary-table {
     width: 100%;
     border-top: 1px solid #ddd;
-    margin-top: 10px;
+    margin-top: 30px;
+    padding-left: 20px;
+    padding-right:20px
 }
 
 .summary-row {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
-    border-bottom: 1px solid #ddd;
 }
 
 .summary-label {
@@ -189,9 +200,9 @@
 }
 
 .modal-description {
-    font-size: 12px;
+    font-size: 10px;
     color: #888;
     text-align: left;
-    margin-top: 10px;
-    line-height: 1.4;
+    margin-top: 20px;
+    margin-bottom: 30px;
 }

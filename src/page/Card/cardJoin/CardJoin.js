@@ -14,6 +14,7 @@ import KakaoImg from '../../../image/kakao.png';
 
 const CardJoin = () => {
 
+    const [cardNumber, setCardNumber] = useState('');
     const navigate = useNavigate();
     const modalRef=useRef();
     const alertRef=useRef();
@@ -26,11 +27,6 @@ const CardJoin = () => {
         firstName: '',
         phone: '',
         cardNumber:'',
-    });
-
-    // 에러 메시지 상태
-    const [errors, setErrors] = useState({
-        name: false,
     });
 
     const [selectedBank,setSelectedBank]=useState('');
@@ -50,10 +46,10 @@ const CardJoin = () => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
 
-        // 입력 시 에러 메시지 제거
-        if (name === 'name' && value.trim() !== '') {
-            setErrors((prev) => ({ ...prev, name: false }));
+        if(name==="cardNumber"){
+            setCardNumber(value);
         }
+
     };
 
     const handleNext = () => {
@@ -74,6 +70,9 @@ const CardJoin = () => {
             return;
         }
 
+        console.log("카드넘버",cardNumber);
+        localStorage.setItem('cardNumber',cardNumber);
+        localStorage.setItem('bankName',selectedBank);
         navigate('/cardDetail',{state:{...form,selectedBank}});
     };
 

@@ -1,5 +1,5 @@
 import Button from '../../../components/button/Button';
-import mainImg from '../../../image/새싹-하양.png';
+import mainImg from '../../../image/tree.png';
 import { useNavigate } from 'react-router-dom';
 import './Start.css';
 
@@ -28,7 +28,7 @@ const Start = () => {
                 <div className="image-section">
                     <img src={mainImg} alt="Login Icon" sizes="2" />
                 </div>
-                <div className="button-container w-100">
+                <div className="button-container">
                     <Button
                         text={'한달적금 시작하기'}
                         bgColor={'white'}
