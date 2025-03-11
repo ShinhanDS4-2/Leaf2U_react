@@ -70,7 +70,7 @@
     cursor: not-allowed;
 }
 
-/* <p>* 사물 전체가 나오도록 촬영해주시기 바랍니다.</p> */
+/* <p>사진 첨부 버튼 밑에 설명</p> */
 .image-upload-note {
     font-size: 8px; /* 글씨 크기 */
     color: #999696; /* 글자 색색 */
