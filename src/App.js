@@ -22,6 +22,7 @@ import Aaa from './page/account/Aaa';
 import Example from './page/Example';
 
 import Deposit from './page/deposit/Deposit';
+import Image from './page/deposit/Image';
 
 function App() {
     return (
@@ -51,7 +52,9 @@ function App() {
 
                 {/* 시온 페이지 END */}
 
+                {/* 동근 페이지 START */}
                 <Route path="/deposit" element={<Deposit />} />
+                <Route path="/image" element={<Image />} />
 
                 <Route path="/example" element={<Example />} />
             </Routes>
