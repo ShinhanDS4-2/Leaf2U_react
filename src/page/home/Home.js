@@ -5,6 +5,7 @@ import HomeHeader from '../../components/header/HomeHeader';
 import BottomModal from '../../components/modal/BottomModal';
 import Button from '../../components/button/Button';
 import Footer from '../../components/footer/Footer';
+import AlertModal from '../../components/modal/AlertModal';
 import { Typography, Box, List, ListItem, Divider, Fade } from '@mui/material';
 import Tree from '../../image/tree.png';
 import Watering from '../../image/watering.png';
@@ -15,8 +16,9 @@ function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false); // 납입 내역 리스트 모달 상태
     const [isInfoOpen, setIsInfoOpen] = useState(false); // 적금 정보 모달 상태
 
-    // 하단 모달
+    // 모달
     const bottomModalRef = useRef();
+    const alertRef = useRef();
 
     const handleOpenBottomModal = () => {
         if (bottomModalRef.current) {
@@ -27,6 +29,18 @@ function Home() {
     const handleCloseBottomModal = () => {
         if (bottomModalRef.current) {
             bottomModalRef.current.closeModal();
+        }
+    };
+
+    const handleOpenAlertModal = () => {
+        if (alertRef.current) {
+            alertRef.current.openModal();
+        }
+    };
+
+    const handleCloseAlertModal = () => {
+        if (alertRef.current) {
+            alertRef.current.closeModal();
         }
     };
 
@@ -88,13 +102,29 @@ function Home() {
         getSavingList();
     };
 
+    // 챌린지 현황
+    const getChallengeInfo = () => {
+        api.post('/saving/challenge/list')
+            .then((response) => {
+                const data = response.data;
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
     // 챌린지 현황 클릭
-    const handleCalendarOnClick = () => {};
+    const handleCalendarOnClick = () => {
+        getChallengeInfo();
+    };
 
     // 납입 클릭
     const handleSavingOnClick = () => {
         if (data.saving_yn <= 0) {
             handleOpenBottomModal();
+        } else {
+            handleOpenAlertModal();
         }
     };
 
@@ -112,7 +142,6 @@ function Home() {
     };
 
     // 나무 이미지
-    // const treeImage = `${process.env.PUBLIC_URL}/image/tree_${data.account_step}.png`;
     const treeImage = require(`../../image/tree_${data.account_step}.png`);
 
     useEffect(() => {
@@ -310,6 +339,11 @@ function Home() {
                     </Box>
                 </Box>
             )}
+            <AlertModal
+                ref={alertRef}
+                text={'<span>이미 오늘의 챌린지를<br/>완료하였습니다.</span>'}
+                onClick={handleCloseAlertModal}
+            />
         </div>
     );
 }
