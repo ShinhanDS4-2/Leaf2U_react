@@ -64,8 +64,6 @@ function App() {
                     <Route path="/image" element={<Image />} />
 
                     <Route path="/example" element={<Example />} />
-
-                    <Route path="/example" element={<Example />} />
                 </Routes>
             </div>
         </ThemeProvider>
