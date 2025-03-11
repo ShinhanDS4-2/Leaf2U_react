@@ -6,6 +6,7 @@ import Button from '../components/button/Button';
 import DoubleButton from '../components/button/DoubleButton';
 import BottomModal from '../components/modal/BottomModal';
 import AlertModal from '../components/modal/AlertModal';
+import CustomCalendar from '../components/calendar/CustomCalendar';
 
 function Home() {
     // 🟢 모달 참조용 ref 생성
@@ -45,6 +46,11 @@ function Home() {
                     <div className="border m-2 p-4" onClick={handleOpenAlert}>
                         Alert 모달 이벤트
                     </div>
+                    <CustomCalendar
+                        minDate={new Date(2025, 1, 22)}
+                        maxDate={new Date(2025, 2, 24)}
+                        stickerDates={{ '2025-03-01': true }}
+                    />
                 </div>
             </Content>
             <BottomModal ref={modalRef}>

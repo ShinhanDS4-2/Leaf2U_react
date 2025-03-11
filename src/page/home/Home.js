@@ -5,18 +5,20 @@ import HomeHeader from '../../components/header/HomeHeader';
 import BottomModal from '../../components/modal/BottomModal';
 import Button from '../../components/button/Button';
 import Footer from '../../components/footer/Footer';
+import AlertModal from '../../components/modal/AlertModal';
 import { Typography, Box, List, ListItem, Divider, Fade } from '@mui/material';
 import Tree from '../../image/tree.png';
 import Watering from '../../image/watering.png';
 
 function Home() {
-    const [data, setData] = useState({account_step: 1});        // 적금 정보
-    const [savingList, setSavingList] = useState([]);           // 납입 내역 리스트
-    const [isModalOpen, setIsModalOpen] = useState(false);      // 납입 내역 리스트 모달 상태
-    const [isInfoOpen, setIsInfoOpen] = useState(false);        // 적금 정보 모달 상태
+    const [data, setData] = useState({ account_step: 1 }); // 적금 정보
+    const [savingList, setSavingList] = useState([]); // 납입 내역 리스트
+    const [isModalOpen, setIsModalOpen] = useState(false); // 납입 내역 리스트 모달 상태
+    const [isInfoOpen, setIsInfoOpen] = useState(false); // 적금 정보 모달 상태
 
-    // 하단 모달
+    // 모달
     const bottomModalRef = useRef();
+    const alertRef = useRef();
 
     const handleOpenBottomModal = () => {
         if (bottomModalRef.current) {
@@ -27,6 +29,18 @@ function Home() {
     const handleCloseBottomModal = () => {
         if (bottomModalRef.current) {
             bottomModalRef.current.closeModal();
+        }
+    };
+
+    const handleOpenAlertModal = () => {
+        if (alertRef.current) {
+            alertRef.current.openModal();
+        }
+    };
+
+    const handleCloseAlertModal = () => {
+        if (alertRef.current) {
+            alertRef.current.closeModal();
         }
     };
 
@@ -88,15 +102,31 @@ function Home() {
         getSavingList();
     };
 
+    // 챌린지 현황
+    const getChallengeInfo = () => {
+        api.post('/saving/challenge/list')
+            .then((response) => {
+                const data = response.data;
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
     // 챌린지 현황 클릭
-    const handleCalendarOnClick = () => {};
+    const handleCalendarOnClick = () => {
+        getChallengeInfo();
+    };
 
     // 납입 클릭
     const handleSavingOnClick = () => {
         if (data.saving_yn <= 0) {
             handleOpenBottomModal();
+        } else {
+            handleOpenAlertModal();
         }
-    }
+    };
 
     // 나무 클릭
     const handleAccountInfoClick = () => {
@@ -104,7 +134,7 @@ function Home() {
         setTimeout(() => {
             setIsInfoOpen(false);
         }, 5000);
-    }
+    };
 
     // 모달 닫기
     const handleCloseModal = () => {
@@ -112,7 +142,7 @@ function Home() {
     };
 
     // 나무 이미지
-    const treeImage = `${process.env.PUBLIC_URL}/image/tree_${data.account_step}.png`;
+    const treeImage = require(`../../image/tree_${data.account_step}.png`);
 
     useEffect(() => {
         getAccountInfo();
@@ -125,7 +155,7 @@ function Home() {
             <div className="cloud2"></div>
             <HomeHeader listClick={handleListOnClick} calendarClick={handleCalendarOnClick} />
             <div className="tree-div">
-                <img src={Watering} className='watering-img' onClick={handleSavingOnClick}/>
+                <img src={Watering} className="watering-img" onClick={handleSavingOnClick} />
                 <img src={treeImage} className="tree-img" onClick={handleAccountInfoClick} />
             </div>
             <Footer />
@@ -133,18 +163,25 @@ function Home() {
             {/* 하단 모달 (납입 확인) */}
             <BottomModal ref={bottomModalRef}>
                 <div>
-                    <div className='mt-3 mb-3'>
-                        <span className='bottom-text'>   
-                            오늘의 챌린지를<br/>진행하시겠습니까?
+                    <div className="mt-3 mb-3">
+                        <span className="bottom-text">
+                            오늘의 챌린지를
+                            <br />
+                            진행하시겠습니까?
                         </span>
                     </div>
-                    <Button text={`${data?.accountDTO?.paymentAmount.toLocaleString() ?? 0}원 입금`} onClick={() => {}}/>
-                    <span className='small text-secondary' onClick={handleCloseBottomModal}>다음에 할래요</span>
+                    <Button
+                        text={`${data?.accountDTO?.paymentAmount.toLocaleString() ?? 0}원 입금`}
+                        onClick={() => {}}
+                    />
+                    <span className="small text-secondary" onClick={handleCloseBottomModal}>
+                        다음에 할래요
+                    </span>
                 </div>
             </BottomModal>
 
             {/* 적금 계좌 정보 모달 */}
-            <Fade in={isInfoOpen} timeout={{enter: 500, exit: 500}}>
+            <Fade in={isInfoOpen} timeout={{ enter: 500, exit: 500 }}>
                 <Box
                     sx={{
                         position: 'absolute',
@@ -158,16 +195,25 @@ function Home() {
                         width: '80%',
                         zIndex: 999,
                         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
-                        transition: 'all 0.5s ease-in-out'
+                        transition: 'all 0.5s ease-in-out',
                     }}
                 >
-                    <div className='row'>
-                        <div className='col align-items-center'>
-                            <span className='small mx-auto'>적용금리 <span className='info-rate'>{data?.accountDTO?.finalInterestRate ?? 0}%</span></span>
-                            <p className='info-balance'>{data?.accountDTO?.balance?.toLocaleString() ?? 0}원</p>
+                    <div className="row">
+                        <div className="col align-items-center">
+                            <span className="small mx-auto">
+                                적용금리{' '}
+                                <span className="info-rate">
+                                    {data?.accountDTO?.finalInterestRate ?? 0}%
+                                </span>
+                            </span>
+                            <p className="info-balance">
+                                {data?.accountDTO?.balance?.toLocaleString() ?? 0}원
+                            </p>
                         </div>
-                        <div className='col'>
-                            <div className='p-2 text-center diff-div'><span className='diff'>D - {data?.diff ?? 0}</span></div>
+                        <div className="col">
+                            <div className="p-2 text-center diff-div">
+                                <span className="diff">D - {data?.diff ?? 0}</span>
+                            </div>
                         </div>
                     </div>
                 </Box>
@@ -293,6 +339,11 @@ function Home() {
                     </Box>
                 </Box>
             )}
+            <AlertModal
+                ref={alertRef}
+                text={'<span>이미 오늘의 챌린지를<br/>완료하였습니다.</span>'}
+                onClick={handleCloseAlertModal}
+            />
         </div>
     );
 }
