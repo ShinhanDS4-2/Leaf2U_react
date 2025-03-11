@@ -7,30 +7,32 @@ import Header from '../../components/header/Header';
 import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 
+// axios 인스턴스
+const api = axios.create({
+    baseURL: '/api', // API 기본 URL
+});
+
+// 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
+        console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
+
+        if (token) {
+            console.log('보내는 토큰:', token); // 🔥 확인용 로그
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    },
+);
+
+// 컴포넌트 내부에서 API 호출 (useEffect 사용 예시)
 const HistoryList = () => {
     const [historys, setHistorys] = useState([]); // historys 상태관리
     const navigate = useNavigate(); // 페이지 이동을 위한 훅
-
-    // axios 인스턴스
-    const api = axios.create({
-        baseURL: '/api', // API 기본 URL
-    });
-    // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
-            console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
-
-            if (token) {
-                console.log('보내는 토큰:', token); // 🔥 확인용 로그
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        },
-    );
 
     // 후원내역 리스트 호출 API
     const getDonationHistorys = () => {
@@ -46,7 +48,7 @@ const HistoryList = () => {
     };
 
     useEffect(() => {
-        getDonationHistorys(); // 컴포넌트가 처음 렌더링될 때 한 번만 실행됨
+        getDonationHistorys(); // 컴포넌트가 처음 렌더링될 때 한 번만 실행됨 (후원 내역 호출)
     }, []);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -102,6 +104,7 @@ const HistoryList = () => {
                             variant="outlined" // 카드위에 마우스 올리면 elevation로 변하게 해도 좋을듯
                             onClick={() => {
                                 if (history.idx !== undefined) {
+                                    console.error('history.idx 있음', history.idx);
                                     navigate(`/historyDetail/${history.idx}`);
                                 } else {
                                     console.error('오류: history.idx is undefined!');

@@ -1,4 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
 
 import Header from '../../components/header/Header';
@@ -50,7 +52,66 @@ const Termination = () => {
         }
     };
 
-    //
+    const [data, setData] = useState({}); // api호출 성공 시 data 값 관리
+
+    // axios 인스턴스
+    const api = axios.create({
+        baseURL: '/api', // API 기본 URL
+    });
+    // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
+    api.interceptors.request.use(
+        (config) => {
+            const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
+            console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
+
+            if (token) {
+                console.log('보내는 토큰:', token); // 🔥 확인용 로그
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        },
+    );
+
+    // 예상이자조회(오늘해지) API 호출 -> 오늘 중도해지 시 예상이자 먼저 보여줘야함
+    const interestToday = () => {
+        api.get('/account/interest/today')
+            .then((response) => {
+                const data = response.data; //
+                setData(data.accountDTO);
+                console.log('api 성공 data', data); // 🔥 확인용 로그
+                console.log('api 성공 data.accountDTO', data.accountDTO); // 🔥 확인용 로그
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    // 날짜형식 변환 YYYY-MM-DD
+    const formatDate = (date) => {
+        if (date != null) return date.substring(0, 10);
+    };
+
+    // 계좌 해지 API 호출 -> 최종적으로 해지하는 경우
+    const termination = () => {
+        api.patch(`/account/termination`)
+            .then((response) => {
+                const data = response.data; //
+                setData(data);
+                console.log('api 성공 data', data); // 🔥 확인용 로그
+                console.log('api 성공 data.accountDTO', data.accountDTO); // 🔥 확인용 로그
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    useEffect(() => {
+        interestToday();
+    }, []);
+
     return (
         <>
             <Header title="계좌 해지" />
@@ -89,7 +150,9 @@ const Termination = () => {
                             <Typography variant="body2" color="text.secondary">
                                 이자 계산 기간
                             </Typography>
-                            <Typography variant="body2">2025-02-01 ~ 2025-03-13</Typography>
+                            <Typography variant="body2">
+                                {formatDate(data.createDate)}~ {formatDate(data.endDate)}
+                            </Typography>
                         </Box>
                         <Box
                             sx={{
@@ -101,7 +164,7 @@ const Termination = () => {
                             <Typography variant="body2" color="text.secondary">
                                 기본 금리
                             </Typography>
-                            <Typography variant="body2">1.0 %</Typography>
+                            <Typography variant="body2"> {data.interestRate} %</Typography>
                         </Box>
                         <Box
                             sx={{
@@ -114,7 +177,7 @@ const Termination = () => {
                                 원금
                             </Typography>
                             <Typography variant="body2" fontWeight="bold">
-                                360,000원
+                                {data.balance}원
                             </Typography>
                         </Box>
                         <Box
@@ -127,7 +190,7 @@ const Termination = () => {
                             <Typography variant="body2" color="text.secondary">
                                 이자(세전)
                             </Typography>
-                            <Typography variant="body2">295원</Typography>
+                            <Typography variant="body2"> {data.preTaxInterestAmount}원</Typography>
                         </Box>
                         <Box
                             sx={{
@@ -139,7 +202,7 @@ const Termination = () => {
                             <Typography variant="body2" color="text.secondary">
                                 세금
                             </Typography>
-                            <Typography variant="body2">0원</Typography>
+                            <Typography variant="body2">{data.taxAmount}원</Typography>
                         </Box>
                         <Box
                             sx={{
@@ -151,7 +214,9 @@ const Termination = () => {
                             <Typography variant="body2" color="text.secondary">
                                 과세구분
                             </Typography>
-                            <Typography variant="body2">일반과세</Typography>
+                            <Typography variant="body2">
+                                {data.taxationYn == 'Y' ? '일반과세' : '비과세'}
+                            </Typography>
                         </Box>
 
                         {/* 실제 이자 및 최종 수령액 */}
@@ -166,7 +231,7 @@ const Termination = () => {
                                 이자
                             </Typography>
                             <Typography variant="body" fontWeight="bold">
-                                295원
+                                {data.interestAmount}원
                             </Typography>
                         </Box>
                         <Divider sx={{ marginY: 1, borderColor: 'black', marginBottom: 2 }} />
@@ -181,7 +246,8 @@ const Termination = () => {
                                 받으실금액
                             </Typography>
                             <Typography variant="h5" color="#5DB075" fontWeight="bold">
-                                360,295원
+                                {data.balance + data.interestAmount}원
+                                {/* 계좌원금balance + 세후이자interestAmount */}
                             </Typography>
                         </Box>
                     </CardContent>
