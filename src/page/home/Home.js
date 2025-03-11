@@ -1,20 +1,26 @@
-import React, { useRef, useState, useEffect } from 'react';
-import axios from 'axios';
 import './Home.css';
+import axios from 'axios';
+import React, { useRef, useState, useEffect } from 'react';
+import { Typography, Box, List, ListItem, Divider, Fade } from '@mui/material';
+import { Icon } from '@iconify/react/dist/iconify.js';
+import Tree from '../../image/tree.png';
+import Watering from '../../image/watering.png';
+import Tumblr from '../../image/Tumblr.jpg';
+import Bicycle from '../../image/Bicycle.jpg';
+import Receipt from '../../image/Receipt.jpg';
 import HomeHeader from '../../components/header/HomeHeader';
 import BottomModal from '../../components/modal/BottomModal';
 import Button from '../../components/button/Button';
 import Footer from '../../components/footer/Footer';
 import AlertModal from '../../components/modal/AlertModal';
-import { Typography, Box, List, ListItem, Divider, Fade } from '@mui/material';
-import Tree from '../../image/tree.png';
-import Watering from '../../image/watering.png';
+import CustomCalendar from '../../components/calendar/CustomCalendar';
 
 function Home() {
     const [data, setData] = useState({ account_step: 1 }); // 적금 정보
     const [savingList, setSavingList] = useState([]); // 납입 내역 리스트
     const [isModalOpen, setIsModalOpen] = useState(false); // 납입 내역 리스트 모달 상태
     const [isInfoOpen, setIsInfoOpen] = useState(false); // 적금 정보 모달 상태
+    const [isChallengeOpen, setIsChallengeOpen] = useState(false); // 챌린지 현황 모달 상태
 
     // 모달
     const bottomModalRef = useRef();
@@ -108,6 +114,8 @@ function Home() {
             .then((response) => {
                 const data = response.data;
                 console.log(data);
+
+                setIsChallengeOpen(true);
             })
             .catch((error) => {
                 console.error(error);
@@ -139,6 +147,7 @@ function Home() {
     // 모달 닫기
     const handleCloseModal = () => {
         setIsModalOpen(false);
+        setIsChallengeOpen(false);
     };
 
     // 나무 이미지
@@ -193,7 +202,7 @@ function Home() {
                         paddingTop: '30px',
                         borderRadius: '10px',
                         width: '80%',
-                        zIndex: 999,
+                        zIndex: 50,
                         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
                         transition: 'all 0.5s ease-in-out',
                     }}
@@ -233,7 +242,7 @@ function Home() {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        zIndex: 10,
+                        zIndex: 60,
                     }}
                 >
                     <Box
@@ -336,6 +345,100 @@ function Home() {
                                 </React.Fragment>
                             ))}
                         </List>
+                    </Box>
+                </Box>
+            )}
+            {/* 챌린지 현황 모달 컴포넌트 */}
+            {isChallengeOpen && (
+                <Box
+                    onClick={handleCloseModal}
+                    sx={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 60,
+                    }}
+                >
+                    <Box
+                        onClick={(e) => e.stopPropagation()}
+                        sx={{
+                            borderRadius: '10px',
+                            maxWidth: '500px',
+                            width: '100%',
+                            marginLeft: '25px',
+                            marginRight: '25px',
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                backgroundColor: '#f5f5f5',
+                                borderRadius: '10px',
+                                marginBottom: '15px',
+                                justifyContent: 'center',
+                                display: 'flex',
+                            }}
+                        >
+                            <CustomCalendar
+                                minDate={new Date(2025, 1, 22)}
+                                maxDate={new Date(2025, 2, 24)}
+                                stickerDates={{ '2025-03-01': true }}
+                            />
+                        </Box>
+                        <Box
+                            sx={{
+                                backgroundColor: 'white',
+                                borderRadius: '10px',
+                                paddingLeft: '20px',
+                                paddingRight: '30px',
+                                paddingBottom: '5px',
+                                paddingTop: '5px',
+                                marginBottom: '10px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Icon icon="flat-color-icons:icons8-cup" width="60" height="60" />
+                                <Typography variant="body1" sx={{ marginLeft: '10px' }}>
+                                    텀블러 사용
+                                </Typography>
+                            </Box>
+                            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+                                10회
+                            </Typography>
+                        </Box>
+                        <Box
+                            sx={{
+                                backgroundColor: 'white',
+                                borderRadius: '10px',
+                                paddingTop: '20px',
+                                paddingBottom: '20px',
+                                paddingLeft: '15px',
+                                paddingRight: '15px',
+                                marginBottom: '10px',
+                            }}
+                        >
+                            <div>asdf</div>
+                        </Box>
+                        <Box
+                            sx={{
+                                backgroundColor: 'white',
+                                borderRadius: '10px',
+                                paddingTop: '20px',
+                                paddingBottom: '20px',
+                                paddingLeft: '15px',
+                                paddingRight: '15px',
+                            }}
+                        >
+                            <div>asdf</div>
+                        </Box>
                     </Box>
                 </Box>
             )}
