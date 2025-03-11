@@ -151,7 +151,7 @@ function Home() {
     };
 
     // 나무 이미지
-    const treeImage = require(`../../image/tree_${data.account_step}.png`);
+    const treeImage = require(`../../image/tree_${data.account_step ?? 1}.png`);
 
     useEffect(() => {
         getAccountInfo();

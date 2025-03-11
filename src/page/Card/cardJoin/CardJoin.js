@@ -149,9 +149,9 @@ const CardJoin = () => {
                     </ul>
                 </div>
             </div>
-
-            <Button text={'다음'} onClick={handleNext}/>
-
+            <div className='p-3'>
+                <Button text={'다음'} onClick={handleNext}/>
+            </div>
             <BottomModal ref={modalRef} maxHeight="40%">
                 <div className="modal-content">
                     <div className="bank-select">

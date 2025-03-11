@@ -16,7 +16,7 @@ import { Button as MuiButton } from '@mui/material';
  */
 const Button = ({ text, bgColor = '#5DB075', textColor = 'white', onClick }) => {
     return (
-        <div className="p-3">
+        <div>
             <MuiButton
                 variant="contained"
                 disableElevation

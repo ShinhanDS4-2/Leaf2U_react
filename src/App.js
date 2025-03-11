@@ -4,6 +4,10 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './page/join/login/Login';
 import Home from './page/home/Home';
 import HomeNotice from './page/home/Notice';
+import Maturity from './page/home/Maturity';
+import MaturityList from './page/home/MaturityList';
+import MaturityRate from './page/home/MaturityRate';
+import MaturityResult from './page/home/MaturityResult';
 
 import Start from './page/join/start/Start';
 import Notice from './page/join/notice/Notice';
@@ -39,6 +43,10 @@ function App() {
                 <Routes>
                     <Route path="/home" element={<Home />} />
                     <Route path="/home/notice" element={<HomeNotice />} />
+                    <Route path="/home/maturity" element={<Maturity />} />
+                    <Route path="/home/maturityList" element={<MaturityList />} />
+                    <Route path="/home/maturityRate" element={<MaturityRate />} />
+                    <Route path="/home/maturityResult" element={<MaturityResult />} />
 
                     {/* 현욱 페이지 START */}
                     <Route path="/" element={<Login />} />

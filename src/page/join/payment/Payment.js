@@ -99,9 +99,9 @@ const Payment = () => {
             <div className="payment-info">
                 <p>100원부터 30,000원까지 입력 가능</p>
             </div>
-
-            <Button text={'개설정보 확인'} onClick={handleNextPage} />
-
+            <div className='p-3'>
+                <Button text={'개설정보 확인'} onClick={handleNextPage} />
+            </div>
             <Keypad onKeyPress={handleKeypadClick} onDelete={handleDelete} />
             <AlertModal ref={alertRef} text="100원부터 30,000원까지 입력 가능합니다."/>
         </div>

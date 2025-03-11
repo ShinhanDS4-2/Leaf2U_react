@@ -116,7 +116,9 @@ const CardHome = () => {
                 </ul>
             </div>
 
-            <Button text="다음" />
+            <div className='p-3'>
+                <Button text="다음" />
+            </div>
 
             <BottomModal ref={modalRef} maxHeight="70%">
                 <div className="agree-item-modal">

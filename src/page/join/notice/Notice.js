@@ -125,8 +125,9 @@ const Notice = () => {
                     </div>
                 </div>
             </div>
+            <div className='p-3'>
             <Button text={'다음'} onClick={handleNextClick} />
-
+            </div>
             <BottomModal ref={modalRef} maxHeight="50%">
                 <div className="agree-item-modal">
                     <p className="agree-item">
