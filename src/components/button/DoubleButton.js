@@ -43,25 +43,6 @@ const DoubleButton = ({
                 <div className="col">
                     <MuiButton
                         disableElevation
-                        onClick={cancelOnClick}
-                        sx={{
-                            backgroundColor: cancelBgColor,
-                            color: cancelColor,
-                            borderRadius: '30px',
-                            fontSize: '16px',
-                            fontWeight: 'bold',
-                            height: '50px',
-                            boxShadow: 'none',
-                            width: '100%',
-                            marginRight: '0px',
-                        }}
-                    >
-                        {cancelText}
-                    </MuiButton>
-                </div>
-                <div className="col">
-                    <MuiButton
-                        disableElevation
                         onClick={confirmOnClick}
                         sx={{
                             backgroundColor: confirmBgColor,
@@ -76,6 +57,25 @@ const DoubleButton = ({
                         }}
                     >
                         {confirmText}
+                    </MuiButton>
+                </div>
+                <div className="col">
+                    <MuiButton
+                        disableElevation
+                        onClick={cancelOnClick}
+                        sx={{
+                            backgroundColor: cancelBgColor,
+                            color: cancelColor,
+                            borderRadius: '30px',
+                            fontSize: '16px',
+                            fontWeight: 'bold',
+                            height: '50px',
+                            boxShadow: 'none',
+                            width: '100%',
+                            marginRight: '0px',
+                        }}
+                    >
+                        {cancelText}
                     </MuiButton>
                 </div>
             </div>

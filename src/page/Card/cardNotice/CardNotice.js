@@ -8,7 +8,6 @@ import AlertModal from '../../../components/modal/AlertModal';
 
 const CardNotice = () => {
     const navigate = useNavigate();
-    const modalRef = useRef();
     const alertRef=useRef();
 
     // 체크박스 상태 관리

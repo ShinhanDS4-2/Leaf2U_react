@@ -8,6 +8,7 @@ import Payment from './page/join/payment/Payment';
 import CardHome from './page/Card/cardHome/CardHome';
 import CardNotice from './page/Card/cardNotice/CardNotice';
 import CardJoin from './page/Card/cardJoin/CardJoin';
+import CardDetail from './page/Card/cardDetail/CardDetail';
 
 import OrganizationList from './page/donation/OrganizationList';
 import HistoryList from './page/donation/HistoryList';
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/cardHome" element={<CardHome/>} />
                 <Route path="/leaf" element={<CardNotice />} />
                 <Route path="/cardjoin" element={<CardJoin />} />
+                <Route path="/cardDetail" element={<CardDetail />} />
 
                 {/* 시온 페이지 START */}
                 <Route path="/organizationList" element={<OrganizationList />} />

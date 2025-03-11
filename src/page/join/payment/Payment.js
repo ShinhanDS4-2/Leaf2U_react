@@ -1,18 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Payment.css';
 import Button from '../../../components/button/Button';
 import Keypad from '../../../components/Keypad';
 import Header from '../../../components/header/Header';
+import AlertModal from '../../../components/modal/AlertModal';
 
 const Payment = () => {
+
     const navigate = useNavigate();
+    const alertRef=useRef();
     const [amount, setAmount] = useState('');
 
     // 페이지가 새로고침되거나 처음 접속할 때마다 amount를 빈 문자열로 초기화
     useEffect(() => {
-        setAmount(''); // sessionStorage에서 값을 가져오지 않고, 항상 빈 문자열로 초기화
-        sessionStorage.removeItem('paymentAmount'); // 필요하다면 sessionStorage도 초기화
+        setAmount('');                                   // sessionStorage에서 값을 가져오지 않고, 항상 빈 문자열로 초기화
+        sessionStorage.removeItem('paymentAmount');      // 필요하다면 sessionStorage도 초기화
     }, []);
 
     const handleChange = (e) => {
@@ -21,10 +24,11 @@ const Payment = () => {
     };
 
     const handleNextPage = async () => {
+        
         const numAmount = Number(amount);
 
         if (numAmount < 100 || numAmount > 30000) {
-            alert('100원부터 30,0000원까지 입력 가능합니다.');
+            alertRef.current.openModal();
             return;
         }
 
@@ -57,8 +61,9 @@ const Payment = () => {
             const data = await response.json();
             console.log('서버 응답:', data);
 
-            //navigate("/cardHome",{state:{cardYn:data.cardYn}});
-            navigate('/cardHome', { state: { cardYn: data.cardYn, amount: numAmount } });
+            localStorage.setItem("amount",amount);
+            navigate("/cardHome",{state:{cardYn:data.cardYn}});
+            
         } catch (error) {
             console.error('API 요청 실패: ', error);
         }
@@ -98,6 +103,7 @@ const Payment = () => {
             <Button text={'개설정보 확인'} onClick={handleNextPage} />
 
             <Keypad onKeyPress={handleKeypadClick} onDelete={handleDelete} />
+            <AlertModal ref={alertRef} text="100원부터 30,000원까지 입력 가능합니다."/>
         </div>
     );
 };

@@ -5,24 +5,30 @@ import Header from '../../../components/header/Header';
 import BottomModal from '../../../components/modal/BottomModal';
 import mainImg from '../../../image/leaf2u-card.png';
 import './CardHome.css';
+import DoubleButton from '../../../components/button/DoubleButton';
 
 const CardHome = () => {
+    
     const location = useLocation();
     const navigate = useNavigate();
     const modalRef = useRef();
+    const modalRef2 = useRef();
 
     const cardYn = location.state?.cardYn || 'Y';
-    const [amount, setAmount] = useState(location.state?.amount || '10,000');
+
+    const [amount,setAmount]=useState(()=>{
+
+        return localStorage.getItem("amount");
+    })
 
     useEffect(() => {
         if (cardYn === 'N') {
             modalRef.current.openModal();
         }
+        else if(cardYn=='Y'){
+            modalRef2.current.openModal();
+        }
     }, [cardYn]);
-
-    const handleCloseModal = () => {
-        modalRef.current?.closeModal();
-    };
 
     return (
         <div className="card-container">
@@ -95,7 +101,10 @@ const CardHome = () => {
 
             <BottomModal ref={modalRef} maxHeight="70%">
                 <div className="agree-item-modal">
-                    <h2 className="modal-title">안내</h2>
+                    <div className="modal-title-box">
+                        <h2 className="modal-title">안내</h2>
+                    </div>
+                    
                     <img src={mainImg} alt="Leaf2U 카드" className="card-image" />
                     <p className="modal-text">
                         <strong>Leaf2U 카드를 발급 받으시겠습니까?</strong>
@@ -109,14 +118,29 @@ const CardHome = () => {
                         <br />
                         스타벅스 5% 캐시백
                     </p>
-                    <div className="button2-container">
-                        <Button text={'예'} onClick={() => navigate('/leaf')} />
-                        <Button
-                            text={'아니오'}
-                            onClick={handleCloseModal}
-                            className="gray-button"
-                        />
-                    </div>
+                    <DoubleButton
+                        confirmText="예"
+                        cancelText="아니요"
+                        cancelOnClick={() => modalRef.current.closeModal()}
+                        confirmOnClick={() => {
+
+                            navigate('/leaf');
+                        }}
+                    />
+                </div>
+            </BottomModal>
+
+            <BottomModal ref={modalRef2} maxHeight="70%">
+                <div>
+                    <p>
+                        <span>Leaf2U 한달적금을 개설하시겠습니까?</span>
+                    </p>
+
+                    <DoubleButton
+                        confirmText="예"
+                        cancelText="아니요"
+                        cancelOnClick={() => modalRef.current.closeModal()}
+                    />
                 </div>
             </BottomModal>
         </div>
