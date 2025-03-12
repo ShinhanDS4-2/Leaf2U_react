@@ -19,7 +19,6 @@ import CardDetail from './page/Card/cardDetail/CardDetail';
 
 import OrganizationList from './page/donation/OrganizationList';
 import HistoryList from './page/donation/HistoryList';
-import OrganizationDetail from './page/donation/OrganizationDetail';
 import HistoryDetail from './page/donation/HistoryDetail';
 import ManageAccount from './page/account/ManageAccount';
 import Termination from './page/account/Termination';
@@ -61,14 +60,15 @@ function App() {
 
                     {/* 시온 페이지 START */}
                     <Route path="/organizationList" element={<OrganizationList />} />
-                    <Route path="/organizationDetail" element={<OrganizationDetail />} />
                     <Route path="/historyList" element={<HistoryList />} />
-                    <Route path="/manageAccount" element={<ManageAccount />} />
-                    <Route path="/termination" element={<Termination />} />
-                    <Route path="/aaa" element={<Aaa />} />
                     {/* 후원내역 상세 페이지 (동적 라우팅) */}
                     <Route path="/historyDetail/:idx" element={<HistoryDetail />} />
+                    <Route path="/termination" element={<Termination />} />
+
+                    {/* 해야할페이지 */}
                     <Route path="/interest" element={<Interest />} />
+                    <Route path="/manageAccount" element={<ManageAccount />} />
+                    <Route path="/aaa" element={<Aaa />} />
 
                     {/* 시온 페이지 END */}
 

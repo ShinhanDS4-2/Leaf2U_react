@@ -237,7 +237,7 @@ const HistoryDetail = () => {
                                     원금
                                 </Typography>
                                 <Typography variant="body2" fontWeight="bold">
-                                    {data.donationHistory.principal} 원
+                                    {data?.donationHistory?.principal?.toLocaleString()} 원
                                 </Typography>
                             </Box>
 
@@ -252,7 +252,7 @@ const HistoryDetail = () => {
                                     이자
                                 </Typography>
                                 <Typography variant="body2">
-                                    {data.donationHistory.interest} 원
+                                    {data?.donationHistory?.interest?.toLocaleString()} 원
                                 </Typography>
                             </Box>
 
@@ -267,7 +267,7 @@ const HistoryDetail = () => {
                                     포인트
                                 </Typography>
                                 <Typography variant="body2">
-                                    {data.donationHistory.point} 원
+                                    {data?.donationHistory?.point?.toLocaleString()} 원
                                 </Typography>
                             </Box>
 
@@ -285,7 +285,7 @@ const HistoryDetail = () => {
                                     후원금액
                                 </Typography>
                                 <Typography variant="h5" color="#5DB075" fontWeight="bold">
-                                    {data.donationHistory.donationAmount} 원
+                                    {data?.donationHistory?.donationAmount?.toLocaleString()} 원
                                 </Typography>
                             </Box>
                         </Box>
