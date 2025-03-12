@@ -60,7 +60,13 @@ const Topic = () => {
     const getEcoTips = async (category) => {
         try {
             const response = await axios.get(`/api/topic/tips?category=${category}`);
-            setEcoTips(response.data);
+            const allTips = response.data;
+
+            // 무작위로 3개 선택하는 로직
+            const shuffled = allTips.sort(() => 0.5 - Math.random());
+            const selectedTips = shuffled.slice(0, 3);
+
+            setEcoTips(selectedTips);
         } catch (error) {
             console.error('환경 팁 가져오기 실패!', error);
         }
@@ -70,7 +76,7 @@ const Topic = () => {
     useEffect(() => {
         getFineDustInfo();
         getNews();
-        getEcoTips('h');
+        getEcoTips('h&c&s&r');
     }, []);
 
     //모달 열기
@@ -100,18 +106,22 @@ const Topic = () => {
                 </div>
             )}
 
-            <section className="news-section">
-                <h2>뉴스</h2>
-                {news.map((news1, index) => (
-                    <div key={index} className="news-item" onClick={() => openModal(news1)}>
-                        <h3>{news1.title}</h3>
-                        <p>{news1.summary}</p>
+            <div className="news-section">
+                <h2>🌱 뉴스</h2>
+                {news.map((news, index) => (
+                    <div key={index} className="news-item">
+                        <h3>
+                            <a href={news.url} target="_blank" rel="noopener noreferrer">
+                                {news.title}
+                            </a>
+                        </h3>
+                        <p>{news.summary}</p>
                     </div>
                 ))}
-            </section>
+            </div>
 
             <section className="eco-tips-section">
-                <h2>환경 팁</h2>
+                <h3>🌱 환경 팁</h3>
                 {ecoTips.map((tip, index) => (
                     <div key={index} className="eco-tip-item" onClick={() => openModal(tip)}>
                         <h3>{tip.title}</h3>
