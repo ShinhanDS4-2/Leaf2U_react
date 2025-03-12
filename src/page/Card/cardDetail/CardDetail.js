@@ -50,6 +50,8 @@ const CardDetail = () => {
 
             pwdModalRef2.current.closeModal();
             pwdModalRef1.current.openModal();
+
+            //여기서 axios로 
         }
     }
 
