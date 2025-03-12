@@ -12,6 +12,8 @@ import Button from '../../components/button/Button';
 import Footer from '../../components/footer/Footer';
 import AlertModal from '../../components/modal/AlertModal';
 import CustomCalendar from '../../components/calendar/CustomCalendar';
+import ChallengeItem from '../../components/item/ChallengeItem';
+import { motion } from "framer-motion";
 
 function Home() {
     const navigate = useNavigate();
@@ -31,13 +33,14 @@ function Home() {
 
     // 모달의 동적 내용 관리
     const [modalContent, setModalContent] = useState({
-        text: '오늘의 챌린지를<br>진행하시겠습니까?',
+        text: (<>오늘의 챌린지를<br/>진행하시겠습니까?</>),
         buttonText: '0원 입금',
         onConfirm: () => {},
     });
 
     const location = useLocation();
     const { deposit, type } = location.state || {}; // type여기로 받아서 넘어옴
+    const [currentDeposit, setCurrentDeposit] = useState(deposit);
 
     // 모달
     const bottomModalRef = useRef();
@@ -96,14 +99,12 @@ function Home() {
                 receipt: 'R',
             };
 
+            console.log(deposit);
             const challengeType = typeMap[type] || {};
-
-            console.log('React에서 보낼 challengeType:', challengeType);
 
             // 챌린지 완료 후 적금 납입
             api.post('/saving/deposit', { challengeType })
                 .then((response) => {
-                    console.log('API 응답:', response.data);
                     setChallengeCount(response.data.saving_cnt || 0);
                     setBonusRate(response.data.todayInterestRate || 0);
                     setIsChallengeCompleted(true);
@@ -114,6 +115,9 @@ function Home() {
                         console.log(' 서버 응답 상태 코드:', error.response.status);
                         console.log(' 서버 응답 데이터:', error.response.data);
                     }
+                }).finally(() => {
+                    setCurrentDeposit("N");
+                    navigate(location.pathname, { state: { deposit: "N", type } });
                 });
         }
     };
@@ -125,6 +129,14 @@ function Home() {
                 setData(response.data);
 
                 if (response.data.maturity_yn == 'Y') {
+                    setModalContent({
+                        text: (<>만기가 되었어요!<br/>이자가 얼만큼 쌓였을까요?</>),
+                        buttonText: '해지하기',
+                        onConfirm: () => {
+                            navigate('/home/maturity');
+                        },
+                    });
+                    handleOpenBottomModal();
                 }
             })
             .catch((error) => {
@@ -193,7 +205,7 @@ function Home() {
     const handleSavingOnClick = () => {
         if (data.saving_yn <= 0) {
             setModalContent({
-                text: '오늘의 챌린지를<br>진행하시겠습니까?',
+                text: (<>오늘의 챌린지를<br/>진행하시겠습니까?</>),
                 buttonText: `${data?.accountDTO?.paymentAmount.toLocaleString() ?? 0}원 입금`,
                 onConfirm: () => {
                     navigate('/deposit');
@@ -218,6 +230,51 @@ function Home() {
         setIsModalOpen(false);
         setIsChallengeOpen(false);
     };
+
+    // 챌린지 현황 모션
+    const challengeVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: (i) => ({
+            opacity: 1,
+            y: 0,
+            transition: { delay: i * 0.2, duration: 0.5 }
+        })
+    };
+    
+    const challengeItems = challengeInfo
+        ? [
+              {
+                  content: '텀블러 사용',
+                  carbon: challengeInfo.carbon.carbonT.toLocaleString(),
+                  icon: (
+                      <div className="pt-2 pb-2">
+                          <Icon icon="flat-color-icons:icons8-cup" width="60" height="60" />
+                      </div>
+                  ),
+                  cnt: challengeInfo.challengeCnt.countT
+              },
+              {
+                  content: '따릉이 이용',
+                  carbon: challengeInfo.carbon.carbonC.toLocaleString(),
+                  icon: (
+                      <div className="pb-3">
+                          <Icon icon="twemoji:bicycle" width="60" height="60" />
+                      </div>
+                  ),
+                  cnt: challengeInfo.challengeCnt.countC
+              },
+              {
+                  content: '전자 영수증 발급',
+                  carbon: challengeInfo.carbon.carbonR.toLocaleString(),
+                  icon: (
+                      <div className="pt-2 pb-2">
+                          <Icon icon="noto:receipt" width="60" height="60" />
+                      </div>
+                  ),
+                  cnt: challengeInfo.challengeCnt.countR
+              }
+          ]
+        : [];
 
     // 나무 이미지
     const treeImage = require(`../../image/tree_${data.account_step ?? 1}.png`);
@@ -483,55 +540,25 @@ function Home() {
                                 stickerDates={paymentDateMap}
                             />
                         </Box>
-                        <Box
-                            sx={{
-                                backgroundColor: 'white',
-                                borderRadius: '10px',
-                                paddingLeft: '20px',
-                                paddingRight: '30px',
-                                paddingBottom: '5px',
-                                paddingTop: '5px',
-                                marginBottom: '10px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
+                        <motion.div
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                                visible: { transition: { staggerChildren: 0.2 } }
                             }}
                         >
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                <Icon icon="flat-color-icons:icons8-cup" width="60" height="60" />
-                                <Typography variant="body1" sx={{ marginLeft: '10px' }}>
-                                    텀블러 사용
-                                </Typography>
-                            </Box>
-                            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                                10회
-                            </Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                backgroundColor: 'white',
-                                borderRadius: '10px',
-                                paddingTop: '20px',
-                                paddingBottom: '20px',
-                                paddingLeft: '15px',
-                                paddingRight: '15px',
-                                marginBottom: '10px',
-                            }}
-                        >
-                            <div>asdf</div>
-                        </Box>
-                        <Box
-                            sx={{
-                                backgroundColor: 'white',
-                                borderRadius: '10px',
-                                paddingTop: '20px',
-                                paddingBottom: '20px',
-                                paddingLeft: '15px',
-                                paddingRight: '15px',
-                            }}
-                        >
-                            <div>asdf</div>
-                        </Box>
+                            {challengeItems.map((item, index) => (
+                                <motion.div
+                                    key={index}
+                                    variants={challengeVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    custom={index}
+                                >
+                                    <ChallengeItem {...item} />
+                                </motion.div>
+                            ))}
+                        </motion.div>
                     </Box>
                 </Box>
             )}
