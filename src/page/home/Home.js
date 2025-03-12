@@ -1,7 +1,7 @@
 import './Home.css';
 import axios from 'axios';
 import React, { useRef, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Typography, Box, List, ListItem, Divider, Fade } from '@mui/material';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import Tree from '../../image/tree.png';
@@ -14,6 +14,8 @@ import AlertModal from '../../components/modal/AlertModal';
 import CustomCalendar from '../../components/calendar/CustomCalendar';
 
 function Home() {
+    const navigate = useNavigate();
+
     const [data, setData] = useState({ account_step: 1 }); // 적금 정보
     const [savingList, setSavingList] = useState([]); // 납입 내역 리스트
     const [challengeInfo, setChallengeInfo] = useState(null);
@@ -26,6 +28,13 @@ function Home() {
     const [isChallengeCompleted, setIsChallengeCompleted] = useState(false); // 챌린지 완료 여부
     const [challengeCount, setChallengeCount] = useState(0); // 챌린지 완료 횟수
     const [bonusRate, setBonusRate] = useState(0); // 우대 금리
+
+    // 모달의 동적 내용 관리
+    const [modalContent, setModalContent] = useState({
+        text: '오늘의 챌린지를<br>진행하시겠습니까?',
+        buttonText: '0원 입금',
+        onConfirm: () => {},
+    });
 
     const location = useLocation();
     const { deposit, type } = location.state || {}; // type여기로 받아서 넘어옴
@@ -183,6 +192,13 @@ function Home() {
     // 납입 클릭
     const handleSavingOnClick = () => {
         if (data.saving_yn <= 0) {
+            setModalContent({
+                text: '오늘의 챌린지를<br>진행하시겠습니까?',
+                buttonText: `${data?.accountDTO?.paymentAmount.toLocaleString() ?? 0}원 입금`,
+                onConfirm: () => {
+                    navigate('/deposit');
+                },
+            });
             handleOpenBottomModal();
         } else {
             handleOpenAlertModal();
@@ -255,17 +271,10 @@ function Home() {
             <BottomModal ref={bottomModalRef}>
                 <div>
                     <div className="mt-3 mb-3">
-                        <span className="bottom-text">
-                            오늘의 챌린지를
-                            <br />
-                            진행하시겠습니까?
-                        </span>
+                        <span className="bottom-text">{modalContent.text}</span>
                     </div>
                     <div className="p-3">
-                        <Button
-                            text={`${data?.accountDTO?.paymentAmount.toLocaleString() ?? 0}원 입금`}
-                            onClick={() => {}}
-                        />
+                        <Button text={modalContent.buttonText} onClick={modalContent.onConfirm} />
                     </div>
                     <span className="small text-secondary" onClick={handleCloseBottomModal}>
                         다음에 할래요
