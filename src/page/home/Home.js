@@ -71,6 +71,9 @@ function Home() {
         api.post('/account/saving/info')
             .then((response) => {
                 setData(response.data);
+
+                if (response.data.maturity_yn == 'Y') {
+                }
             })
             .catch((error) => {
                 console.error(error);

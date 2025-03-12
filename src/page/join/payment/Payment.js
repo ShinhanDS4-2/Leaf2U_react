@@ -62,6 +62,8 @@ const Payment = () => {
             console.log('서버 응답:', data);
 
             localStorage.setItem("amount",amount);
+            localStorage.setItem("memberIdx",data.memberIdx);               //멤버 Idx 저장
+
             navigate("/cardHome",{state:{cardYn:data.cardYn}});
             
         } catch (error) {

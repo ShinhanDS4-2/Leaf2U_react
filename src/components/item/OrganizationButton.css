@@ -5,7 +5,7 @@
 }
 
 .organizatoin-list {
-    background-color: #4B9460;
+    background-color: #4b9460;
     border-radius: 60px;
     padding: 5px;
 }
@@ -15,6 +15,10 @@
     background-color: wheat;
     width: 70px;
     height: 70px;
+}
+
+.organization-img img {
+    width: 100%;
 }
 
 .organization-title {
