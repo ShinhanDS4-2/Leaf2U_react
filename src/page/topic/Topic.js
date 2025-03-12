@@ -96,6 +96,7 @@ const Topic = () => {
                     <h2>현재 미세먼지 정보</h2>
                     <p>미세먼지: {fineDust.pm10} µg/m³</p>
                     <p>초미세먼지: {fineDust.pm25} µg/m³</p>
+
                     <div className="emoji">
                         {fineDust.pm10Status === 'good'
                             ? '😊'
@@ -107,7 +108,7 @@ const Topic = () => {
             )}
 
             <div className="news-section">
-                <h2>🌱 뉴스</h2>
+                <h3>🌱 뉴스</h3>
                 {news.map((news, index) => (
                     <div key={index} className="news-item">
                         <h3>
@@ -120,20 +121,18 @@ const Topic = () => {
                 ))}
             </div>
 
-            <section className="eco-tips-section">
+            <div className="eco-tips">
                 <h3>🌱 환경 팁</h3>
                 {ecoTips.map((tip, index) => (
                     <div key={index} className="eco-tip-item" onClick={() => openModal(tip)}>
                         <h3>{tip.title}</h3>
-                        <p>{tip.content}</p>
                     </div>
                 ))}
-            </section>
+            </div>
 
             <BottomModal ref={modalRef}>
                 {modalContent && (
                     <div>
-                        <h2>{modalContent.title}</h2>
                         <p>{modalContent.content}</p>
                         <Button variant="contained" onClick={() => modalRef.current.closeModal()}>
                             닫기

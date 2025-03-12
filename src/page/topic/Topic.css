@@ -17,23 +17,27 @@
 
 /* 상태별 배경색 */
 .fine-dust.good {
-    background-color: #4caf50; /* 녹색 */
+    background-color: #4caf50;
 }
 
 .fine-dust.moderate {
-    background-color: #ff9800; /* 주황색 */
+    background-color: #ff9800;
 }
 
 .fine-dust.bad {
-    background-color: #f44336; /* 빨간색 */
+    background-color: #f44336;
 }
 
+.finedust-text {
+    text-align: left;
+}
 /* 이모지 스타일 */
 .emoji {
-    font-size: 40px;
-    margin-top: 10px;
+    font-size: 30px;
 }
-
+.news-section {
+    margin-top: 20px;
+}
 /* 뉴스 섹션 */
 .news-section h2,
 .eco-tips-section h2 {
@@ -49,7 +53,7 @@
     background: #f9f9f9;
     border-radius: 10px;
     padding: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     cursor: pointer;
     transition: background 0.2s;
 }
