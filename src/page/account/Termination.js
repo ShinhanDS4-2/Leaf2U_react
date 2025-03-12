@@ -396,7 +396,6 @@ const Termination = () => {
                         text={'<span>적금해지 실패하였습니다.<br/>관리자에게 문의해주세요.</span>'}
                         onClick={CloseFailAlertRef2}
                     />
-                    ;
                 </div>
             </Content>
             <Footer />

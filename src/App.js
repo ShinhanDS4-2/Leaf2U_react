@@ -22,7 +22,7 @@ import HistoryList from './page/donation/HistoryList';
 import HistoryDetail from './page/donation/HistoryDetail';
 import ManageAccount from './page/account/ManageAccount';
 import Termination from './page/account/Termination';
-import Interest from './page/account/Interest';
+import InterestMainPage from './page/interest/InterestMainPage';
 import Aaa from './page/account/Aaa';
 import Deposit from './page/deposit/Deposit';
 import Image from './page/deposit/Image';
@@ -66,7 +66,7 @@ function App() {
                     <Route path="/termination" element={<Termination />} />
 
                     {/* 해야할페이지 */}
-                    <Route path="/interest" element={<Interest />} />
+                    <Route path="/interestMainPage" element={<InterestMainPage />} />
                     <Route path="/manageAccount" element={<ManageAccount />} />
                     <Route path="/aaa" element={<Aaa />} />
 
