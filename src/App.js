@@ -29,6 +29,7 @@ import Deposit from './page/deposit/Deposit';
 import Image from './page/deposit/Image';
 
 import Example from './page/Example';
+import Topic from './page/topic/Topic';
 
 const theme = createTheme({
     typography: {
@@ -77,6 +78,7 @@ function App() {
                     <Route path="/image" element={<Image />} />
 
                     <Route path="/example" element={<Example />} />
+                    <Route path="/topic" element={<Topic />} />
                 </Routes>
             </div>
         </ThemeProvider>
