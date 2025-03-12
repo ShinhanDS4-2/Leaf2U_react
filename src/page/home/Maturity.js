@@ -33,22 +33,21 @@ const formatDate = (date) => {
     if (date != null) return date.substring(0, 10);
 };
 
+// 메인함수 시작
 const Maturity = () => {
-    const [tabIndex, setTabIndex] = useState(0); // 선택된 탭의 인덱스를 관리
-    const [interestData, setInterestData] = useState(null); // API에서 가져온 데이터
-
-    // 현재 선택된 탭의 index와 비교하여 렌더링
-    const TabPanel = ({ children, value, index }) => {
-        return value === index ? <div>{children}</div> : null;
-    }; // value와 index 값이 같으면 children(탭에 들어올 페이지 지정) 반환
+    const [accountDTO, setAccountDTO] = useState(null); // API 응답값 accountDTO
+    const [rateSumMap, setRateSumMap] = useState(null); // API 응답값 rateSumMap
+    const navigate = useNavigate();
 
     // (3-1) 예상이자조회(만기일 해지) API
     const getMaturityInterest = () => {
-        api.get('/interest/maturity')
+        api.get('/account/interest/maturity')
             .then((response) => {
-                const data = response.data;
-                setInterestData(data);
-                console.log(data); // 🔥 확인용 로그
+                const data = response.data; // API 호출 응답값: rateSumMap, accountDTO
+                setAccountDTO(data.accountDTO);
+                setRateSumMap(data.rateSumMap);
+                console.log('data.accountDTO?? ', data.accountDTO); // 🔥 확인용 로그
+                console.log('rateSumMap?? ', data.rateSumMap); // 🔥 확인용 로그
             })
             .catch((error) => {
                 console.error(error);
@@ -56,11 +55,9 @@ const Maturity = () => {
     };
 
     useEffect(() => {
-        getMaturityInterest(); // (3-1) 예상이자조회(만기일 해지) API
-    }, []); // tabIndex가 변경될 때마다 호출됨
-
-    /////////하는중
-    const navigate = useNavigate();
+        // 컴포넌트 처음 렌더링될때만 실행
+        getMaturityInterest();
+    }, []);
 
     return (
         <div>
@@ -102,7 +99,10 @@ const Maturity = () => {
                                 <Typography variant="body2" color="text.secondary">
                                     이자 계산 기간
                                 </Typography>
-                                <Typography variant="body2">2025</Typography>
+                                <Typography variant="body2">
+                                    {formatDate(accountDTO?.createDate)} ~{' '}
+                                    {formatDate(accountDTO?.maturityDate)}
+                                </Typography>
                             </Box>
                             <Box
                                 sx={{
@@ -114,7 +114,9 @@ const Maturity = () => {
                                 <Typography variant="body2" color="text.secondary">
                                     기본 금리
                                 </Typography>
-                                <Typography variant="body2"> 12 %</Typography>
+                                <Typography variant="body2">
+                                    {accountDTO?.interestRate} %
+                                </Typography>
                             </Box>
 
                             {/* [추가] START - 적용금리에 대한 세부 항목을 보여줄 작은 박스 */}
@@ -128,8 +130,13 @@ const Maturity = () => {
                                 <Typography variant="body2" color="text.secondary">
                                     우대 금리
                                 </Typography>
-                                <Typography variant="body2"> 연 7.00 % 반영</Typography>
+                                <Typography variant="body2">
+                                    {' '}
+                                    연 {accountDTO?.primeRate}% 반영
+                                </Typography>
                             </Box>
+
+                            {/* [우대금리에 대한 세부 항목을 보여줄 작은 박스 START */}
                             <Box
                                 sx={{
                                     backgroundColor: '#F5F5F5', // F5F5F5 연회색
@@ -139,52 +146,89 @@ const Maturity = () => {
                                     marginBottom: 2,
                                 }}
                             >
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Typography variant="body2" color="text.secondary">
-                                        카드 발급
-                                    </Typography>
-                                    <Typography variant="body2">ssssss %</Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Typography variant="body2" color="text.secondary">
-                                        최초 가입
-                                    </Typography>
-                                    <Typography variant="body2">ssssss %</Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Typography variant="body2" color="text.secondary">
-                                        매일 우대금리
-                                    </Typography>
-                                    <Typography variant="body2">ssssss %</Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Typography variant="body2" color="text.secondary">
-                                        연속 보너스 우대금리
-                                    </Typography>
-                                    <Typography variant="body2">ssssss %</Typography>
-                                </Box>
+                                {/* 금리타입 별 우대금리가 있는 경우에만 조건부 렌더링 */}
+
+                                {/* 카드발급 우대금리 택1 (C:전용카드/E:기후동행카드)*/}
+                                {rateSumMap?.rateC != null && rateSumMap?.rateC !== 0 && (
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                        }}
+                                    >
+                                        <Typography variant="body2" color="text.secondary">
+                                            카드 발급
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            {rateSumMap?.rateC} %
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {rateSumMap?.rateE != null && rateSumMap?.rateE !== 0 && (
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                        }}
+                                    >
+                                        <Typography variant="body2" color="text.secondary">
+                                            카드 발급
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            {rateSumMap?.rateE} %
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {/* F:최초금리 */}
+                                {rateSumMap?.rateF != null && rateSumMap?.rateF !== 0 && (
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                        }}
+                                    >
+                                        <Typography variant="body2" color="text.secondary">
+                                            최초 가입
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            {rateSumMap?.rateF} %
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {/* D: 매일금리 */}
+                                {rateSumMap?.rateD != null && rateSumMap?.rateD !== 0 && (
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                        }}
+                                    >
+                                        <Typography variant="body2" color="text.secondary">
+                                            매일 우대금리
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            {rateSumMap?.rateD} %
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {/* W:연속금리 */}
+                                {rateSumMap?.rateW != null && rateSumMap?.rateW !== 0 && (
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                        }}
+                                    >
+                                        <Typography variant="body2" color="text.secondary">
+                                            연속 보너스 우대금리
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            {rateSumMap?.rateW} %
+                                        </Typography>
+                                    </Box>
+                                )}
                             </Box>
-                            {/* [추가] END */}
+                            {/* [우대금리에 대한 세부 항목을 보여줄 작은 박스 END */}
 
                             <Box
                                 sx={{
@@ -197,7 +241,7 @@ const Maturity = () => {
                                     원금
                                 </Typography>
                                 <Typography variant="body2" fontWeight="bold">
-                                    1000원
+                                    {accountDTO?.balance.toLocaleString()}원
                                 </Typography>
                             </Box>
                             <Box
@@ -210,7 +254,9 @@ const Maturity = () => {
                                 <Typography variant="body2" color="text.secondary">
                                     이자(세전)
                                 </Typography>
-                                <Typography variant="body2"> 2000원</Typography>
+                                <Typography variant="body2">
+                                    {accountDTO?.preTaxInterestAmount.toLocaleString()}원
+                                </Typography>
                             </Box>
                             <Box
                                 sx={{
@@ -222,7 +268,9 @@ const Maturity = () => {
                                 <Typography variant="body2" color="text.secondary">
                                     세금
                                 </Typography>
-                                <Typography variant="body2">2000원</Typography>
+                                <Typography variant="body2">
+                                    {accountDTO?.taxAmount.toLocaleString()}원
+                                </Typography>
                             </Box>
                             <Box
                                 sx={{
@@ -234,7 +282,9 @@ const Maturity = () => {
                                 <Typography variant="body2" color="text.secondary">
                                     과세구분
                                 </Typography>
-                                <Typography variant="body2">20202020</Typography>
+                                <Typography variant="body2">
+                                    {accountDTO?.taxationYn == 'Y' ? '일반과세' : '비과세'}
+                                </Typography>
                             </Box>
 
                             {/* 실제 이자 및 최종 수령액 */}
@@ -249,7 +299,7 @@ const Maturity = () => {
                                     이자
                                 </Typography>
                                 <Typography variant="body" fontWeight="bold">
-                                    202020원
+                                    {accountDTO?.interestAmount.toLocaleString()}원
                                 </Typography>
                             </Box>
                             <Divider sx={{ marginY: 1, borderColor: 'black', marginBottom: 2 }} />
@@ -264,8 +314,11 @@ const Maturity = () => {
                                     받으실금액
                                 </Typography>
                                 <Typography variant="h5" color="#5DB075" fontWeight="bold">
-                                    202020원
                                     {/* 계좌원금balance + 세후이자interestAmount */}
+                                    {(
+                                        accountDTO?.balance + accountDTO?.interestAmount
+                                    ).toLocaleString()}
+                                    원
                                 </Typography>
                             </Box>
                         </CardContent>
