@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import {
     Tabs,
@@ -195,6 +196,7 @@ const Tap2Page = () => {
 
 const OrganizationList = () => {
     const [tabIndex, setTabIndex] = useState(0);
+    const location = useLocation();
 
     return (
         <>
