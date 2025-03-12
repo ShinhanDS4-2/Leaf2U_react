@@ -8,7 +8,7 @@
 .tree-div {
     text-align: center;
     position: relative;
-    height: 700px;
+    height: 730px;
     z-index: 10;
     background-color: transparent;
 }
@@ -99,7 +99,7 @@
 
 .info-balance {
     font-weight: bold;
-    font-size: 23px;
+    font-size: 24px;
 }
 
 .card-img {
@@ -129,7 +129,6 @@
     text-align: center;
     padding-right: 20px;
     padding-left: 20px;
-
 }
 
 .rate-title {
