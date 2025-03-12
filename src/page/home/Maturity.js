@@ -3,9 +3,63 @@ import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 import { Card, Box, CardContent, Divider, Typography } from '@mui/material';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+// axios 인스턴스
+const api = axios.create({
+    baseURL: '/api', // API 기본 URL
+});
+// 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
+        console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
+
+        if (token) {
+            console.log('보내는 토큰:', token); // 🔥 확인용 로그
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    },
+);
+
+// 날짜형식 변환 YYYY-MM-DD
+const formatDate = (date) => {
+    if (date != null) return date.substring(0, 10);
+};
 
 const Maturity = () => {
+    const [tabIndex, setTabIndex] = useState(0); // 선택된 탭의 인덱스를 관리
+    const [interestData, setInterestData] = useState(null); // API에서 가져온 데이터
+
+    // 현재 선택된 탭의 index와 비교하여 렌더링
+    const TabPanel = ({ children, value, index }) => {
+        return value === index ? <div>{children}</div> : null;
+    }; // value와 index 값이 같으면 children(탭에 들어올 페이지 지정) 반환
+
+    // (3-1) 예상이자조회(만기일 해지) API
+    const getMaturityInterest = () => {
+        api.get('/interest/maturity')
+            .then((response) => {
+                const data = response.data;
+                setInterestData(data);
+                console.log(data); // 🔥 확인용 로그
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    useEffect(() => {
+        getMaturityInterest(); // (3-1) 예상이자조회(만기일 해지) API
+    }, []); // tabIndex가 변경될 때마다 호출됨
+
+    /////////하는중
     const navigate = useNavigate();
 
     return (
