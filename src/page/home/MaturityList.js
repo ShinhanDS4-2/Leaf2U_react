@@ -6,6 +6,7 @@ import AlertModal from '../../components/modal/AlertModal';
 import OrganizationButton from '../../components/item/OrganizationButton';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
+import { useMaturity } from '../../context/MaturityContext';
 import axios from 'axios';
 
 const MaturityList = () => {
@@ -13,6 +14,7 @@ const MaturityList = () => {
 
     const [list, setList] = useState([]);
     const [select, setSelect] = useState(null);
+    const { setOrganizationIdx } = useMaturity(); // context
 
     // alert
     const alertRef = useRef();
@@ -60,6 +62,7 @@ const MaturityList = () => {
     // 다음 버튼 클릭
     const handleClickNext = () => {
         if (select != null) {
+            setOrganizationIdx(select);
             navigate('/home/maturityRate');
         } else {
             handleOpenAlert();

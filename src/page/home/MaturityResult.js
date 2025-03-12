@@ -4,9 +4,63 @@ import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 import { Card, Box, CardContent, Divider, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useMaturity } from '../../context/MaturityContext';
+import axios from 'axios';
 
 const MaturityResult = () => {
     const navigate = useNavigate();
+    const { accountInfo = {}, donationInfo = {}, organizationIdx } = useMaturity(); // context
+
+    const interestAmount = accountInfo?.interestAmount ?? 0;
+    const balance = accountInfo?.balance ?? 0;
+    const donationRate = donationInfo?.donationRate ?? 0;
+    const interestDonation = donationInfo?.interestDonation ?? 0;
+    const additionalDonation = donationInfo?.additionalDonation ?? 0;
+    const point = donationInfo?.pointDonation ?? 0;
+
+    // 최종 수령 금액 계산 (원금 + 이자 - 후원금)
+    const donationAmount = interestDonation + additionalDonation + point;
+    const finalAmount = balance + interestAmount - donationAmount;
+
+    // axios 인스턴스
+    const api = axios.create({
+        baseURL: '/api',
+    });
+
+    // 인터셉터
+    api.interceptors.request.use(
+        (config) => {
+            const token = localStorage.getItem('jwtToken');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        },
+    );
+
+    // 해지하기 클릭
+    const handleClickTermination = () => {
+        const param = {
+            afterTaxInterest: interestAmount,
+            organisationIdx: organizationIdx,
+            interest: interestDonation,
+            principal: additionalDonation,
+            point: point,
+        };
+
+        api.post('/account/maturity', param, { headers: { 'Content-Type': 'application/json' } })
+            .then((response) => {
+                if (response.data) {
+                    navigate('/home/termination');
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
 
     return (
         <div>
@@ -29,7 +83,7 @@ const MaturityResult = () => {
                             {/* 상단 제목 */}
                             <Box sx={{ marginBottom: 2 }}>
                                 <Typography variant="h6" fontWeight="bold">
-                                    이자
+                                    후원금
                                 </Typography>
                             </Box>
 
@@ -42,9 +96,11 @@ const MaturityResult = () => {
                                 }}
                             >
                                 <Typography variant="body2" color="text.secondary">
-                                    이자 계산 기간
+                                    이자(세후)
                                 </Typography>
-                                <Typography variant="body2">2025</Typography>
+                                <Typography variant="body2">
+                                    {interestAmount.toLocaleString()}원
+                                </Typography>
                             </Box>
                             <Box
                                 sx={{
@@ -54,12 +110,10 @@ const MaturityResult = () => {
                                 }}
                             >
                                 <Typography variant="body2" color="text.secondary">
-                                    기본 금리
+                                    후원율
                                 </Typography>
-                                <Typography variant="body2"> 12 %</Typography>
+                                <Typography variant="body2">{donationRate}%</Typography>
                             </Box>
-
-                            {/* [추가] START - 적용금리에 대한 세부 항목을 보여줄 작은 박스 */}
                             <Box
                                 sx={{
                                     marginBottom: 1,
@@ -68,66 +122,12 @@ const MaturityResult = () => {
                                 }}
                             >
                                 <Typography variant="body2" color="text.secondary">
-                                    우대 금리
+                                    후원율 반영 후원금
                                 </Typography>
-                                <Typography variant="body2"> 연 7.00 % 반영</Typography>
+                                <Typography variant="body2" fontWeight="bold">
+                                    {interestDonation.toLocaleString()}원
+                                </Typography>
                             </Box>
-                            <Box
-                                sx={{
-                                    backgroundColor: '#F5F5F5', // F5F5F5 연회색
-                                    borderRadius: 1,
-                                    border: '3px solid #F5F5F5', // 테두리 두께와 색상 지정
-                                    padding: 1,
-                                    marginBottom: 2,
-                                }}
-                            >
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Typography variant="body2" color="text.secondary">
-                                        카드 발급
-                                    </Typography>
-                                    <Typography variant="body2">ssssss %</Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Typography variant="body2" color="text.secondary">
-                                        최초 가입
-                                    </Typography>
-                                    <Typography variant="body2">ssssss %</Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Typography variant="body2" color="text.secondary">
-                                        매일 우대금리
-                                    </Typography>
-                                    <Typography variant="body2">ssssss %</Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Typography variant="body2" color="text.secondary">
-                                        연속 보너스 우대금리
-                                    </Typography>
-                                    <Typography variant="body2">ssssss %</Typography>
-                                </Box>
-                            </Box>
-                            {/* [추가] END */}
-
                             <Box
                                 sx={{
                                     marginBottom: 1,
@@ -138,8 +138,22 @@ const MaturityResult = () => {
                                 <Typography variant="body2" color="text.secondary">
                                     원금
                                 </Typography>
+                                <Typography variant="body2">
+                                    {balance.toLocaleString()}원
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginBottom: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary">
+                                    개별 후원금
+                                </Typography>
                                 <Typography variant="body2" fontWeight="bold">
-                                    1000원
+                                    {additionalDonation.toLocaleString()}원
                                 </Typography>
                             </Box>
                             <Box
@@ -150,51 +164,44 @@ const MaturityResult = () => {
                                 }}
                             >
                                 <Typography variant="body2" color="text.secondary">
-                                    이자(세전)
+                                    후원 포인트
                                 </Typography>
-                                <Typography variant="body2"> 2000원</Typography>
-                            </Box>
-                            <Box
-                                sx={{
-                                    marginBottom: 1,
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <Typography variant="body2" color="text.secondary">
-                                    세금
+                                <Typography variant="body2" fontWeight="bold">
+                                    {point.toLocaleString()}P
                                 </Typography>
-                                <Typography variant="body2">2000원</Typography>
-                            </Box>
-                            <Box
-                                sx={{
-                                    marginBottom: 2,
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                }}
-                            >
-                                <Typography variant="body2" color="text.secondary">
-                                    과세구분
-                                </Typography>
-                                <Typography variant="body2">20202020</Typography>
                             </Box>
 
-                            {/* 실제 이자 및 최종 수령액 */}
+                            <Divider
+                                sx={{
+                                    marginY: 1,
+                                    borderColor: 'black',
+                                    marginBottom: 2,
+                                    marginTop: 3,
+                                }}
+                            />
+
                             <Box
                                 sx={{
-                                    marginBottom: 2,
                                     display: 'flex',
                                     justifyContent: 'space-between',
                                 }}
                             >
-                                <Typography variant="body" color="text.secondary" fontWeight="bold">
-                                    이자
+                                <Typography variant="h6" color="text.secondary" fontWeight="bold">
+                                    총 후원금
                                 </Typography>
-                                <Typography variant="body" fontWeight="bold">
-                                    202020원
+                                <Typography variant="h5" color="#5DB075" fontWeight="bold">
+                                    {donationAmount.toLocaleString()}원
                                 </Typography>
                             </Box>
-                            <Divider sx={{ marginY: 1, borderColor: 'black', marginBottom: 2 }} />
+
+                            <Divider
+                                sx={{
+                                    marginY: 1,
+                                    borderColor: 'black',
+                                    marginBottom: 2,
+                                    marginTop: 3,
+                                }}
+                            />
 
                             <Box
                                 sx={{
@@ -206,8 +213,7 @@ const MaturityResult = () => {
                                     받으실금액
                                 </Typography>
                                 <Typography variant="h5" color="#5DB075" fontWeight="bold">
-                                    202020원
-                                    {/* 계좌원금balance + 세후이자interestAmount */}
+                                    {finalAmount.toLocaleString()}원
                                 </Typography>
                             </Box>
                         </CardContent>
@@ -221,7 +227,7 @@ const MaturityResult = () => {
                 <Button
                     text="해지하기"
                     onClick={() => {
-                        navigate('/home/termination');
+                        handleClickTermination();
                     }}
                 />
             </div>
