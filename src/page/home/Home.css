@@ -105,3 +105,43 @@
 .card-img {
     width: 60px;
 }
+
+/* Maturity */
+.maturity-content {
+    border-radius: 15px;
+    padding: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+    background-color: white;
+}
+
+.maturity-content p {
+    font-size: large;
+    font-weight: bold;
+}
+
+.maturity-button-field {
+    position: fixed;
+    bottom: 80px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    text-align: center;
+    padding-right: 20px;
+    padding-left: 20px;
+
+}
+
+.rate-title {
+    font-size: 11px;
+    color: #848688;
+}
+
+.rate-cnt {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.rate-operator {
+    padding-top: 14px;
+}

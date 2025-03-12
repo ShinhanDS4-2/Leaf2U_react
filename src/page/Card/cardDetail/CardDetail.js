@@ -45,6 +45,8 @@ const CardDetail = () => {
 
             pwdModalRef2.current.closeModal();
             pwdModalRef1.current.openModal();
+
+            //여기서 axios로
         }
     };
 
@@ -84,6 +86,9 @@ const CardDetail = () => {
 
                 <p className="notice">* 위 정보가 사실과 다름이 없음을 확인합니다.</p>
                 <Button text="확인" onClick={handleNextClick} />
+                <div className="p-3">
+                    <Button text="확인" onClick={handleNextClick} />
+                </div>
             </div>
 
             <BottomModal ref={modalRef} maxHeight="50%">

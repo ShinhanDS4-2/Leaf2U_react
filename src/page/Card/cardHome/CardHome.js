@@ -21,6 +21,18 @@ const CardHome = () => {
         return localStorage.getItem("amount");
     })
 
+    const [cardNumber,setCardNumber]=useState(()=>{
+
+        return localStorage.getItem("cardNumber");
+    })
+
+    const [bankName,setbankName]=useState(()=>{
+
+        return localStorage.getItem("bankName");
+    })
+
+    const [maturityDate,setMaturityDate]=useState('');
+
     useEffect(() => {
         if (cardYn === 'N') {
             modalRef.current.openModal();
@@ -28,6 +40,13 @@ const CardHome = () => {
         else if(cardYn=='Y'){
             modalRef2.current.openModal();
         }
+
+        const today=new Date();
+        today.setMonth(today.getMonth()+1);
+        const formattedDate=today.toISOString().split('T')[0];
+
+        setMaturityDate(formattedDate);
+
     }, [cardYn]);
 
     return (
@@ -97,7 +116,9 @@ const CardHome = () => {
                 </ul>
             </div>
 
-            <Button text="다음" />
+            <div className='p-3'>
+                <Button text="다음" />
+            </div>
 
             <BottomModal ref={modalRef} maxHeight="70%">
                 <div className="agree-item-modal">
@@ -131,9 +152,33 @@ const CardHome = () => {
             </BottomModal>
 
             <BottomModal ref={modalRef2} maxHeight="70%">
-                <div>
-                    <p>
-                        <span>Leaf2U 한달적금을 개설하시겠습니까?</span>
+                <div className="agree-item-modal">
+
+                    <div className="summary-title-container">
+                        <h2 className="summary-title">Leaf2U 한달적금을<br/> 개설하시겠습니까?</h2>
+                    </div>
+                    
+                    <div className="summary-table">
+                        <div className="summary-row">
+                            <span className="summary-label">매일 납입 금액</span>
+                            <span className="summary-value">{amount}원</span>
+                        </div>
+                        <div className="summary-row">
+                            <span className="summary-label">만기일자</span>
+                            <span className="summary-value">{maturityDate}</span>
+                        </div>
+                        <div className="summary-row">
+                            <span className="summary-label">연결계좌</span>
+                            <span className="summary-value">{bankName} {cardNumber}</span>
+                        </div>
+                        <div className="summary-row">
+                            <span className="summary-label">적용금리</span>
+                            <span className="summary-value">연 9.00%</span>
+                        </div>
+                    </div>
+                    <p className="modal-description">
+                        * 개설일부터 매일 30회 납입 후 만기해지 시 최고 우대금리가 적용됩니다.<br />
+                        * 입금 일정진 진행을 통해 직접 입금하는 상품으로, 위 계획에서 조정됩니다.
                     </p>
 
                     <DoubleButton

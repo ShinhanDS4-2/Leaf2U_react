@@ -93,10 +93,3 @@
     min-width: 2rem;
     margin-left: auto;
 }
-
-.content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    overflow: hidden; /* 부모에서 오버플로우 방지 */
-}

@@ -109,8 +109,9 @@ const CardNotice = () => {
                     </div>
                 </div>
             </div>
-            <Button text={'다음'} onClick={handleNextClick} />
-
+            <div className='p-3'>
+                <Button text={'다음'} onClick={handleNextClick} />
+            </div>  
             <AlertModal ref={alertRef} text={'모든 약관에 동의해야 다음 단계로 진행할 수 있습니다.'}/>
         </div>
     );
