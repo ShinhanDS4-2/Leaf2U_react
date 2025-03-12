@@ -15,6 +15,9 @@ import CustomCalendar from '../../components/calendar/CustomCalendar';
 function Home() {
     const [data, setData] = useState({ account_step: 1 }); // 적금 정보
     const [savingList, setSavingList] = useState([]); // 납입 내역 리스트
+    const [challengeInfo, setChallengeInfo] = useState(null);
+    const [paymentDateMap, setPaymentDateMap] = useState({});
+
     const [isModalOpen, setIsModalOpen] = useState(false); // 납입 내역 리스트 모달 상태
     const [isInfoOpen, setIsInfoOpen] = useState(false); // 적금 정보 모달 상태
     const [isChallengeOpen, setIsChallengeOpen] = useState(false); // 챌린지 현황 모달 상태
@@ -94,7 +97,6 @@ function Home() {
         api.post('/saving/history/list')
             .then((response) => {
                 const data = response.data;
-
                 setSavingList(data.list || []);
                 setIsModalOpen(true);
             })
@@ -109,17 +111,28 @@ function Home() {
     };
 
     // 챌린지 현황
-    const getChallengeInfo = () => {
-        api.post('/saving/challenge/list')
-            .then((response) => {
-                const data = response.data;
-                console.log(data);
+    const getChallengeInfo = async () => {
+        try {
+            const response = await api.post('/saving/challenge/list');
+            const data = response.data;
+            setChallengeInfo(data);
 
-                setIsChallengeOpen(true);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+            if (data?.paymentDateList?.length > 0) {
+                // 리스트 map 변환
+                const historyMap = data.paymentDateList.reduce((acc, date) => {
+                    acc[date] = true;
+                    return acc;
+                }, {});
+
+                setPaymentDateMap(historyMap);
+
+                setTimeout(() => {
+                    setIsChallengeOpen(true);
+                }, 500);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     // 챌린지 현황 클릭
@@ -387,9 +400,9 @@ function Home() {
                             }}
                         >
                             <CustomCalendar
-                                minDate={new Date(2025, 1, 22)}
-                                maxDate={new Date(2025, 2, 24)}
-                                stickerDates={{ '2025-03-01': true }}
+                                minDate={new Date(data.accountDTO.createDate)}
+                                maxDate={new Date(data.accountDTO.maturityDate)}
+                                stickerDates={paymentDateMap}
                             />
                         </Box>
                         <Box
