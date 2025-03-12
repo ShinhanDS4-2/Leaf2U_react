@@ -31,6 +31,7 @@ import Deposit from './page/deposit/Deposit';
 import Image from './page/deposit/Image';
 
 import Example from './page/Example';
+import Topic from './page/topic/Topic';
 
 const theme = createTheme({
     typography: {
@@ -80,6 +81,8 @@ function App() {
                         {/* 동근 페이지 START */}
                         <Route path="/deposit" element={<Deposit />} />
                         <Route path="/image" element={<Image />} />
+
+                        <Route path="/topic" element={<Topic />} />
 
                         <Route path="/example" element={<Example />} />
                     </Routes>
