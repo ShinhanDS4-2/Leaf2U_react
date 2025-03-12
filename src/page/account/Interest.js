@@ -39,7 +39,7 @@ const CustomTabs = ({ value, onChange }) => {
             sx={{
                 '& .MuiTabs-indicator': { display: 'none' },
                 '& .MuiTab-root': {
-                    borderRadius: '20px',
+                    borderRadius: '10px',
                     fontWeight: 'bold',
                 },
                 '& .Mui-selected': {
@@ -625,11 +625,11 @@ const Interest = () => {
 
     useEffect(() => {
         if (tabIndex === 0) {
-            getMaturityInterest(); // (3-1) 예상이자조회(만기일 해지)
+            getMaturityInterest(); // (3-1) 예상이자조회(만기일 해지) API
         } else if (tabIndex === 1) {
             getTodayInterest(); // (3-2) 예상이자조회(오늘 해지) API
         } else if (tabIndex === 2) {
-            getCustomDateInterest(endDate); // (3-3) 예상이자조회(선택일자 해지)
+            getCustomDateInterest(endDate); // (3-3) 예상이자조회(선택일자 해지) API
         }
     }, [tabIndex]); // tabIndex가 변경될 때마다 호출됨
 
@@ -645,6 +645,7 @@ const Interest = () => {
                 />
                 {/* TabPanel은 value와 index를 props로 받아, value와 index가 같을 때 해당 내용을 보여줌 */}
                 <TabPanel value={tabIndex} index={0}>
+                    {/* 각 api 호출하고 나온 결과 값 interestData 넘겨줌 */}
                     <Tap0Page interestData={interestData} />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={1}>

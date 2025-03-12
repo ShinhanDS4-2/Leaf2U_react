@@ -29,6 +29,10 @@ api.interceptors.request.use(
     },
 );
 
+// 날짜형식 변환 YYYY-MM-DD
+const formatDate = (date) => {
+    if (date != null) return date.substring(0, 10);
+};
 // 컴포넌트 내부에서 API 호출 (useEffect 사용 예시)
 const HistoryList = () => {
     const [historys, setHistorys] = useState([]); // historys 상태관리
@@ -75,20 +79,6 @@ const HistoryList = () => {
                     }}
                 >
                     <Typography variant="body1">총 {historys.Count}건</Typography>
-                    <Button
-                        variant="text"
-                        // color="#5DB075" 더 연한 연두색
-                        onClick={handleClick}
-                        sx={{ color: '#388E3C', fontSize: 15 }}
-                    >
-                        3개월 ▼
-                    </Button>
-                    <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                        <MenuItem onClick={handleClose}>1개월</MenuItem>
-                        <MenuItem onClick={handleClose}>3개월</MenuItem>
-                        <MenuItem onClick={handleClose}>6개월</MenuItem>
-                        <MenuItem onClick={handleClose}>필터 할지말지 고민중</MenuItem>
-                    </Menu>
                 </Box>
 
                 {/* 기부 내역 리스트 */}
@@ -160,7 +150,7 @@ const HistoryList = () => {
                                             기부금액
                                         </Typography>
                                         <Typography variant="body2" fontWeight="bold">
-                                            {history.donationAmount}
+                                            {history?.donationAmount?.toLocaleString()}
                                         </Typography>
                                     </Box>
 
@@ -174,7 +164,7 @@ const HistoryList = () => {
                                             기부일자
                                         </Typography>
                                         <Typography variant="body2">
-                                            {history.donationDate}
+                                            {formatDate(history.donationDate)}
                                         </Typography>
                                     </Box>
                                 </Box>
