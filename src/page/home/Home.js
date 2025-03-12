@@ -1,6 +1,7 @@
 import './Home.css';
 import axios from 'axios';
 import React, { useRef, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Typography, Box, List, ListItem, Divider, Fade } from '@mui/material';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import Tree from '../../image/tree.png';
@@ -18,6 +19,13 @@ function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false); // 납입 내역 리스트 모달 상태
     const [isInfoOpen, setIsInfoOpen] = useState(false); // 적금 정보 모달 상태
     const [isChallengeOpen, setIsChallengeOpen] = useState(false); // 챌린지 현황 모달 상태
+
+    const [isChallengeCompleted, setIsChallengeCompleted] = useState(false); // 챌린지 완료 여부
+    const [challengeCount, setChallengeCount] = useState(0); // 챌린지 완료 횟수
+    const [bonusRate, setBonusRate] = useState(0); // 우대 금리
+
+    const location = useLocation();
+    const { deposit, type } = location.state || {}; // type여기로 받아서 넘어옴
 
     // 모달
     const bottomModalRef = useRef();
@@ -65,6 +73,38 @@ function Home() {
             return Promise.reject(error);
         },
     );
+
+    // 챌린지 완료 후 적금 납입 체크 함수
+    const challengeCheckRate = () => {
+        if (deposit == 'Y') {
+            // React Deposit.js에서 선택한 type이 DB challengeType 저장될 형식 변환
+            const typeMap = {
+                tumblr: 'T',
+                bicycle: 'C',
+                receipt: 'R',
+            };
+
+            const challengeType = typeMap[type] || {};
+
+            console.log('React에서 보낼 challengeType:', challengeType);
+
+            // 챌린지 완료 후 적금 납입
+            api.post('/saving/deposit', { challengeType })
+                .then((response) => {
+                    console.log('API 응답:', response.data);
+                    setChallengeCount(response.data.saving_cnt || 0);
+                    setBonusRate(response.data.todayInterestRate || 0);
+                    setIsChallengeCompleted(true);
+                })
+                .catch((error) => {
+                    console.error('API 호출 실패:', error);
+                    if (error.response) {
+                        console.log(' 서버 응답 상태 코드:', error.response.status);
+                        console.log(' 서버 응답 데이터:', error.response.data);
+                    }
+                });
+        }
+    };
 
     // 적금 계좌 현황 (단계, 만기상태)
     const getAccountInfo = () => {
@@ -156,6 +196,7 @@ function Home() {
     useEffect(() => {
         getAccountInfo();
         checkToday();
+        challengeCheckRate();
     }, []);
 
     return (
@@ -167,6 +208,34 @@ function Home() {
                 <img src={Watering} className="watering-img" onClick={handleSavingOnClick} />
                 <img src={treeImage} className="tree-img" onClick={handleAccountInfoClick} />
             </div>
+
+            {/* 챌린지 deposit */}
+            {isChallengeCompleted && (
+                <Fade in={isChallengeCompleted} timeout={{ enter: 500, exit: 500 }}>
+                    <Box className="home-overlay">
+                        <Box className="challenge-popup">
+                            <Typography className="challenge-count">
+                                {challengeCount}회 챌린지 완료
+                            </Typography>
+                            <Typography className="challenge-text">
+                                +{bonusRate}%<br />
+                            </Typography>
+                            <Typography className="challenge-rate">
+                                우대 금리를 받았어요!
+                            </Typography>
+
+                            {/* 확인 버튼 */}
+                            <Box className="challenge-button">
+                                <Button
+                                    text="확인"
+                                    onClick={() => setIsChallengeCompleted(false)}
+                                />
+                            </Box>
+                        </Box>
+                    </Box>
+                </Fade>
+            )}
+
             <Footer />
 
             {/* 하단 모달 (납입 확인) */}
