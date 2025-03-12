@@ -84,7 +84,7 @@ const OrganizationDetailModal = ({ open, onClose, donation }) => {
     );
 };
 
-const Tap1Page = () => {
+const Tap1Page = ({ selectedOrganizationIdx }) => {
     const [openModal, setOpenModal] = useState(false); // 모달 열기/닫기 상태
     const [donations, setDonations] = useState([]); // donations 상태 관리
     const [selectedDonation, setSelectedDonation] = useState(null); // 선택된 donation 데이터
@@ -139,6 +139,16 @@ const Tap1Page = () => {
     useEffect(() => {
         getOrganizations(); // 컴포넌트가 처음 렌더링될 때 한 번만 실행됨
     }, []); // 빈 배열, 의존성 배열이 비어있기 때문에 한 번만 실행 -> 만약 안에 someState라는 값이 있으면 someState 값이 변경될 때마다 실행됨
+
+    // 만기 해지 -> 후원 단체 리스트에서 해당 단체의 상세 내용을 보고 싶을 경우 이 페이지로 넘어와서 idx 값에 맞는 모달을 open함
+    useEffect(() => {
+        if (selectedOrganizationIdx && donations.length > 0) {
+            const selected = donations.find((d) => d.organizationIdx === selectedOrganizationIdx);
+            if (selected) {
+                handleOpenModal(selected);
+            }
+        }
+    }, [selectedOrganizationIdx, donations]);
 
     return (
         <>
@@ -197,6 +207,7 @@ const Tap2Page = () => {
 const OrganizationList = () => {
     const [tabIndex, setTabIndex] = useState(0);
     const location = useLocation();
+    const selectedOrganizationIdx = location.state?.organizationIdx || null;
 
     return (
         <>
@@ -216,7 +227,7 @@ const OrganizationList = () => {
 
                 {/* TabPanel은 value와 index를 props로 받아, value와 index가 같을 때 해당 내용을 보여줌 */}
                 <TabPanel value={tabIndex} index={0}>
-                    <Tap1Page />
+                    <Tap1Page selectedOrganizationIdx={selectedOrganizationIdx} />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={1}>
                     <Tap2Page />
