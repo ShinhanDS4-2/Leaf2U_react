@@ -59,6 +59,20 @@ const Image = () => {
         const formData = new FormData();
         formData.append('file', file);
 
+        // 인터셉터
+        api.interceptors.request.use(
+            (config) => {
+                const token = localStorage.getItem('jwtToken');
+                if (token) {
+                    config.headers.Authorization = `Bearer ${token}`;
+                }
+                return config;
+            },
+            (error) => {
+                return Promise.reject(error);
+            },
+        );
+
         try {
             const response = await api.post(apiUrl, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
@@ -68,11 +82,11 @@ const Image = () => {
             console.log('API 응답:', result);
 
             if (type === 'tumblr' && result.includes('yes')) {
-                navigate('/next-page');
+                navigate('/home');
             } else if (type === 'bicycle' && /^\d{2}-\d{2}$/.test(result)) {
-                navigate('/next-page');
+                navigate('/home');
             } else if (type === 'receipt' && result.includes('yes')) {
-                navigate('/next-page');
+                navigate('/home');
             } else {
                 setAlertText('<span>챌린지 인증에 실패하였습니다.</span>'); // 모달 메시지 설정
                 alertRef.current.openModal(); // 모달 열기
