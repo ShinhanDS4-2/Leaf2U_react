@@ -14,7 +14,7 @@ import KakaoImg from '../../../image/kakao.png';
 
 const CardJoin = () => {
 
-    const [cardNumber, setCardNumber] = useState('');
+    const [accountNumber, setAccountNumber] = useState('');
     const navigate = useNavigate();
     const modalRef=useRef();
     const alertRef=useRef();
@@ -26,7 +26,7 @@ const CardJoin = () => {
         lastName: '',
         firstName: '',
         phone: '',
-        cardNumber:'',
+        accountNumber:'',
     });
 
     const [selectedBank,setSelectedBank]=useState('');
@@ -46,8 +46,8 @@ const CardJoin = () => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
 
-        if(name==="cardNumber"){
-            setCardNumber(value);
+        if(name==="accountNumber"){
+            setAccountNumber(value);
         }
 
     };
@@ -70,8 +70,7 @@ const CardJoin = () => {
             return;
         }
 
-        console.log("카드넘버",cardNumber);
-        localStorage.setItem('cardNumber',cardNumber);
+        localStorage.setItem('accountNumber',accountNumber);
         localStorage.setItem('bankName',selectedBank);
         navigate('/cardDetail',{state:{...form,selectedBank}});
     };
@@ -140,7 +139,7 @@ const CardJoin = () => {
                         {selectedBank ? selectedBank : '은행 선택'}
                     </div>
 
-                    <input type="text" name="cardNumber" placeholder="카드번호 (- 없이 숫자만)" onChange={handleChange}/>
+                    <input type="text" name="accountNumber" placeholder="계좌번호 (- 없이 숫자만)" onChange={handleChange}/>
                 </div>
 
                 <div className="explain-card">
@@ -175,7 +174,7 @@ const CardJoin = () => {
                 </div>
             </BottomModal>
             <AlertModal ref={alertRef} text="모든 항목을 입력해 주세요." />
-            <AlertModal ref={alertRef2} text="은행을 선택해 주세요" />
+            <AlertModal ref={alertRef2} text="은행을 선택해 주세요." />
 
         </div>
     );

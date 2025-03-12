@@ -21,9 +21,9 @@ const CardHome = () => {
         return localStorage.getItem("amount");
     })
 
-    const [cardNumber,setCardNumber]=useState(()=>{
+    const [accountNumber,setAccountNumber]=useState(()=>{
 
-        return localStorage.getItem("cardNumber");
+        return localStorage.getItem("accountNumber");
     })
 
     const [bankName,setbankName]=useState(()=>{
@@ -169,7 +169,7 @@ const CardHome = () => {
                         </div>
                         <div className="summary-row">
                             <span className="summary-label">연결계좌</span>
-                            <span className="summary-value">{bankName} {cardNumber}</span>
+                            <span className="summary-value">{bankName} {accountNumber}</span>
                         </div>
                         <div className="summary-row">
                             <span className="summary-label">적용금리</span>
