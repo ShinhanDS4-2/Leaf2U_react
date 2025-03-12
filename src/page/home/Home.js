@@ -176,10 +176,12 @@ function Home() {
                             진행하시겠습니까?
                         </span>
                     </div>
-                    <Button
-                        text={`${data?.accountDTO?.paymentAmount.toLocaleString() ?? 0}원 입금`}
-                        onClick={() => {}}
-                    />
+                    <div className="p-3">
+                        <Button
+                            text={`${data?.accountDTO?.paymentAmount.toLocaleString() ?? 0}원 입금`}
+                            onClick={() => {}}
+                        />
+                    </div>
                     <span className="small text-secondary" onClick={handleCloseBottomModal}>
                         다음에 할래요
                     </span>

@@ -13,7 +13,7 @@ const Footer = () => {
         <div className="footer">
             <div className="row">
                 <div className="col">
-                    <Link to="/">
+                    <Link to="/home">
                         <Icon icon="majesticons:home" className="footer-icon" />
                     </Link>
                 </div>
