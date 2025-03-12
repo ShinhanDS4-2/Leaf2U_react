@@ -73,8 +73,11 @@ const InterestMainPage = () => {
             });
     };
 
-    const endDate = '2025-03-15T23:59:59'; // 클라이언트로부터 입력받은 종료일
+    // 클라이언트로부터 입력받은 종료일 예시
+    const endDate = '2025-03-15'; // 지워야함
 
+    // API에서 @RequestParam을 사용하여 endDate 값을 받고있기 때문에 URL 쿼리 파라미터로 endDate를 전달해야함
+    // 예시 => /api/account/interest/customDate?endDate=2025-03-05
     // (3-3) 예상이자조회(선택일자 해지) API
     const getCustomDateInterest = (customDate) => {
         api.get('/account/interest/customDate', {

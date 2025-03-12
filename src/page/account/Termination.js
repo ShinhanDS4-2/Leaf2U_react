@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
 
 import Header from '../../components/header/Header';
@@ -11,6 +10,8 @@ import Button from '../../components/button/Button';
 import DoubleButton from '../../components/button/DoubleButton';
 import PwdModal6 from '../../components/modal/PwdModal6';
 import AlertModal from '../../components/modal/AlertModal';
+import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
+// axios 인스턴스(api) 및 인터셉터 자동추가됨 -> api이름으로 사용
 
 const Termination = () => {
     const navigate = useNavigate(); // useNavigate 훅으로 navigate 함수 얻기
@@ -100,29 +101,6 @@ const Termination = () => {
             OpenFailAlertRef2();
         }
     };
-
-    // axios 인스턴스
-    const api = axios.create({
-        baseURL: '/api', // API 기본 URL
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
-            console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
-
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        },
-    );
 
     // 예상이자조회(오늘해지) API 호출 -> 오늘 중도해지 시 예상이자 먼저 보여줘야함
     const interestToday = () => {

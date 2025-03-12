@@ -40,7 +40,9 @@ const CustomDatePage = ({ interestData }) => {
                         <Typography variant="body2" color="text.secondary">
                             이자 계산 기간
                         </Typography>
-                        <Typography variant="body2">2025</Typography>
+                        <Typography variant="body2">
+                            {formatDate(accountDTO?.createDate)} ~ {formatDate(accountDTO?.endDate)}
+                        </Typography>
                     </Box>
                     <Box
                         sx={{
@@ -52,7 +54,7 @@ const CustomDatePage = ({ interestData }) => {
                         <Typography variant="body2" color="text.secondary">
                             기본 금리
                         </Typography>
-                        <Typography variant="body2"> 12 %</Typography>
+                        <Typography variant="body2"> {accountDTO?.interestRate} %</Typography>
                     </Box>
 
                     <Box
@@ -66,7 +68,7 @@ const CustomDatePage = ({ interestData }) => {
                             원금
                         </Typography>
                         <Typography variant="body2" fontWeight="bold">
-                            1000원
+                            {accountDTO?.balance.toLocaleString()}원
                         </Typography>
                     </Box>
                     <Box
@@ -79,7 +81,10 @@ const CustomDatePage = ({ interestData }) => {
                         <Typography variant="body2" color="text.secondary">
                             이자(세전)
                         </Typography>
-                        <Typography variant="body2"> 2000원</Typography>
+                        <Typography variant="body2">
+                            {' '}
+                            {accountDTO?.preTaxInterestAmount.toLocaleString()}원
+                        </Typography>
                     </Box>
                     <Box
                         sx={{
@@ -91,7 +96,9 @@ const CustomDatePage = ({ interestData }) => {
                         <Typography variant="body2" color="text.secondary">
                             세금
                         </Typography>
-                        <Typography variant="body2">2000원</Typography>
+                        <Typography variant="body2">
+                            {accountDTO?.taxAmount.toLocaleString()}원
+                        </Typography>
                     </Box>
                     <Box
                         sx={{
@@ -103,7 +110,9 @@ const CustomDatePage = ({ interestData }) => {
                         <Typography variant="body2" color="text.secondary">
                             과세구분
                         </Typography>
-                        <Typography variant="body2">20202020</Typography>
+                        <Typography variant="body2">
+                            {accountDTO?.taxationYn == 'Y' ? '일반과세' : '비과세'}
+                        </Typography>
                     </Box>
 
                     {/* 실제 이자 및 최종 수령액 */}
@@ -118,7 +127,7 @@ const CustomDatePage = ({ interestData }) => {
                             이자
                         </Typography>
                         <Typography variant="body" fontWeight="bold">
-                            202020원
+                            {accountDTO?.interestAmount.toLocaleString()}원
                         </Typography>
                     </Box>
                     <Divider sx={{ marginY: 1, borderColor: 'black', marginBottom: 2 }} />
@@ -133,8 +142,8 @@ const CustomDatePage = ({ interestData }) => {
                             받으실금액
                         </Typography>
                         <Typography variant="h5" color="#5DB075" fontWeight="bold">
-                            202020원
                             {/* 계좌원금balance + 세후이자interestAmount */}
+                            {(accountDTO?.balance + accountDTO?.interestAmount).toLocaleString()}원
                         </Typography>
                     </Box>
                 </CardContent>
