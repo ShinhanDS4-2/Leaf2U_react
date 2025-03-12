@@ -33,10 +33,18 @@ const Topic = () => {
             <Header title="토픽" back={false} />
 
             {fineDust && (
-                <section className="fine-dust">
-                    <h2>미세먼지 정보</h2>
-                    <p>{fineDust.description}</p>
-                </section>
+                <div className={`fine-dust ${fineDust.status}`}>
+                    <h2>현재 미세먼지 정보</h2>
+                    <p>미세먼지: {fineDust.pm10} µg/m³</p>
+                    <p>초미세먼지: {fineDust.pm2_5} µg/m³</p>
+                    <div className="emoji">
+                        {fineDust.status === 'good'
+                            ? '😊'
+                            : fineDust.status === 'moderate'
+                            ? '😐'
+                            : '😢'}
+                    </div>
+                </div>
             )}
 
             <section className="news-section">
