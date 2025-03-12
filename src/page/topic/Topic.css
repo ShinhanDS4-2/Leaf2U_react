@@ -1,0 +1,110 @@
+/* 기본 설정 */
+.topic-container {
+    background-color: white;
+    padding: 16px;
+    min-height: 100vh;
+}
+
+/* 미세먼지 정보 */
+.fine-dust {
+    padding: 16px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    margin: 20px;
+}
+
+/* 상태별 배경색 */
+.fine-dust.good {
+    background-color: #4caf50; /* 녹색 */
+}
+
+.fine-dust.moderate {
+    background-color: #ff9800; /* 주황색 */
+}
+
+.fine-dust.bad {
+    background-color: #f44336; /* 빨간색 */
+}
+
+/* 이모지 스타일 */
+.emoji {
+    font-size: 40px;
+    margin-top: 10px;
+}
+
+/* 뉴스 섹션 */
+.news-section h2,
+.eco-tips-section h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.news-item,
+.eco-tip-item {
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.news-item:hover,
+.eco-tip-item:hover {
+    background: #e0f2f1;
+}
+
+.news-item h3,
+.eco-tip-item h3 {
+    font-size: 16px;
+    margin: 0;
+    color: #333;
+}
+
+.news-item p,
+.eco-tip-item p {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0 0;
+}
+
+/* 모달 스타일 */
+.modal-content {
+    text-align: center;
+    padding: 20px;
+}
+
+.modal-content h2 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.modal-content p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 12px;
+    background: #4caf50;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.modal-content button:hover {
+    background: #388e3c;
+}

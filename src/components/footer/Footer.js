@@ -13,7 +13,7 @@ const Footer = () => {
         <div className="footer">
             <div className="row">
                 <div className="col">
-                    <Link to="/">
+                    <Link to="/home">
                         <Icon icon="majesticons:home" className="footer-icon" />
                     </Link>
                 </div>
@@ -33,7 +33,7 @@ const Footer = () => {
                     </Link>
                 </div>
                 <div className="col">
-                    <Link to="/leafboard">
+                    <Link to="/organizationList">
                         <Icon icon="majesticons:leaf-3-angled" className="footer-icon" />
                     </Link>
                 </div>
