@@ -1,44 +1,25 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Point.css';
 import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import ArrowImg from '../../image/Arrow.jpg';
-import { Button } from '@mui/material';
-import BottomModal from '../../components/modal/BottomModal';
+import BottomModal from '../../components/modal/BottomModal'; // 모달 컴포넌트 추가
+import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 navigate
 
 const box = [
-    {
-        title: '출석 체크',
-        description: '출석 체크 시 10포인트 적립',
-        type: 'checkin',
-    },
-    {
-        title: '만보기 인증',
-        description: '걸음 수 인증 시 10포인트 적립 (1000걸음 기준)',
-        type: 'pedometer',
-    },
-    {
-        title: '환경 퀴즈 참여',
-        description: '퀴즈 참여 후 정답 시 10포인트 적립',
-        type: 'quiz',
-    },
+    { title: '출석 체크 📅', description: '출석 체크 시 10포인트 적립', type: 'checkin' },
+    { title: '만보기 인증 🚶‍♂️', description: '만보기 인증 후 포인트 적립', type: 'pedometer' },
+    { title: '환경 퀴즈 참여 ❓', description: '퀴즈 참여 후 정답 시 10포인트 적립', type: 'quiz' },
 ];
 
-const PointCard = ({ title, description, type, onCheckIn, onPedometer }) => {
-    const fileInputRef = useRef(null);
-
-    const handleClick = () => {
-        if (type === 'checkin') {
-            onCheckIn();
-        } else if (type === 'pedometer') {
-            fileInputRef.current.click(); // 파일 업로드 창 열기
-        }
-    };
-
+const PointCard = ({ title, description, type, onCheckIn, onPedometer, onQuiz }) => {
     return (
-        <div className="point-card" onClick={handleClick} style={{ cursor: 'pointer' }}>
+        <div
+            className="point-card"
+            onClick={type === 'checkin' ? onCheckIn : type === 'pedometer' ? onPedometer : onQuiz}
+            style={{ cursor: 'pointer' }}
+        >
             <div className="card-text-container">
                 <h3 className="card-title">{title}</h3>
                 <p className="card-text">{description}</p>
@@ -46,32 +27,22 @@ const PointCard = ({ title, description, type, onCheckIn, onPedometer }) => {
             <div className="card-arrow">
                 <img src={ArrowImg} alt="Go" className="arrow-image" />
             </div>
-            {/* 만보기 파일 업로드 hidden input */}
-            {type === 'pedometer' && (
-                <input
-                    type="file"
-                    accept="image/*"
-                    ref={fileInputRef}
-                    onChange={onPedometer}
-                    style={{ display: 'none' }}
-                />
-            )}
         </div>
     );
 };
 
 const Point = () => {
     const [totalPoints, setTotalPoints] = useState(0);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [modalContent, setModalContent] = useState('');
+    const [modalOpen, setModalOpen] = useState(false); // 모달 상태 관리
+    const [modalContent, setModalContent] = useState(''); // 모달에 표시할 내용
     const navigate = useNavigate();
 
     const api = axios.create({
-        baseURL: '/api', // 백엔드 API 주소
+        baseURL: '/api',
         headers: { 'Content-Type': 'application/json' },
     });
 
-    // 요청 인터셉터 (JWT 토큰 추가)
+    //요청 인터셉터
     api.interceptors.request.use(
         (config) => {
             const token = localStorage.getItem('jwtToken');
@@ -80,14 +51,16 @@ const Point = () => {
             }
             return config;
         },
-        (error) => Promise.reject(error),
+        (error) => {
+            return Promise.reject(error);
+        },
     );
 
     // 보유 포인트 가져오기
     useEffect(() => {
         const fetchTotalPoints = async () => {
             try {
-                const res = await api.get('/point/total'); // 백엔드에서 현재 로그인된 사용자 정보 가져옴
+                const res = await api.get('/point/total');
                 setTotalPoints(res.data.totalPoints);
             } catch (err) {
                 console.error('포인트 정보를 불러올 수 없습니다.', err);
@@ -96,44 +69,24 @@ const Point = () => {
         fetchTotalPoints();
     }, []);
 
-    // 출석 체크
     const checkIn = async () => {
         try {
-            const response = await api.post('/point/checkin'); // 백엔드에서 TokenContext 사용
-            setModalContent(response.data.message);
-            setModalOpen(true);
-            setTotalPoints((prev) => prev + 10); // 출석체크는 10P 고정
+            const response = await api.post('/point/checkin');
+            setModalContent(response.data.message); // 응답 메시지를 모달에 설정
+            setModalOpen(true); // 모달 열기
+            setTotalPoints((prev) => prev + 10); // 포인트 적립
         } catch (error) {
-            console.error('출석 체크 실패:', error);
             setModalContent('출석 체크 중 오류가 발생했습니다.');
-            setModalOpen(true);
+            setModalOpen(true); // 오류 발생 시 모달 열기
         }
     };
 
-    // 만보기 파일 업로드
-    const Pedometer = async (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        try {
-            const res = await api.post('/point/pedometer', formData);
-            setModalContent(res.data.message);
-            setModalOpen(true);
-            if (res.data.earnedPoints) {
-                setTotalPoints((prev) => prev + res.data.earnedPoints);
-            }
-        } catch (err) {
-            setModalContent('걸음 수를 인식할 수 없습니다.');
-            setModalOpen(true);
-        }
+    const goToPedometerPage = () => {
+        navigate('/pedometer'); // 만보기 페이지로 이동
     };
 
-    // 환경 퀴즈 페이지로 이동
-    const Quiz = () => {
-        navigate('/quiz');
+    const goToQuizPage = () => {
+        navigate('/quiz'); // 환경 퀴즈 페이지로 이동
     };
 
     return (
@@ -142,21 +95,23 @@ const Point = () => {
             <div className="point-box">
                 <h2 className="point-title">
                     보유 포인트: <br />
-                    {totalPoints}P
+                    {totalPoints}P 🪙
                 </h2>
                 {box.map((challenge, index) => (
                     <PointCard
                         key={index}
                         {...challenge}
                         onCheckIn={checkIn}
-                        onPedometer={Pedometer}
+                        onPedometer={goToPedometerPage} // 만보기 버튼 클릭 시 이동
+                        onQuiz={goToQuizPage} // 환경 퀴즈 버튼 클릭 시 이동
                     />
                 ))}
             </div>
+            {/* 모달창 컴포넌트 */}
             <BottomModal
                 open={modalOpen}
-                onClose={() => setModalOpen(false)}
-                content={modalContent}
+                onClose={() => setModalOpen(false)} // 모달 닫기
+                content={modalContent} // 모달에 내용 전달
             />
             <Footer />
         </div>
