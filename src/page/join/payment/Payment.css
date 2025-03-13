@@ -3,6 +3,7 @@
     padding-top: 130px;
     text-align: center;
 }
+
 .payment-info {
     padding-top: 15px;
     text-align: center;
@@ -19,7 +20,9 @@
     outline: none;
     margin: 0 5px;
     color: #22b573;
+    background-color: transparent;
 }
+
 .payment-input::placeholder {
     color: lightgray;
     opacity: 0.5; /* 투명도 조절 (0.1 ~ 1) */

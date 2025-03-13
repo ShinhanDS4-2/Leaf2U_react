@@ -88,27 +88,29 @@ const Payment = () => {
         <div>
             <Header title={'한달적금 개설'} />
 
-            <div className="payment">
-                <h3>
-                    매일{' '}
-                    <input
-                        type="text"
-                        value={formattedAmount}
-                        onChange={handleChange}
-                        placeholder="1,000"
-                        className="payment-input"
-                    />
-                    원씩 납입
-                </h3>
+            <div className="content ps-0 pe-0">
+                <div className="payment">
+                    <h3>
+                        매일{' '}
+                        <input
+                            type="text"
+                            value={formattedAmount}
+                            onChange={handleChange}
+                            placeholder="1,000"
+                            className="payment-input"
+                        />
+                        원씩 납입
+                    </h3>
+                </div>
+                <div className="payment-info">
+                    <p>100원부터 30,000원까지 입력 가능</p>
+                </div>
+                <div className="p-3">
+                    <Button text={'개설정보 확인'} onClick={handleNextPage} />
+                </div>
+                <Keypad onKeyPress={handleKeypadClick} onDelete={handleDelete} />
+                <AlertModal ref={alertRef} text="100원부터 30,000원까지 입력 가능합니다." />
             </div>
-            <div className="payment-info">
-                <p>100원부터 30,000원까지 입력 가능</p>
-            </div>
-            <div className="p-3">
-                <Button text={'개설정보 확인'} onClick={handleNextPage} />
-            </div>
-            <Keypad onKeyPress={handleKeypadClick} onDelete={handleDelete} />
-            <AlertModal ref={alertRef} text="100원부터 30,000원까지 입력 가능합니다." />
         </div>
     );
 };

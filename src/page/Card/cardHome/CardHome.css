@@ -1,7 +1,4 @@
 /* 카드 */
-.card-container {
-    background-color: white;
-}
 .card-info {
     padding-top: 15px;
     text-align: center;
@@ -16,6 +13,7 @@
     border-bottom: 1px solid black;
     outline: none;
     margin: 0 5px;
+    background-color: transparent;
 }
 .payment-input::placeholder {
     color: lightgray;
@@ -203,4 +201,14 @@
     margin-top: 20px;
     margin-bottom: 30px;
     padding-left: 20px;
+}
+
+.card-field {
+    background-color: #fafafa;
+    padding: 20px;
+    overflow-y: auto;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
 }
