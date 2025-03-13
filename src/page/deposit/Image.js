@@ -16,6 +16,8 @@ const api = axios.create({
 const Image = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    console.log('Image.js에서 받은 location.state:', location.state); // 뭘타고 들어갔는지 확인 힘들어서 console창창
+
     const notice = location.state?.notice || '사진을 첨부해주세요.';
     const type = location.state?.type;
     const [selectedImage, setSelectedImage] = useState(null);
@@ -82,11 +84,11 @@ const Image = () => {
             console.log('API 응답:', result);
 
             if (type === 'tumblr' && result.includes('yes')) {
-                navigate('/home');
+                navigate('/home', { state: { deposit: 'Y', type } }); // 타입을 여기서 넘겨줘야함 밑에도 마찬가지
             } else if (type === 'bicycle' && /^\d{2}-\d{2}$/.test(result)) {
-                navigate('/home');
+                navigate('/home', { state: { deposit: 'Y', type } });
             } else if (type === 'receipt' && result.includes('yes')) {
-                navigate('/home');
+                navigate('/home', { state: { deposit: 'Y', type } });
             } else {
                 setAlertText('<span>챌린지 인증에 실패하였습니다.</span>'); // 모달 메시지 설정
                 alertRef.current.openModal(); // 모달 열기

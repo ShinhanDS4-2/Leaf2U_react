@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
 
 import Header from '../../components/header/Header';
@@ -11,6 +10,8 @@ import Button from '../../components/button/Button';
 import DoubleButton from '../../components/button/DoubleButton';
 import PwdModal6 from '../../components/modal/PwdModal6';
 import AlertModal from '../../components/modal/AlertModal';
+import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
+// axios 인스턴스(api) 및 인터셉터 자동추가됨 -> api이름으로 사용
 
 const Termination = () => {
     const navigate = useNavigate(); // useNavigate 훅으로 navigate 함수 얻기
@@ -19,11 +20,12 @@ const Termination = () => {
     const terminateModalRef = useRef(); // 해지하기 모달 ref
     const pwdInputModalRef = useRef(); // 비밀번호 입력 모달 ref
     const completeModalRef = useRef(); // 해지 완료 모달 ref
-    const failAlertRef1 = useRef();
-    const failAlertRef2 = useRef();
+    const failAlertRef1 = useRef(); // 비밀번호 불일치 모달 ref
+    const failAlertRef2 = useRef(); // 적금해지 실패 모달 ref
 
     const [data, setData] = useState({}); // 예상이자조회(오늘해지) API 성공 시 data 값
 
+    /* 모달 관리 START */
     // 해지모달 open
     const OpenterminateModal = () => {
         if (terminateModalRef.current) {
@@ -83,6 +85,7 @@ const Termination = () => {
             failAlertRef2.current.closeModal();
         }
     };
+    /* 모달관리 END */
 
     // 간편 비밀번호 입력 후 프로세스
     const inputPwdProcess = async (pwd) => {
@@ -100,29 +103,6 @@ const Termination = () => {
             OpenFailAlertRef2();
         }
     };
-
-    // axios 인스턴스
-    const api = axios.create({
-        baseURL: '/api', // API 기본 URL
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
-            console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
-
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        },
-    );
 
     // 예상이자조회(오늘해지) API 호출 -> 오늘 중도해지 시 예상이자 먼저 보여줘야함
     const interestToday = () => {
@@ -167,6 +147,7 @@ const Termination = () => {
         const diff = Math.abs(date2 - date1); // 밀리초 차이 계산
         return Math.floor(diff / (1000 * 3600 * 24)); // 일 단위로 차이 계산
     };
+
     return (
         <>
             <Header title="계좌 해지" />
@@ -332,74 +313,77 @@ const Termination = () => {
                             OpenterminateModal();
                         }}
                     />
-                    <BottomModal ref={terminateModalRef}>
-                        <div>
-                            <Typography variant="h5" className="fw-bold mb-2">
-                                정말 적금 해지를 <br /> 신청하시겠습니까?
-                            </Typography>
-                            <Typography variant="caption" display="block" color="text.secondary">
-                                만기일까지{' '}
-                                {Math.floor(
-                                    (new Date('2025-03-24T00:15:20') -
-                                        new Date('2025-03-11T20:48:04.6781052')) /
-                                        (1000 * 3600 * 24),
-                                )}
-                                일 남았습니다.
-                            </Typography>
-                            <Typography
-                                variant="caption"
-                                display="block"
-                                color="error"
-                                className="mb-4"
-                            >
-                                중도해지 시 우대금리가 적용되지 않습니다.
-                            </Typography>
-                            <DoubleButton
-                                cancelText="아니요"
-                                confirmText="예"
-                                cancelOnClick={() => {
-                                    CloseterminateModal();
-                                }}
-                                confirmOnClick={() => {
-                                    CloseterminateModal();
-                                    OpenPwdInputModal();
-                                }}
-                            />
-                        </div>
-                    </BottomModal>
-                    {/* 간편 비밀번호 입력 모달 */}
-                    <PwdModal6
-                        ref={pwdInputModalRef}
-                        onSubmit={(pwd) => {
-                            // onSubmit에서 매개변수로 입력된 pwd가 넘어옴
-                            inputPwdProcess(pwd);
-                        }}
-                    ></PwdModal6>
-                    <BottomModal ref={completeModalRef}>
-                        <Typography variant="h6" className="fw-bold m-4 ">
-                            적금 해지가 완료되었습니다.
-                        </Typography>
-                        <Button
-                            text="확인"
-                            onClick={(e) => {
-                                CloseCompleteModal();
-                            }}
-                        />
-                    </BottomModal>
-                    <AlertModal
-                        ref={failAlertRef1}
-                        text={'<span>비밀번호가 일치하지 않습니다.<br/>다시 시도해주세요.</span>'}
-                        onClick={CloseFailAlertRef1}
-                    />
-                    <AlertModal
-                        ref={failAlertRef2}
-                        text={'<span>적금해지 실패하였습니다.<br/>관리자에게 문의해주세요.</span>'}
-                        onClick={CloseFailAlertRef2}
-                    />
-                    ;
                 </div>
             </Content>
             <Footer />
+            {/* 해지하시겠습니까? 모달 START */}
+            <BottomModal ref={terminateModalRef}>
+                <div>
+                    <Typography variant="h5" className="fw-bold mb-2">
+                        정말 적금 해지를 <br /> 신청하시겠습니까?
+                    </Typography>
+                    <Typography variant="caption" display="block" color="text.secondary">
+                        만기일까지{' '}
+                        {Math.floor(
+                            (new Date('2025-03-24T00:15:20') -
+                                new Date('2025-03-11T20:48:04.6781052')) /
+                                (1000 * 3600 * 24),
+                        )}
+                        일 남았습니다.
+                    </Typography>
+                    <Typography variant="caption" display="block" color="error" className="mb-4">
+                        중도해지 시 우대금리가 적용되지 않습니다.
+                    </Typography>
+                    <DoubleButton
+                        cancelText="아니요"
+                        confirmText="예"
+                        cancelOnClick={() => {
+                            CloseterminateModal();
+                        }}
+                        confirmOnClick={() => {
+                            CloseterminateModal();
+                            OpenPwdInputModal();
+                        }}
+                    />
+                </div>
+            </BottomModal>
+            {/* 해지하시겠습니까? 모달 END */}
+            {/* 간편 비밀번호 입력 모달 START */}
+            <PwdModal6
+                ref={pwdInputModalRef}
+                onSubmit={(pwd) => {
+                    // onSubmit에서 매개변수로 입력된 pwd가 넘어옴
+                    inputPwdProcess(pwd);
+                }}
+            ></PwdModal6>
+            {/* 간편 비밀번호 입력 모달 END */}
+            {/* 적금해지 완료 모달 START */}
+            <BottomModal ref={completeModalRef}>
+                <Typography variant="h6" className="fw-bold m-4 ">
+                    적금 해지가 완료되었습니다.
+                </Typography>
+                <Button
+                    text="확인"
+                    onClick={(e) => {
+                        CloseCompleteModal();
+                    }}
+                />
+            </BottomModal>
+            {/* 적금해지 완료 모달 END */}
+            {/* 비밀번호 불일치 모달 START */}
+            <AlertModal
+                ref={failAlertRef1}
+                text={'<span>비밀번호가 일치하지 않습니다.<br/>다시 시도해주세요.</span>'}
+                onClick={CloseFailAlertRef1}
+            />
+            {/* 비밀번호 불일치 모달 END */}
+            {/* 적금해지 실패 모달 START */}
+            <AlertModal
+                ref={failAlertRef2}
+                text={'<span>적금해지 실패하였습니다.<br/>관리자에게 문의해주세요.</span>'}
+                onClick={CloseFailAlertRef2}
+            />
+            {/* 적금해지 실패 모달 END */}
         </>
     );
 };

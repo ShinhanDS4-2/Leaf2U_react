@@ -46,6 +46,12 @@ const CardDetail = () => {
 
             console.log("멤버 idx 살아있니?",localStorage.getItem('memberIdx'));
             console.log("계좌번호는?",formData.accountNumber);
+        if (pwd == firstPwd) {
+            pwdModalRef2.current.closeModal();
+            successModalRef.current.openModal();
+
+            console.log('멤버 idx 살아있니?', localStorage.getItem('memberIdx'));
+            console.log('계좌번호는?', formData.accountNumber);
 
             const token = localStorage.getItem('jwtToken');
             console.log('전송할 토큰:', token);
@@ -56,28 +62,28 @@ const CardDetail = () => {
                 return;
             }
 
-            try{
-                const response = await axios.post('http://localhost:8090/api/card/new', {
-                
-                   memberIdx:localStorage.getItem('memberIdx'),
-                   accountNumber:formData.accountNumber,
-                   cardPassword:pwd,
-                   cardName:formData.selectedBank,
-                },{
-                    headers:{
-                        'Content-Type':'application/json',
-                        Authorization: `Bearer ${token}`,
-                    }
-                });
+            try {
+                const response = await axios.post(
+                    'http://localhost:8090/api/card/new',
+                    {
+                        memberIdx: localStorage.getItem('memberIdx'),
+                        accountNumber: formData.accountNumber,
+                        cardPassword: pwd,
+                        cardName: formData.selectedBank,
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`,
+                        },
+                    },
+                );
 
-                console.log("카드 발급 성공:",response.data);
-
-            }catch(error){
-                console.error("카드 발급 실패:",error);
-                
+                console.log('카드 발급 성공:', response.data);
+            } catch (error) {
+                console.error('카드 발급 실패:', error);
             }
-        }else{
-            
+        } else {
             alertRef.current.openModal();
             setFirstPwd('');
 
@@ -96,13 +102,25 @@ const CardDetail = () => {
 
             <div className="card-detail-container">
                 <h3>가입 정보 확인</h3>
-                
                 <div className="info-box">
-                    <p><strong>이름</strong> <span>{formData.name}</span></p>
-                    <p><strong>영문 성</strong> <span>{formData.lastName}</span></p>
-                    <p><strong>영문 이름</strong> <span>{formData.firstName}</span></p>
-                    <p><strong>연락처</strong> <span>{formData.phone}</span></p>
-                    <p><strong>계좌번호</strong> <span>({formData.selectedBank}) {formData.accountNumber}</span></p>
+                    <p>
+                        <strong>이름</strong> <span>{formData.name}</span>
+                    </p>
+                    <p>
+                        <strong>영문 성</strong> <span>{formData.lastName}</span>
+                    </p>
+                    <p>
+                        <strong>영문 이름</strong> <span>{formData.firstName}</span>
+                    </p>
+                    <p>
+                        <strong>연락처</strong> <span>{formData.phone}</span>
+                    </p>
+                    <p>
+                        <strong>계좌번호</strong>{' '}
+                        <span>
+                            ({formData.selectedBank}) {formData.accountNumber}
+                        </span>
+                    </p>
                 </div>
 
                 <p className="notice">* 위 정보가 사실과 다름이 없음을 확인합니다.</p>
@@ -139,6 +157,7 @@ const CardDetail = () => {
             <AlertModal ref={alertRef} text="비밀번호가 일치하지 않습니다. 다시 입력해주세요." />
         </div>
     );
+};
 };
 
 export default CardDetail;

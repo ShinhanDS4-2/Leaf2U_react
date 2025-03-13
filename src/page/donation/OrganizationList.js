@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import {
     Tabs,
@@ -17,6 +18,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 import Header from '../../components/header/Header';
+import Button from '../../components/button/Button';
+import { Icon } from '@iconify/react/dist/iconify.js';
+import { motion } from 'framer-motion';
 
 const TabPanel = ({ children, value, index }) => {
     return value === index ? <div>{children}</div> : null;
@@ -75,6 +79,13 @@ const OrganizationDetailModal = ({ open, onClose, donation }) => {
                                 </Typography>
                                 <Typography variant="body2">{donation.description}</Typography>
                             </Box>
+                            <Button
+                                text="홈페이지 바로가기"
+                                onClick={() =>
+                                    // donation.url이 null, undefined가 아닐때만 처리
+                                    donation.url && (window.location.href = donation.url)
+                                }
+                            />
                         </CardContent>
                     </Card>
                 )}
@@ -83,7 +94,7 @@ const OrganizationDetailModal = ({ open, onClose, donation }) => {
     );
 };
 
-const Tap1Page = () => {
+const Tap1Page = ({ selectedOrganizationIdx }) => {
     const [openModal, setOpenModal] = useState(false); // 모달 열기/닫기 상태
     const [donations, setDonations] = useState([]); // donations 상태 관리
     const [selectedDonation, setSelectedDonation] = useState(null); // 선택된 donation 데이터
@@ -139,33 +150,92 @@ const Tap1Page = () => {
         getOrganizations(); // 컴포넌트가 처음 렌더링될 때 한 번만 실행됨
     }, []); // 빈 배열, 의존성 배열이 비어있기 때문에 한 번만 실행 -> 만약 안에 someState라는 값이 있으면 someState 값이 변경될 때마다 실행됨
 
+    // 만기 해지 -> 후원 단체 리스트에서 해당 단체의 상세 내용을 보고 싶을 경우 이 페이지로 넘어와서 idx 값에 맞는 모달을 open함
+    useEffect(() => {
+        if (selectedOrganizationIdx && donations.length > 0) {
+            const selected = donations.find((d) => d.organizationIdx === selectedOrganizationIdx);
+            if (selected) {
+                handleOpenModal(selected);
+            }
+        }
+    }, [selectedOrganizationIdx, donations]);
+
     return (
         <>
             <Box className="p-0 mt-4">
                 {donations.map((donation) => (
                     <Card
-                        key={donation.organizationIdx} // idx값을 사용하여 각 항목을 식별
-                        variant="outlined" // 카드위에 마우스 올리면 elevation으로 변하게 해도 좋을듯
-                        onClick={() => handleOpenModal(donation)} // 카드 클릭 시 모달 열기
-                        sx={{ borderRadius: 2, marginBottom: 1, height: 'auto' }}
+                        key={donation.organizationIdx}
+                        variant="outlined"
+                        onClick={() => handleOpenModal(donation)}
+                        sx={{
+                            borderRadius: 2,
+                            marginBottom: 1,
+                            height: 'auto',
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: 1,
+                            cursor: 'pointer',
+                        }}
                     >
-                        <CardContent>
-                            {/* 제목 + 화살표 아이콘 */}
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                }}
+                        {/* 왼쪽: 이미지 (고정 크기) */}
+                        <Box
+                            sx={{
+                                width: 50,
+                                height: 50,
+                                backgroundColor: '#F0F0F0',
+                                borderRadius: 2,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginRight: 2,
+                                flexShrink: 0, // 크기 고정 (늘어나지 않도록)
+                            }}
+                        >
+                            <img
+                                src={require(`../../image/${donation.icon}`)}
+                                // require() 를 사용해서 이미지 동적으로 불러오기
+                                alt={donation.name}
+                                style={{ width: 50, height: 50 }}
+                            />
+                        </Box>
+
+                        {/* 가운데: 제목 + 설명 (세로로만 늘어나도록 설정) */}
+                        <Box
+                            sx={{
+                                flexGrow: 1, // 가능한 공간 차지
+                                display: 'flex',
+                                flexDirection: 'column', // 세로 배치
+                                minWidth: 0, // 가로 크기 제한 (늘어나지 않도록)
+                            }}
+                        >
+                            <Typography
+                                variant="subtitle1"
+                                fontWeight="bold"
+                                sx={{ wordBreak: 'break-word' }} // 긴 글이 줄바꿈되도록 설정
                             >
-                                <Typography variant="h6" fontWeight="bold" marginTop={1}>
-                                    {donation.name}
-                                </Typography>
-                                <Typography variant="h6" color="text.secondary">
-                                    &gt;
-                                </Typography>
-                            </Box>
-                        </CardContent>
+                                {donation.name}
+                            </Typography>
+                            {/* <Typography  설명 넣을지말지
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{ wordBreak: 'break-word' }} // 긴 글이 줄바꿈되도록 설정
+                            >
+                                {donation.description}
+                            </Typography> */}
+                        </Box>
+
+                        {/* 오른쪽: 화살표 아이콘 (고정 크기) */}
+                        <Typography
+                            variant="h6"
+                            color="text.secondary"
+                            sx={{
+                                flexShrink: 0, // 크기 고정 (늘어나지 않도록)
+                                marginLeft: 2, // 왼쪽 여백 추가
+                            }}
+                        >
+                            &gt;
+                        </Typography>
                     </Card>
                 ))}
             </Box>
@@ -181,20 +251,372 @@ const Tap1Page = () => {
         </>
     );
 };
+
+const total = 100000;
+const firstValue = 20000;
+const secondValue = 50000;
+/** 기여도 탭 */
 const Tap2Page = () => {
     return (
-        <Card variant="outlined" className="p-0 m-2">
-            <CardContent>
-                <Typography variant="h6" gutterBottom>
-                    기여도 탭 들어올 부분
-                </Typography>
-            </CardContent>
-        </Card>
+        <Box sx={{ margin: '10px', marginTop: '40px' }}>
+            {/* 랭킹 */}
+            <Box>
+                <Box sx={{ display: 'flex', justifyContent: 'start' }}>
+                    <Icon
+                        icon="solar:ranking-broken"
+                        width="20px"
+                        height="20px"
+                        style={{ color: '#4B9460' }}
+                    />
+                    <Typography sx={{ marginLeft: '5px', fontWeight: 'bold' }}>
+                        후원 랭킹
+                    </Typography>
+                </Box>
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="flex-end"
+                    height={250}
+                    gap={0}
+                >
+                    {/* 2등 */}
+                    <Box
+                        width={100}
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                        position="relative"
+                    >
+                        <Icon
+                            icon="noto:2nd-place-medal"
+                            width="50px"
+                            height="50px"
+                            style={{ position: 'absolute', top: -20 }}
+                        />
+                        <motion.div
+                            initial={{ height: 0 }}
+                            animate={{ height: 150 }}
+                            transition={{ duration: 1, ease: 'easeOut' }}
+                            style={{
+                                borderTopLeftRadius: '8px',
+                                borderBottomLeftRadius: '8px',
+                                backgroundColor: '#4B9460',
+                                width: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography color="white" variant="h6">
+                                2
+                            </Typography>
+                        </motion.div>
+                    </Box>
+
+                    {/* 1등 */}
+                    <Box
+                        width={100}
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                        position="relative"
+                    >
+                        <Icon
+                            icon="noto:1st-place-medal"
+                            width="50px"
+                            height="50px"
+                            style={{ position: 'absolute', top: -20 }}
+                        />
+                        <motion.div
+                            initial={{ height: 0 }}
+                            animate={{ height: 200 }}
+                            transition={{ duration: 1.2, ease: 'easeOut' }}
+                            style={{
+                                borderTopLeftRadius: '8px',
+                                borderTopRightRadius: '8px',
+                                backgroundColor: '#4B9460',
+                                width: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography color="white" variant="h6">
+                                1
+                            </Typography>
+                        </motion.div>
+                    </Box>
+
+                    {/* 3등 */}
+                    <Box
+                        width={100}
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
+                        position="relative"
+                    >
+                        <Icon
+                            icon="noto:3rd-place-medal"
+                            width="50px"
+                            height="50px"
+                            style={{ position: 'absolute', top: -20 }}
+                        />
+                        <motion.div
+                            initial={{ height: 0 }}
+                            animate={{ height: 100 }}
+                            transition={{ duration: 1, ease: 'easeOut' }}
+                            style={{
+                                borderTopRightRadius: '8px',
+                                borderBottomRightRadius: '8px',
+                                backgroundColor: '#4B9460',
+                                width: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography color="white" variant="h6">
+                                3
+                            </Typography>
+                        </motion.div>
+                    </Box>
+                </Box>
+            </Box>
+
+            {/* 후원 기여도 */}
+            <Box sx={{ marginTop: '30px' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'start', marginBottom: '50px' }}>
+                    <Icon
+                        icon="lucide:hand-heart"
+                        width="20px"
+                        height="20px"
+                        style={{ color: '#4B9460' }}
+                    />
+                    <Typography sx={{ marginLeft: '5px', fontWeight: 'bold' }}>
+                        이만큼 후원했어요!
+                    </Typography>
+                </Box>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    position="relative"
+                    sx={{ width: '100%' }}
+                >
+                    {/* 말풍선 */}
+                    <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        width="100%"
+                        position="absolute"
+                        top={-40}
+                    >
+                        {/* 나 말풍선 */}
+                        <motion.div
+                            initial={{ left: '0%' }}
+                            animate={{ left: `${(firstValue / total) * 100}%` }}
+                            transition={{ duration: 1.5, ease: 'easeOut' }}
+                            style={{
+                                position: 'absolute',
+                                transform: 'translateX(-50%)',
+                            }}
+                        >
+                            <Box
+                                sx={{ paddingTop: '5px' }}
+                                position="relative"
+                                bgcolor="#4B9460"
+                                color="white"
+                                width={70}
+                                height={70}
+                                borderRadius="50%"
+                                display="flex"
+                                flexDirection="column"
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <Typography variant="caption" sx={{ fontSize: '10px' }}>
+                                    나
+                                </Typography>
+                                <Typography
+                                    variant="subtitle2"
+                                    fontWeight="bold"
+                                    sx={{ fontSize: '12px' }}
+                                >
+                                    {firstValue.toLocaleString()}원
+                                </Typography>
+                                <Typography variant="caption" sx={{ fontSize: '10px' }}>
+                                    {((firstValue / total) * 100).toFixed(1)}%
+                                </Typography>
+                                <Box
+                                    position="absolute"
+                                    bottom={-6}
+                                    left={25}
+                                    width={0}
+                                    height={0}
+                                    borderLeft="8px solid transparent"
+                                    borderRight="8px solid transparent"
+                                    borderTop="10px solid #4B9460"
+                                />
+                            </Box>
+                        </motion.div>
+
+                        {/* 또래 말풍선 */}
+                        <motion.div
+                            initial={{ left: '0%' }}
+                            animate={{ left: `${(secondValue / total) * 100}%` }}
+                            transition={{ duration: 1.2, ease: 'easeOut' }}
+                            style={{
+                                position: 'absolute',
+                                transform: 'translateX(-50%)',
+                            }}
+                        >
+                            <Box
+                                sx={{ paddingTop: '5px' }}
+                                position="relative"
+                                bgcolor="#A2D39C"
+                                color="white"
+                                width={70}
+                                height={70}
+                                borderRadius="50%"
+                                display="flex"
+                                flexDirection="column"
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <Typography variant="caption" sx={{ fontSize: '10px' }}>
+                                    내 또래
+                                </Typography>
+                                <Typography
+                                    variant="subtitle2"
+                                    fontWeight="bold"
+                                    sx={{ fontSize: '12px' }}
+                                >
+                                    {secondValue.toLocaleString()}원
+                                </Typography>
+                                <Typography variant="caption" sx={{ fontSize: '10px' }}>
+                                    {((secondValue / total) * 100).toFixed(1)}%
+                                </Typography>
+                                <Box
+                                    position="absolute"
+                                    bottom={-6}
+                                    left={25}
+                                    width={0}
+                                    height={0}
+                                    borderLeft="8px solid transparent"
+                                    borderRight="8px solid transparent"
+                                    borderTop="10px solid #A2D39C"
+                                />
+                            </Box>
+                        </motion.div>
+
+                        {/* 전체 말풍선 */}
+                        <Box position="absolute" left="80%" transform="translateX(-50%)">
+                            <Box
+                                position="relative"
+                                bgcolor="#E8E8E8"
+                                color="black"
+                                width={70}
+                                height={70}
+                                borderRadius="50%"
+                                display="flex"
+                                flexDirection="column"
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <Typography variant="subtitle2" fontWeight="bold">
+                                    전체
+                                </Typography>
+                                <Typography variant="caption" sx={{ fontSize: '11px' }}>
+                                    {total.toLocaleString()}원
+                                </Typography>
+                                <Box
+                                    position="absolute"
+                                    bottom={-6}
+                                    left={25}
+                                    width={0}
+                                    height={0}
+                                    borderLeft="8px solid transparent"
+                                    borderRight="8px solid transparent"
+                                    borderTop="10px solid #E8E8E8"
+                                />
+                            </Box>
+                        </Box>
+                    </Box>
+
+                    {/* 프로그레스 바 */}
+                    <Box
+                        position="relative"
+                        width="100%"
+                        height={15}
+                        bgcolor="#E8E8E8"
+                        borderRadius={15}
+                        mt={5}
+                    >
+                        {/* 또래 */}
+                        <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(secondValue / total) * 100}%` }}
+                            transition={{ duration: 1.2, ease: 'easeOut' }}
+                            style={{
+                                backgroundColor: '#A2D39C',
+                                height: '100%',
+                                borderRadius: '15px',
+                                position: 'absolute',
+                            }}
+                        />
+                        {/* 나 */}
+                        <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${(firstValue / total) * 100}%` }}
+                            transition={{ duration: 1.5, ease: 'easeOut' }}
+                            style={{
+                                backgroundColor: '#4B9460',
+                                height: '100%',
+                                borderRadius: '15px',
+                                position: 'absolute',
+                            }}
+                        />
+                    </Box>
+                </Box>
+            </Box>
+
+            {/* 통계 */}
+            <Box
+                sx={{
+                    marginTop: '30px',
+                    borderRadius: '10px',
+                    backgroundColor: 'white',
+                    padding: '25px',
+                }}
+            >
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Icon
+                        icon="ri:tree-fill"
+                        width="50px"
+                        height="50px"
+                        style={{ color: '#4B9460' }}
+                    />
+                    <Box sx={{ textAlign: 'center', marginLeft: '10px', marginTop: '5px' }}>
+                        <Typography sx={{ fontSize: '14px' }}>
+                            챌린지로 기후 행동 실천하고
+                        </Typography>
+                        <Typography sx={{ fontSize: '14px' }}>
+                            탄소 배출량 <span style={{ color: '#4B9460' }}>280g</span>을 줄였어요!
+                        </Typography>
+                    </Box>
+                </Box>
+            </Box>
+        </Box>
     );
 };
 
 const OrganizationList = () => {
     const [tabIndex, setTabIndex] = useState(0);
+    const location = useLocation();
+    const selectedOrganizationIdx = location.state?.organizationIdx || null;
 
     return (
         <>
@@ -214,7 +636,7 @@ const OrganizationList = () => {
 
                 {/* TabPanel은 value와 index를 props로 받아, value와 index가 같을 때 해당 내용을 보여줌 */}
                 <TabPanel value={tabIndex} index={0}>
-                    <Tap1Page />
+                    <Tap1Page selectedOrganizationIdx={selectedOrganizationIdx} />
                 </TabPanel>
                 <TabPanel value={tabIndex} index={1}>
                     <Tap2Page />
