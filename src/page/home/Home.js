@@ -139,7 +139,7 @@ function Home() {
     // 비밀번호 검증 API 요청
     const verifyPassword = async (inputPassword) => {
         try {
-            const response = await fetch('/saving/password', {
+            const response = await fetch('api/saving/password', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ inputPassword }),
