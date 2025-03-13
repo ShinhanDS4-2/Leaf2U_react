@@ -52,13 +52,11 @@ const AccountInfoPage = () => {
 
     // 이자조회 클릭 시
     const handleInterestClick = () => {
-        alert(`이자 조회 페이지로 이동합니다.`);
         navigate('/interestMainPage'); // 이자 조회 페이지로 이동
     };
 
     // 해지 클릭 시
     const handleTerminationClick = () => {
-        alert(`계좌 해지 페이지로 이동합니다.`);
         navigate('/termination'); // 중도 해지 페이지로 이동
     };
     /* 클릭 이벤트 핸들러 END */
@@ -196,170 +194,175 @@ const AccountInfoPage = () => {
     /* 키패드 관련 모음 END */
     return (
         <>
-            <Typography variant="h6" fontWeight="bold">
-                리프적금
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-                {accountDTO.accountNumber}
-            </Typography>
-            <Card
-                variant="outlined"
-                sx={{ borderRadius: 3, margin: 1, padding: 0, marginBottom: 2 }}
-            >
-                <CardContent>
-                    <Box sx={{ padding: 2, backgroundColor: '#F7F7F7', borderRadius: 3 }}>
-                        <Box
-                            sx={{
-                                marginBottom: 1,
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                기본 금리
-                            </Typography>
-                            <Typography variant="body2"> {accountDTO?.interestRate} %</Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                marginBottom: 1,
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                개설일
-                            </Typography>
-                            <Typography variant="body2"> {accountDTO?.createDate}</Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                marginBottom: 1,
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                만기일
-                            </Typography>
-                            <Typography variant="body2"> {accountDTO?.endDate}</Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                marginBottom: 1,
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                잔액
-                            </Typography>
-                            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                {`${accountDTO.balance.toLocaleString()}원`}
-                            </Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                marginBottom: 1,
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                적용금리
-                            </Typography>
-                            <Box sx={{ textAlign: 'right' }}>
-                                <Typography variant="body2">
-                                    기본금리 {accountDTO.interestRate}%
+            <Box sx={{ padding: 0, marginTop: 3 }}>
+                <Typography variant="h6" fontWeight="bold">
+                    리프적금
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    {accountDTO.accountNumber}
+                </Typography>
+                <Card
+                    variant="outlined"
+                    sx={{ borderRadius: 3, margin: 1, padding: 0, marginBottom: 2 }}
+                >
+                    <CardContent>
+                        <Box sx={{ padding: 2, backgroundColor: '#F7F7F7', borderRadius: 3 }}>
+                            <Box
+                                sx={{
+                                    marginBottom: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary">
+                                    기본 금리
                                 </Typography>
                                 <Typography variant="body2">
-                                    우대금리 {accountDTO.extraRate}%
+                                    {' '}
+                                    {accountDTO?.interestRate} %
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginBottom: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary">
+                                    개설일
+                                </Typography>
+                                <Typography variant="body2"> {accountDTO?.createDate}</Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginBottom: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary">
+                                    만기일
+                                </Typography>
+                                <Typography variant="body2"> {accountDTO?.endDate}</Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginBottom: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary">
+                                    잔액
+                                </Typography>
+                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                    {`${accountDTO.balance.toLocaleString()}원`}
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    marginBottom: 1,
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary">
+                                    적용금리
+                                </Typography>
+                                <Box sx={{ textAlign: 'right' }}>
+                                    <Typography variant="body2">
+                                        기본금리 {accountDTO.interestRate}%
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        우대금리 {accountDTO.extraRate}%
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginBottom: 2,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary">
+                                    과세구분
+                                </Typography>
+                                <Typography variant="body2">
+                                    {accountDTO?.taxationYn == 'Y' ? '일반과세' : '비과세'}
                                 </Typography>
                             </Box>
                         </Box>
+                    </CardContent>
+                </Card>
+                {/* 계좌 설정 START */}
+                <Typography variant="body1" color="text.secondary">
+                    설정
+                </Typography>
+                <Card variant="outlined" sx={{ borderRadius: 3, margin: 1, padding: 0 }}>
+                    <CardContent>
                         <Box
                             sx={{
-                                marginBottom: 2,
+                                marginBottom: 0,
                                 display: 'flex',
                                 justifyContent: 'space-between',
                             }}
                         >
-                            <Typography variant="body2" color="text.secondary">
-                                과세구분
+                            <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                onClick={handlePaymentAmountClick}
+                            >
+                                납입금액
                             </Typography>
-                            <Typography variant="body2">
-                                {accountDTO?.taxationYn == 'Y' ? '일반과세' : '비과세'}
+                            <Typography variant="body2" onClick={handlePaymentAmountClick}>
+                                매일 30,000원 &gt;
                             </Typography>
                         </Box>
-                    </Box>
-                </CardContent>
-            </Card>
-            {/* 계좌 설정 START */}
-            <Typography variant="body1" color="text.secondary">
-                설정
-            </Typography>
-            <Card variant="outlined" sx={{ borderRadius: 3, margin: 1, padding: 0 }}>
-                <CardContent>
-                    <Box
-                        sx={{
-                            marginBottom: 0,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            onClick={handlePaymentAmountClick}
+                        <Divider sx={{ marginY: 1, border: 1 }} />
+                        <Box
+                            sx={{
+                                marginBottom: 0,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
                         >
-                            납입금액
-                        </Typography>
-                        <Typography variant="body2" onClick={handlePaymentAmountClick}>
-                            매일 30,000원 &gt;
-                        </Typography>
-                    </Box>
-                    <Divider sx={{ marginY: 1, border: 1 }} />
-                    <Box
-                        sx={{
-                            marginBottom: 0,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            onClick={handleInterestClick}
+                            <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                onClick={handleInterestClick}
+                            >
+                                이자조회
+                            </Typography>
+                            <Typography variant="body2" onClick={handleInterestClick}>
+                                &gt;
+                            </Typography>
+                        </Box>
+                        <Divider sx={{ marginY: 1, border: 1 }} />
+                        <Box
+                            sx={{
+                                marginBottom: 0,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
                         >
-                            이자조회
-                        </Typography>
-                        <Typography variant="body2" onClick={handleInterestClick}>
-                            &gt;
-                        </Typography>
-                    </Box>
-                    <Divider sx={{ marginY: 1, border: 1 }} />
-                    <Box
-                        sx={{
-                            marginBottom: 0,
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                        }}
-                    >
-                        <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            onClick={handleTerminationClick}
-                        >
-                            해지
-                        </Typography>
-                        <Typography variant="body2" onClick={handleTerminationClick}>
-                            &gt;
-                        </Typography>
-                    </Box>
-                    <Divider sx={{ marginY: 1, border: 1 }} />
-                </CardContent>
-            </Card>
-            {/* 계좌 설정 END */}
+                            <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                onClick={handleTerminationClick}
+                            >
+                                해지
+                            </Typography>
+                            <Typography variant="body2" onClick={handleTerminationClick}>
+                                &gt;
+                            </Typography>
+                        </Box>
+                        <Divider sx={{ marginY: 1, border: 1 }} />
+                    </CardContent>
+                </Card>
+                {/* 계좌 설정 END */}
+            </Box>
             <>
                 {/* 모달모음 */}
 

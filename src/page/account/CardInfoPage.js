@@ -11,7 +11,7 @@ const CardInfoPage = ({ interestData }) => {
     const accountDTO = interestData?.accountDTO;
     return (
         <>
-            <Box sx={{ padding: 2 }}>
+            <Box sx={{ padding: 2, marginTop: 3 }}>
                 {/* 제목 */}
                 <Typography variant="subtitle1" fontWeight="bold">
                     연결 카드/계좌
@@ -41,12 +41,12 @@ const CardInfoPage = ({ interestData }) => {
                 </Card>
 
                 {/* 카드 정보 */}
-                <CardContent sx={{ padding: 0, marginTop: 2 }}>
-                    <Typography variant="subtitle1" fontWeight="bold">
-                        카드이름
+                <CardContent sx={{ padding: 0, marginTop: 1 }}>
+                    <Typography variant="subtitle1" fontWeight="bold" sx={{ marginLeft: 1 }}>
+                        신한Leaf2U카드 (1367)
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        카드넘버
+                    <Typography variant="body2" color="text.secondary" sx={{ marginLeft: 1 }}>
+                        110-123-456789
                     </Typography>
                     <Typography
                         variant="caption"
