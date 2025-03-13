@@ -32,7 +32,13 @@ const CardInfoPage = ({ interestData }) => {
                         marginTop: 1,
                     }}
                 >
-                    이미지
+                    {/* 카드 이미지 하드코딩해서 넣었는데 나중에 DB에 저장해서 쓸지 확인필요 */}
+                    <img
+                        src={require(`../../image/leafcard.png`)}
+                        // require() 를 사용해서 이미지 동적으로 불러오기
+                        alt={'카드 이미지입니다.'}
+                        style={{ width: 320, height: 180 }}
+                    />
                     {/* <img
                            src={cardImage}
                            alt="카드 이미지"

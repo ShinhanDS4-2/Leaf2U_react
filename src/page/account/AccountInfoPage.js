@@ -15,7 +15,10 @@ const formatDate = (date) => {
 };
 
 // 계좌 정보 페이지
-const AccountInfoPage = () => {
+const AccountInfoPage = ({ interestData }) => {
+    // ㄴ interestData에는 accountDTO?  들어있음
+    const accountDTO12 = interestData?.accountDTO;
+
     // 가짜 데이터 API연결하고 삭제해야함
     const accountDTO = {
         accountNumber: '235-987-654321',
@@ -125,53 +128,53 @@ const AccountInfoPage = () => {
 
     // 간편 비밀번호 입력 후 프로세스
     const inputPwdProcess = async (pwd) => {
+        ClosePwdInputModal();
+        console.log('입력된 pwd값!!!!!!!!', pwd); // 🔥 확인용 로그
+        // const result = await termination(pwd); // 납입금액 변경 API 실행하고 await 결과 기다리기
+        // if (result === 1) {
+        //     OpenCompleteModal(); // 해지 완료 모달 open
+        // } else if (result === 401) {
         //     ClosePwdInputModal();
-        //     console.log('입력된 pwd값!!!!!!!!', pwd); // 🔥 확인용 로그
-        //     const result = await termination(pwd); // 납입금액 변경 API 실행하고 await 결과 기다리기
-        //     if (result === 1) {
-        //         OpenCompleteModal(); // 해지 완료 모달 open
-        //     } else if (result === 401) {
-        //         ClosePwdInputModal();
-        //         OpenFailAlertRef1();
-        //     } else {
-        //         // 기타 오류
-        //         ClosePwdInputModal();
-        //         OpenFailAlertRef2();
-        //     }
+        //     OpenFailAlertRef1();
+        // } else {
+        //     // 기타 오류
+        //     ClosePwdInputModal();
+        //     OpenFailAlertRef2();
+        // }
     };
 
-    // 계좌정보 조회 API 호출
-    const accountInfoAPI = () => {
-        api.get('/account/info')
-            .then((response) => {
-                const data = response.data; // API호출 응답값: accountDTO
-                setData(data.accountDTO);
-                console.log('✅ accountInfoAPI 성공:', data); // 🔥 확인용 로그
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
+    // // 계좌정보 조회 API 호출
+    // const accountInfoAPI = () => {
+    //     api.get('/account/info')
+    //         .then((response) => {
+    //             const data = response.data; // API호출 응답값: accountDTO
+    //             setData(data.accountDTO);
+    //             console.log('✅ accountInfoAPI 성공:', data); // 🔥 확인용 로그
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    // };
 
     // 납입금액 변경 API 호출 ->"accountPassword", "paymentAmount" 넘겨야함
     // 사용자가 입력한 pwd값, 납입금액값 넘겨줘야함@@@@@@@@ 서버에서 (@RequestBody AccountDTO accountDTO)로 받음
-    const updatePaymentAmountAPI = async (pwd, paymentAmount) => {
-        try {
-            const response = await api.patch(`/account/update/paymentAmount`, {
-                accountPassword: pwd, // 사용자가 입력한 간편비밀번호
-                paymentAmount: paymentAmount, // 사용자가 입력한 납입금액
-            });
-            const result = response.data; // API호출 응답값 (1:성공, 0:실패, 401:비밀번호 불일치)
-            console.log('✅ updatePaymentAmountAPI 성공 result값은???:', result); // 🔥 확인용 로그
-            return result;
-        } catch (error) {
-            console.error('❌ API 요청 실패:', error);
-            return 0; // 실패 시 0반환
-        }
-    };
+    // const updatePaymentAmountAPI = async (pwd, paymentAmount) => {
+    //     try {
+    //         const response = await api.patch(`/account/update/paymentAmount`, {
+    //             accountPassword: pwd, // 사용자가 입력한 간편비밀번호
+    //             paymentAmount: paymentAmount, // 사용자가 입력한 납입금액
+    //         });
+    //         const result = response.data; // API호출 응답값 (1:성공, 0:실패, 401:비밀번호 불일치)
+    //         console.log('✅ updatePaymentAmountAPI 성공 result값은???:', result); // 🔥 확인용 로그
+    //         return result;
+    //     } catch (error) {
+    //         console.error('❌ API 요청 실패:', error);
+    //         return 0; // 실패 시 0반환
+    //     }
+    // };
 
     useEffect(() => {
-        accountInfoAPI(); // 첫 렌더링 시 계좌정보 조회 API 호출
+        // accountInfoAPI(); // 첫 렌더링 시 계좌정보 조회 API 호출
     }, []);
 
     // 날짜형식 변환 YYYY-MM-DD

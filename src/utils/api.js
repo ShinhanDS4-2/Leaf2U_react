@@ -20,6 +20,7 @@ api.interceptors.request.use(
     },
 );
 
+// 로딩 스피너 뜨는 부분
 export const setupAxiosInterceptors = (startLoading, stopLoading) => {
     api.interceptors.request.use(
         (config) => {

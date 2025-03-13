@@ -1,5 +1,5 @@
 import React from 'react';
-import { PuffLoader } from 'react-spinners';
+import { SyncLoader } from 'react-spinners';
 import { Box } from '@mui/material';
 
 const Loading = () => {
@@ -18,7 +18,7 @@ const Loading = () => {
                 justifyContent: 'center',
             }}
         >
-            <PuffLoader color="#5DB075"></PuffLoader>
+            <SyncLoader color="#FAFAFA"></SyncLoader>
         </Box>
     );
 };
