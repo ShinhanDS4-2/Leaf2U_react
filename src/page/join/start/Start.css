@@ -1,7 +1,3 @@
-.content-container {
-    display: flex;
-    justify-content: center;
-}
 .TextBox {
     text-align: center;
     padding-top: 90px;
@@ -45,13 +41,14 @@
     font-size: 14px;
     font-weight: bold;
 }
+.top-container {
+    height: 45%;
+}
 .container2 {
-    align-items: center;
-    justify-content: flex-start;
     background-color: #a2d39c;
+    height: 55%;
 }
 .image-section {
-    margin-top: 15px;
     text-align: center;
 }
 .image-section img {
