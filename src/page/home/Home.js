@@ -13,7 +13,6 @@ import Footer from '../../components/footer/Footer';
 import AlertModal from '../../components/modal/AlertModal';
 import CustomCalendar from '../../components/calendar/CustomCalendar';
 import ChallengeItem from '../../components/item/ChallengeItem';
-import { motion } from 'framer-motion';
 import api from '../../utils/api';
 import { AnimatePresence, motion } from 'framer-motion';
 
