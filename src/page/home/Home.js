@@ -13,7 +13,7 @@ import Footer from '../../components/footer/Footer';
 import AlertModal from '../../components/modal/AlertModal';
 import CustomCalendar from '../../components/calendar/CustomCalendar';
 import ChallengeItem from '../../components/item/ChallengeItem';
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
 function Home() {
     const navigate = useNavigate();
@@ -33,7 +33,13 @@ function Home() {
 
     // 모달의 동적 내용 관리
     const [modalContent, setModalContent] = useState({
-        text: (<>오늘의 챌린지를<br/>진행하시겠습니까?</>),
+        text: (
+            <>
+                오늘의 챌린지를
+                <br />
+                진행하시겠습니까?
+            </>
+        ),
         buttonText: '0원 입금',
         onConfirm: () => {},
     });
@@ -41,6 +47,10 @@ function Home() {
     const location = useLocation();
     const { deposit, type } = location.state || {}; // type여기로 받아서 넘어옴
     const [currentDeposit, setCurrentDeposit] = useState(deposit);
+
+    const [feedback, setFeedback] = useState(''); // AI 피드백
+    const [isFeedbackVisible, setIsFeedbackVisible] = useState(true); // 피드백 UI 상태 추가
+    const [isFeedbackAllowed, setIsFeedbackAllowed] = useState(false); // 피드백 UI가 떠도 되는 상태
 
     // 모달
     const bottomModalRef = useRef();
@@ -70,6 +80,22 @@ function Home() {
         }
     };
 
+    // 챌린지 완료 후 확인 버튼 클릭 시 피드백 UI 실행
+    const handleChallengeConfirm = () => {
+        setIsChallengeCompleted(false); // 우대금리 UI 숨기기
+        setIsFeedbackAllowed(true); // 피드백 UI를 띄울 수 있도록 상태 변경
+
+        setTimeout(() => {
+            setIsFeedbackVisible(true); // 피드백 UI 표시
+        }, 500);
+
+        // 10초 후 피드백 UI 사라짐
+        setTimeout(() => {
+            setIsFeedbackVisible(false);
+            setIsFeedbackAllowed(false); // 피드백 UI 표시
+        }, 10000);
+    };
+
     // axios 인스턴스
     const api = axios.create({
         baseURL: '/api',
@@ -88,6 +114,17 @@ function Home() {
             return Promise.reject(error);
         },
     );
+
+    // Feedback API 호출 함수
+    const getFeedback = async () => {
+        try {
+            const response = await api.post('/openai/feedback');
+            setFeedback(response.data.feedback);
+            console.log('AI 피드백:', response.data.feedback);
+        } catch (error) {
+            console.error('Feedback API 호출 실패:', error);
+        }
+    };
 
     // 챌린지 완료 후 적금 납입 체크 함수
     const challengeCheckRate = () => {
@@ -115,9 +152,10 @@ function Home() {
                         console.log(' 서버 응답 상태 코드:', error.response.status);
                         console.log(' 서버 응답 데이터:', error.response.data);
                     }
-                }).finally(() => {
-                    setCurrentDeposit("N");
-                    navigate(location.pathname, { state: { deposit: "N", type } });
+                })
+                .finally(() => {
+                    setCurrentDeposit('N');
+                    navigate(location.pathname, { state: { deposit: 'N', type } });
                 });
         }
     };
@@ -130,7 +168,13 @@ function Home() {
 
                 if (response.data.maturity_yn == 'Y') {
                     setModalContent({
-                        text: (<>만기가 되었어요!<br/>이자가 얼만큼 쌓였을까요?</>),
+                        text: (
+                            <>
+                                만기가 되었어요!
+                                <br />
+                                이자가 얼만큼 쌓였을까요?
+                            </>
+                        ),
                         buttonText: '해지하기',
                         onConfirm: () => {
                             navigate('/home/maturity');
@@ -205,7 +249,13 @@ function Home() {
     const handleSavingOnClick = () => {
         if (data.saving_yn <= 0) {
             setModalContent({
-                text: (<>오늘의 챌린지를<br/>진행하시겠습니까?</>),
+                text: (
+                    <>
+                        오늘의 챌린지를
+                        <br />
+                        진행하시겠습니까?
+                    </>
+                ),
                 buttonText: `${data?.accountDTO?.paymentAmount.toLocaleString() ?? 0}원 입금`,
                 onConfirm: () => {
                     navigate('/deposit');
@@ -237,10 +287,10 @@ function Home() {
         visible: (i) => ({
             opacity: 1,
             y: 0,
-            transition: { delay: i * 0.2, duration: 0.5 }
-        })
+            transition: { delay: i * 0.2, duration: 0.5 },
+        }),
     };
-    
+
     const challengeItems = challengeInfo
         ? [
               {
@@ -251,7 +301,7 @@ function Home() {
                           <Icon icon="flat-color-icons:icons8-cup" width="60" height="60" />
                       </div>
                   ),
-                  cnt: challengeInfo.challengeCnt.countT
+                  cnt: challengeInfo.challengeCnt.countT,
               },
               {
                   content: '따릉이 이용',
@@ -261,7 +311,7 @@ function Home() {
                           <Icon icon="twemoji:bicycle" width="60" height="60" />
                       </div>
                   ),
-                  cnt: challengeInfo.challengeCnt.countC
+                  cnt: challengeInfo.challengeCnt.countC,
               },
               {
                   content: '전자 영수증 발급',
@@ -271,8 +321,8 @@ function Home() {
                           <Icon icon="noto:receipt" width="60" height="60" />
                       </div>
                   ),
-                  cnt: challengeInfo.challengeCnt.countR
-              }
+                  cnt: challengeInfo.challengeCnt.countR,
+              },
           ]
         : [];
 
@@ -280,10 +330,16 @@ function Home() {
     const treeImage = require(`../../image/tree_${data.account_step ?? 1}.png`);
 
     useEffect(() => {
+        if (deposit == 'Y') {
+            setIsChallengeCompleted(true); // 우대금리 UI 보이기
+            setIsFeedbackVisible(false); // 피드백 UI는 절대 뜨지 않음
+            setIsFeedbackAllowed(false); // 피드백 UI가 떠도 되는 상태 초기화
+        }
         getAccountInfo();
         checkToday();
         challengeCheckRate();
-    }, []);
+        getFeedback();
+    }, [deposit]);
 
     return (
         <div className="backgrung-img">
@@ -310,16 +366,28 @@ function Home() {
                                 우대 금리를 받았어요!
                             </Typography>
 
-                            {/* 확인 버튼 */}
+                            {/* 확인 버튼 클릭 시 우대금리 UI 사라지고 피드백 UI 나타남*/}
                             <Box className="challenge-button">
-                                <Button
-                                    text="확인"
-                                    onClick={() => setIsChallengeCompleted(false)}
-                                />
+                                <Button text="확인" onClick={handleChallengeConfirm} />
                             </Box>
                         </Box>
                     </Box>
                 </Fade>
+            )}
+
+            {/* AI 피드백 UI 추가 */}
+            {isFeedbackAllowed && isFeedbackVisible && (
+                <Box className={`feedback-box ${!isFeedbackVisible ? 'feedback-hidden' : ''}`}>
+                    {/* 새싹 이미지 영역 */}
+                    <div className="feedback-icon-box">
+                        <img src={Tree} className="feedback-icon" alt="tree icon" />
+                    </div>
+
+                    {/* AI 피드백 내용 */}
+                    <Typography className="feedback-text">
+                        {feedback || '피드백 생성 중...'} {/* 피드백 없으면 기본 메시지 */}
+                    </Typography>
+                </Box>
             )}
 
             <Footer />
@@ -544,7 +612,7 @@ function Home() {
                             initial="hidden"
                             animate="visible"
                             variants={{
-                                visible: { transition: { staggerChildren: 0.2 } }
+                                visible: { transition: { staggerChildren: 0.2 } },
                             }}
                         >
                             {challengeItems.map((item, index) => (
