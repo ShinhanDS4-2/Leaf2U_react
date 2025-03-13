@@ -1,9 +1,11 @@
 .card-detail-container{
     padding-top: 100px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
-.card-detail-container h3{
+.section-title{
     font-weight: bold;
-    padding-left: 25px;
+    padding-left: 20px;
     font-size: 18px;
 }
 .info-container{
