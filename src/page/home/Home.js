@@ -13,7 +13,8 @@ import Footer from '../../components/footer/Footer';
 import AlertModal from '../../components/modal/AlertModal';
 import CustomCalendar from '../../components/calendar/CustomCalendar';
 import ChallengeItem from '../../components/item/ChallengeItem';
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+import api from '../../utils/api';
 
 function Home() {
     const navigate = useNavigate();
@@ -33,7 +34,13 @@ function Home() {
 
     // 모달의 동적 내용 관리
     const [modalContent, setModalContent] = useState({
-        text: (<>오늘의 챌린지를<br/>진행하시겠습니까?</>),
+        text: (
+            <>
+                오늘의 챌린지를
+                <br />
+                진행하시겠습니까?
+            </>
+        ),
         buttonText: '0원 입금',
         onConfirm: () => {},
     });
@@ -70,24 +77,24 @@ function Home() {
         }
     };
 
-    // axios 인스턴스
-    const api = axios.create({
-        baseURL: '/api',
-    });
+    // // axios 인스턴스
+    // const api = axios.create({
+    //     baseURL: '/api',
+    // });
 
-    // 인터셉터
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken');
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        },
-    );
+    // // 인터셉터
+    // api.interceptors.request.use(
+    //     (config) => {
+    //         const token = localStorage.getItem('jwtToken');
+    //         if (token) {
+    //             config.headers.Authorization = `Bearer ${token}`;
+    //         }
+    //         return config;
+    //     },
+    //     (error) => {
+    //         return Promise.reject(error);
+    //     },
+    // );
 
     // 챌린지 완료 후 적금 납입 체크 함수
     const challengeCheckRate = () => {
@@ -115,9 +122,10 @@ function Home() {
                         console.log(' 서버 응답 상태 코드:', error.response.status);
                         console.log(' 서버 응답 데이터:', error.response.data);
                     }
-                }).finally(() => {
-                    setCurrentDeposit("N");
-                    navigate(location.pathname, { state: { deposit: "N", type } });
+                })
+                .finally(() => {
+                    setCurrentDeposit('N');
+                    navigate(location.pathname, { state: { deposit: 'N', type } });
                 });
         }
     };
@@ -130,7 +138,13 @@ function Home() {
 
                 if (response.data.maturity_yn == 'Y') {
                     setModalContent({
-                        text: (<>만기가 되었어요!<br/>이자가 얼만큼 쌓였을까요?</>),
+                        text: (
+                            <>
+                                만기가 되었어요!
+                                <br />
+                                이자가 얼만큼 쌓였을까요?
+                            </>
+                        ),
                         buttonText: '해지하기',
                         onConfirm: () => {
                             navigate('/home/maturity');
@@ -205,7 +219,13 @@ function Home() {
     const handleSavingOnClick = () => {
         if (data.saving_yn <= 0) {
             setModalContent({
-                text: (<>오늘의 챌린지를<br/>진행하시겠습니까?</>),
+                text: (
+                    <>
+                        오늘의 챌린지를
+                        <br />
+                        진행하시겠습니까?
+                    </>
+                ),
                 buttonText: `${data?.accountDTO?.paymentAmount.toLocaleString() ?? 0}원 입금`,
                 onConfirm: () => {
                     navigate('/deposit');
@@ -237,10 +257,10 @@ function Home() {
         visible: (i) => ({
             opacity: 1,
             y: 0,
-            transition: { delay: i * 0.2, duration: 0.5 }
-        })
+            transition: { delay: i * 0.2, duration: 0.5 },
+        }),
     };
-    
+
     const challengeItems = challengeInfo
         ? [
               {
@@ -251,7 +271,7 @@ function Home() {
                           <Icon icon="flat-color-icons:icons8-cup" width="60" height="60" />
                       </div>
                   ),
-                  cnt: challengeInfo.challengeCnt.countT
+                  cnt: challengeInfo.challengeCnt.countT,
               },
               {
                   content: '따릉이 이용',
@@ -261,7 +281,7 @@ function Home() {
                           <Icon icon="twemoji:bicycle" width="60" height="60" />
                       </div>
                   ),
-                  cnt: challengeInfo.challengeCnt.countC
+                  cnt: challengeInfo.challengeCnt.countC,
               },
               {
                   content: '전자 영수증 발급',
@@ -271,8 +291,8 @@ function Home() {
                           <Icon icon="noto:receipt" width="60" height="60" />
                       </div>
                   ),
-                  cnt: challengeInfo.challengeCnt.countR
-              }
+                  cnt: challengeInfo.challengeCnt.countR,
+              },
           ]
         : [];
 
@@ -425,7 +445,7 @@ function Home() {
                                 <img
                                     src={Tree}
                                     style={{
-                                        width: '15%',
+                                        width: '13%',
                                         display: 'inline',
                                         marginLeft: '5px',
                                         verticalAlign: 'middle',
@@ -544,7 +564,7 @@ function Home() {
                             initial="hidden"
                             animate="visible"
                             variants={{
-                                visible: { transition: { staggerChildren: 0.2 } }
+                                visible: { transition: { staggerChildren: 0.2 } },
                             }}
                         >
                             {challengeItems.map((item, index) => (

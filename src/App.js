@@ -1,6 +1,10 @@
 import './App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { LoadingProvider, useLoading } from './context/LoadingContext';
+import Loading from './components/loading/Loading';
+import { setupAxiosInterceptors } from './utils/api';
 import { MaturityProvider } from './context/MaturityContext';
 
 import Login from './page/join/login/Login';
@@ -40,9 +44,16 @@ const theme = createTheme({
     },
 });
 
-function App() {
+function AppContent() {
+    const { isLoading, startLoading, stopLoading } = useLoading();
+
+    useEffect(() => {
+        setupAxiosInterceptors(startLoading, stopLoading);
+    }, []);
+
     return (
-        <ThemeProvider theme={theme}>
+        <>
+            {isLoading && <Loading />}
             <div className="w-100 h-100">
                 <MaturityProvider>
                     <Routes>
@@ -90,7 +101,17 @@ function App() {
                     </Routes>
                 </MaturityProvider>
             </div>
-        </ThemeProvider>
+        </>
+    );
+}
+
+function App() {
+    return (
+        <LoadingProvider>
+            <ThemeProvider theme={theme}>
+                <AppContent />
+            </ThemeProvider>
+        </LoadingProvider>
     );
 }
 

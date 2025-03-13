@@ -21,6 +21,7 @@ import Header from '../../components/header/Header';
 import Button from '../../components/button/Button';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { motion } from 'framer-motion';
+import Loading from '../../components/loading/Loading';
 
 const TabPanel = ({ children, value, index }) => {
     return value === index ? <div>{children}</div> : null;
@@ -94,6 +95,27 @@ const OrganizationDetailModal = ({ open, onClose, donation }) => {
     );
 };
 
+// axios 인스턴스
+const api = axios.create({
+    baseURL: '/api', // API 기본 URL
+});
+// 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
+        console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
+
+        if (token) {
+            console.log('보내는 토큰:', token); // 🔥 확인용 로그
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    },
+);
+
 const Tap1Page = ({ selectedOrganizationIdx }) => {
     const [openModal, setOpenModal] = useState(false); // 모달 열기/닫기 상태
     const [donations, setDonations] = useState([]); // donations 상태 관리
@@ -108,27 +130,6 @@ const Tap1Page = ({ selectedOrganizationIdx }) => {
         setOpenModal(false); // 모달 닫기
         setSelectedDonation(null); // 선택된 donation 초기화
     };
-
-    // axios 인스턴스
-    const api = axios.create({
-        baseURL: '/api', // API 기본 URL
-    });
-    // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
-            console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
-
-            if (token) {
-                console.log('보내는 토큰:', token); // 🔥 확인용 로그
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        },
-    );
 
     // 후원기관 리스트 호출 API
     const getOrganizations = () => {
@@ -252,364 +253,442 @@ const Tap1Page = ({ selectedOrganizationIdx }) => {
     );
 };
 
-const total = 100000;
-const firstValue = 20000;
-const secondValue = 50000;
 /** 기여도 탭 */
 const Tap2Page = () => {
+    const [rankingInfo, setRankingInfo] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        getRankingInfo();
+    }, []);
+
+    // 랭킹, 기여도 가져오기
+    const getRankingInfo = async () => {
+        try {
+            const response = await api.post('/donation/statistics');
+            setRankingInfo(response.data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    if (isLoading) {
+        return <Loading />;
+    }
+
     return (
-        <Box sx={{ margin: '10px', marginTop: '40px' }}>
-            {/* 랭킹 */}
-            <Box>
-                <Box sx={{ display: 'flex', justifyContent: 'start' }}>
-                    <Icon
-                        icon="solar:ranking-broken"
-                        width="20px"
-                        height="20px"
-                        style={{ color: '#4B9460' }}
-                    />
-                    <Typography sx={{ marginLeft: '5px', fontWeight: 'bold' }}>
-                        후원 랭킹
-                    </Typography>
-                </Box>
-                <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="flex-end"
-                    height={250}
-                    gap={0}
-                >
-                    {/* 2등 */}
-                    <Box
-                        width={100}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        position="relative"
-                    >
-                        <Icon
-                            icon="noto:2nd-place-medal"
-                            width="50px"
-                            height="50px"
-                            style={{ position: 'absolute', top: -20 }}
-                        />
-                        <motion.div
-                            initial={{ height: 0 }}
-                            animate={{ height: 150 }}
-                            transition={{ duration: 1, ease: 'easeOut' }}
-                            style={{
-                                borderTopLeftRadius: '8px',
-                                borderBottomLeftRadius: '8px',
-                                backgroundColor: '#4B9460',
-                                width: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Typography color="white" variant="h6">
-                                2
+        <>
+            {!isLoading && (
+                <Box sx={{ margin: '10px', marginTop: '40px' }}>
+                    {/* 랭킹 */}
+                    <Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'start' }}>
+                            <Icon
+                                icon="solar:ranking-broken"
+                                width="20px"
+                                height="20px"
+                                style={{ color: '#4B9460' }}
+                            />
+                            <Typography sx={{ marginLeft: '5px', fontWeight: 'bold' }}>
+                                후원 랭킹
                             </Typography>
-                        </motion.div>
-                    </Box>
-
-                    {/* 1등 */}
-                    <Box
-                        width={100}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        position="relative"
-                    >
-                        <Icon
-                            icon="noto:1st-place-medal"
-                            width="50px"
-                            height="50px"
-                            style={{ position: 'absolute', top: -20 }}
-                        />
-                        <motion.div
-                            initial={{ height: 0 }}
-                            animate={{ height: 200 }}
-                            transition={{ duration: 1.2, ease: 'easeOut' }}
-                            style={{
-                                borderTopLeftRadius: '8px',
-                                borderTopRightRadius: '8px',
-                                backgroundColor: '#4B9460',
-                                width: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
+                        </Box>
+                        <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="flex-end"
+                            height={250}
+                            gap={0}
                         >
-                            <Typography color="white" variant="h6">
-                                1
-                            </Typography>
-                        </motion.div>
-                    </Box>
-
-                    {/* 3등 */}
-                    <Box
-                        width={100}
-                        display="flex"
-                        flexDirection="column"
-                        alignItems="center"
-                        position="relative"
-                    >
-                        <Icon
-                            icon="noto:3rd-place-medal"
-                            width="50px"
-                            height="50px"
-                            style={{ position: 'absolute', top: -20 }}
-                        />
-                        <motion.div
-                            initial={{ height: 0 }}
-                            animate={{ height: 100 }}
-                            transition={{ duration: 1, ease: 'easeOut' }}
-                            style={{
-                                borderTopRightRadius: '8px',
-                                borderBottomRightRadius: '8px',
-                                backgroundColor: '#4B9460',
-                                width: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Typography color="white" variant="h6">
-                                3
-                            </Typography>
-                        </motion.div>
-                    </Box>
-                </Box>
-            </Box>
-
-            {/* 후원 기여도 */}
-            <Box sx={{ marginTop: '30px' }}>
-                <Box sx={{ display: 'flex', justifyContent: 'start', marginBottom: '50px' }}>
-                    <Icon
-                        icon="lucide:hand-heart"
-                        width="20px"
-                        height="20px"
-                        style={{ color: '#4B9460' }}
-                    />
-                    <Typography sx={{ marginLeft: '5px', fontWeight: 'bold' }}>
-                        이만큼 후원했어요!
-                    </Typography>
-                </Box>
-                <Box
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    position="relative"
-                    sx={{ width: '100%' }}
-                >
-                    {/* 말풍선 */}
-                    <Box
-                        display="flex"
-                        justifyContent="space-between"
-                        width="100%"
-                        position="absolute"
-                        top={-40}
-                    >
-                        {/* 나 말풍선 */}
-                        <motion.div
-                            initial={{ left: '0%' }}
-                            animate={{ left: `${(firstValue / total) * 100}%` }}
-                            transition={{ duration: 1.5, ease: 'easeOut' }}
-                            style={{
-                                position: 'absolute',
-                                transform: 'translateX(-50%)',
-                            }}
-                        >
+                            {/* 2등 */}
                             <Box
-                                sx={{ paddingTop: '5px' }}
-                                position="relative"
-                                bgcolor="#4B9460"
-                                color="white"
-                                width={70}
-                                height={70}
-                                borderRadius="50%"
+                                width={100}
                                 display="flex"
                                 flexDirection="column"
-                                justifyContent="center"
                                 alignItems="center"
-                            >
-                                <Typography variant="caption" sx={{ fontSize: '10px' }}>
-                                    나
-                                </Typography>
-                                <Typography
-                                    variant="subtitle2"
-                                    fontWeight="bold"
-                                    sx={{ fontSize: '12px' }}
-                                >
-                                    {firstValue.toLocaleString()}원
-                                </Typography>
-                                <Typography variant="caption" sx={{ fontSize: '10px' }}>
-                                    {((firstValue / total) * 100).toFixed(1)}%
-                                </Typography>
-                                <Box
-                                    position="absolute"
-                                    bottom={-6}
-                                    left={25}
-                                    width={0}
-                                    height={0}
-                                    borderLeft="8px solid transparent"
-                                    borderRight="8px solid transparent"
-                                    borderTop="10px solid #4B9460"
-                                />
-                            </Box>
-                        </motion.div>
-
-                        {/* 또래 말풍선 */}
-                        <motion.div
-                            initial={{ left: '0%' }}
-                            animate={{ left: `${(secondValue / total) * 100}%` }}
-                            transition={{ duration: 1.2, ease: 'easeOut' }}
-                            style={{
-                                position: 'absolute',
-                                transform: 'translateX(-50%)',
-                            }}
-                        >
-                            <Box
-                                sx={{ paddingTop: '5px' }}
                                 position="relative"
-                                bgcolor="#A2D39C"
-                                color="white"
-                                width={70}
-                                height={70}
-                                borderRadius="50%"
+                            >
+                                <Icon
+                                    icon="noto:2nd-place-medal"
+                                    width="50px"
+                                    height="50px"
+                                    style={{ position: 'absolute', top: -20 }}
+                                />
+                                <motion.div
+                                    initial={{ height: 0 }}
+                                    animate={{ height: 150 }}
+                                    transition={{ duration: 1, ease: 'easeOut' }}
+                                    style={{
+                                        borderTopLeftRadius: '8px',
+                                        borderBottomLeftRadius: '8px',
+                                        backgroundColor: '#4B9460',
+                                        width: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {rankingInfo.ranking.length == 2 && (
+                                        <Box>
+                                            <Typography color="white" variant="h6">
+                                                {rankingInfo.ranking[1].name}
+                                            </Typography>
+                                            <Typography color="white" variant="caption">
+                                                {rankingInfo.ranking[1].total_donation.toLocaleString()}
+                                                원
+                                            </Typography>
+                                        </Box>
+                                    )}
+                                </motion.div>
+                            </Box>
+
+                            {/* 1등 */}
+                            <Box
+                                width={100}
                                 display="flex"
                                 flexDirection="column"
-                                justifyContent="center"
                                 alignItems="center"
+                                position="relative"
                             >
-                                <Typography variant="caption" sx={{ fontSize: '10px' }}>
-                                    내 또래
-                                </Typography>
-                                <Typography
-                                    variant="subtitle2"
-                                    fontWeight="bold"
-                                    sx={{ fontSize: '12px' }}
-                                >
-                                    {secondValue.toLocaleString()}원
-                                </Typography>
-                                <Typography variant="caption" sx={{ fontSize: '10px' }}>
-                                    {((secondValue / total) * 100).toFixed(1)}%
-                                </Typography>
-                                <Box
-                                    position="absolute"
-                                    bottom={-6}
-                                    left={25}
-                                    width={0}
-                                    height={0}
-                                    borderLeft="8px solid transparent"
-                                    borderRight="8px solid transparent"
-                                    borderTop="10px solid #A2D39C"
+                                <Icon
+                                    icon="noto:1st-place-medal"
+                                    width="50px"
+                                    height="50px"
+                                    style={{ position: 'absolute', top: -20 }}
                                 />
+                                <motion.div
+                                    initial={{ height: 0 }}
+                                    animate={{ height: 200 }}
+                                    transition={{ duration: 1.2, ease: 'easeOut' }}
+                                    style={{
+                                        borderTopLeftRadius: '8px',
+                                        borderTopRightRadius: '8px',
+                                        backgroundColor: '#4B9460',
+                                        width: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {rankingInfo.ranking.length == 1 && (
+                                        <Box>
+                                            <Typography color="white" variant="h6">
+                                                {rankingInfo.ranking[0].name}
+                                            </Typography>
+                                            <Typography color="white" variant="caption">
+                                                {rankingInfo.ranking[0].total_donation.toLocaleString()}
+                                                원
+                                            </Typography>
+                                        </Box>
+                                    )}
+                                </motion.div>
                             </Box>
-                        </motion.div>
 
-                        {/* 전체 말풍선 */}
-                        <Box position="absolute" left="80%" transform="translateX(-50%)">
+                            {/* 3등 */}
+                            <Box
+                                width={100}
+                                display="flex"
+                                flexDirection="column"
+                                alignItems="center"
+                                position="relative"
+                            >
+                                <Icon
+                                    icon="noto:3rd-place-medal"
+                                    width="50px"
+                                    height="50px"
+                                    style={{ position: 'absolute', top: -20 }}
+                                />
+                                <motion.div
+                                    initial={{ height: 0 }}
+                                    animate={{ height: 100 }}
+                                    transition={{ duration: 1, ease: 'easeOut' }}
+                                    style={{
+                                        borderTopRightRadius: '8px',
+                                        borderBottomRightRadius: '8px',
+                                        backgroundColor: '#4B9460',
+                                        width: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {rankingInfo.ranking.length == 3 && (
+                                        <Box>
+                                            <Typography color="white" variant="h6">
+                                                {rankingInfo.ranking[2].name}
+                                            </Typography>
+                                            <Typography color="white" variant="caption">
+                                                {rankingInfo.ranking[2].total_donation.toLocaleString()}
+                                                원
+                                            </Typography>
+                                        </Box>
+                                    )}
+                                </motion.div>
+                            </Box>
+                        </Box>
+                    </Box>
+
+                    {/* 후원 기여도 */}
+                    <Box sx={{ marginTop: '30px' }}>
+                        <Box
+                            sx={{ display: 'flex', justifyContent: 'start', marginBottom: '50px' }}
+                        >
+                            <Icon
+                                icon="lucide:hand-heart"
+                                width="20px"
+                                height="20px"
+                                style={{ color: '#4B9460' }}
+                            />
+                            <Typography sx={{ marginLeft: '5px', fontWeight: 'bold' }}>
+                                이만큼 후원했어요!
+                            </Typography>
+                        </Box>
+                        <Box
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            position="relative"
+                            sx={{ width: '90%', marginLeft: '20px', marginRight: '20px' }}
+                        >
+                            {/* 말풍선 */}
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                width="100%"
+                                position="absolute"
+                                top={-40}
+                            >
+                                {/* 나 말풍선 */}
+                                <motion.div
+                                    initial={{ left: '0%' }}
+                                    animate={{
+                                        left: `${
+                                            (rankingInfo.my_total / rankingInfo.all_total) * 100
+                                        }%`,
+                                    }}
+                                    transition={{ duration: 1.5, ease: 'easeOut' }}
+                                    style={{
+                                        position: 'absolute',
+                                        transform: 'translateX(-50%)',
+                                        zIndex: 3,
+                                    }}
+                                >
+                                    <Box
+                                        sx={{ paddingTop: '5px' }}
+                                        position="relative"
+                                        bgcolor="#4B9460"
+                                        color="white"
+                                        width={70}
+                                        height={70}
+                                        borderRadius="50%"
+                                        display="flex"
+                                        flexDirection="column"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                    >
+                                        <Typography variant="caption" sx={{ fontSize: '10px' }}>
+                                            나
+                                        </Typography>
+                                        <Typography
+                                            variant="subtitle2"
+                                            fontWeight="bold"
+                                            sx={{ fontSize: '12px' }}
+                                        >
+                                            {rankingInfo.my_total.toLocaleString()}원
+                                        </Typography>
+                                        <Typography variant="caption" sx={{ fontSize: '10px' }}>
+                                            {(
+                                                (rankingInfo.my_total / rankingInfo.all_total) *
+                                                100
+                                            ).toFixed(1)}
+                                            %
+                                        </Typography>
+                                        <Box
+                                            position="absolute"
+                                            bottom={-6}
+                                            left={25}
+                                            width={0}
+                                            height={0}
+                                            borderLeft="8px solid transparent"
+                                            borderRight="8px solid transparent"
+                                            borderTop="10px solid #4B9460"
+                                        />
+                                    </Box>
+                                </motion.div>
+
+                                {/* 또래 말풍선 */}
+                                <motion.div
+                                    initial={{ left: '0%' }}
+                                    animate={{
+                                        left: `${
+                                            (rankingInfo.age_total / rankingInfo.all_total) * 100
+                                        }%`,
+                                    }}
+                                    transition={{ duration: 1.2, ease: 'easeOut' }}
+                                    style={{
+                                        position: 'absolute',
+                                        transform: 'translateX(-50%)',
+                                        zIndex: 2,
+                                    }}
+                                >
+                                    <Box
+                                        sx={{ paddingTop: '5px' }}
+                                        position="relative"
+                                        bgcolor="#A2D39C"
+                                        color="white"
+                                        width={70}
+                                        height={70}
+                                        borderRadius="50%"
+                                        display="flex"
+                                        flexDirection="column"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                    >
+                                        <Typography variant="caption" sx={{ fontSize: '10px' }}>
+                                            내 또래
+                                        </Typography>
+                                        <Typography
+                                            variant="subtitle2"
+                                            fontWeight="bold"
+                                            sx={{ fontSize: '12px' }}
+                                        >
+                                            {rankingInfo.age_total.toLocaleString()}원
+                                        </Typography>
+                                        <Typography variant="caption" sx={{ fontSize: '10px' }}>
+                                            {(
+                                                (rankingInfo.age_total / rankingInfo.all_total) *
+                                                100
+                                            ).toFixed(1)}
+                                            %
+                                        </Typography>
+                                        <Box
+                                            position="absolute"
+                                            bottom={-6}
+                                            left={25}
+                                            width={0}
+                                            height={0}
+                                            borderLeft="8px solid transparent"
+                                            borderRight="8px solid transparent"
+                                            borderTop="10px solid #A2D39C"
+                                        />
+                                    </Box>
+                                </motion.div>
+
+                                {/* 전체 말풍선 */}
+                                <Box position="absolute" left="88.5%" transform="translateX(-50%)">
+                                    <Box
+                                        position="relative"
+                                        bgcolor="#E8E8E8"
+                                        color="black"
+                                        width={70}
+                                        height={70}
+                                        borderRadius="50%"
+                                        display="flex"
+                                        flexDirection="column"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                    >
+                                        <Typography variant="subtitle2" fontWeight="bold">
+                                            전체
+                                        </Typography>
+                                        <Typography variant="caption" sx={{ fontSize: '11px' }}>
+                                            {rankingInfo.all_total.toLocaleString()}원
+                                        </Typography>
+                                        <Box
+                                            position="absolute"
+                                            bottom={-6}
+                                            left={25}
+                                            width={0}
+                                            height={0}
+                                            borderLeft="8px solid transparent"
+                                            borderRight="8px solid transparent"
+                                            borderTop="10px solid #E8E8E8"
+                                        />
+                                    </Box>
+                                </Box>
+                            </Box>
+
+                            {/* 프로그레스 바 */}
                             <Box
                                 position="relative"
+                                width="100%"
+                                height={15}
                                 bgcolor="#E8E8E8"
-                                color="black"
-                                width={70}
-                                height={70}
-                                borderRadius="50%"
-                                display="flex"
-                                flexDirection="column"
-                                justifyContent="center"
-                                alignItems="center"
+                                borderRadius={15}
+                                mt={5}
                             >
-                                <Typography variant="subtitle2" fontWeight="bold">
-                                    전체
-                                </Typography>
-                                <Typography variant="caption" sx={{ fontSize: '11px' }}>
-                                    {total.toLocaleString()}원
-                                </Typography>
-                                <Box
-                                    position="absolute"
-                                    bottom={-6}
-                                    left={25}
-                                    width={0}
-                                    height={0}
-                                    borderLeft="8px solid transparent"
-                                    borderRight="8px solid transparent"
-                                    borderTop="10px solid #E8E8E8"
+                                {/* 또래 */}
+                                <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{
+                                        width: `${
+                                            (rankingInfo.age_total / rankingInfo.all_total) * 100
+                                        }%`,
+                                    }}
+                                    transition={{ duration: 1.2, ease: 'easeOut' }}
+                                    style={{
+                                        backgroundColor: '#A2D39C',
+                                        height: '100%',
+                                        borderRadius: '15px',
+                                        position: 'absolute',
+                                    }}
+                                />
+                                {/* 나 */}
+                                <motion.div
+                                    initial={{ width: 0 }}
+                                    animate={{
+                                        width: `${
+                                            (rankingInfo.my_total / rankingInfo.all_total) * 100
+                                        }%`,
+                                    }}
+                                    transition={{ duration: 1.5, ease: 'easeOut' }}
+                                    style={{
+                                        backgroundColor: '#4B9460',
+                                        height: '100%',
+                                        borderRadius: '15px',
+                                        position: 'absolute',
+                                    }}
                                 />
                             </Box>
                         </Box>
                     </Box>
 
-                    {/* 프로그레스 바 */}
+                    {/* 통계 */}
                     <Box
-                        position="relative"
-                        width="100%"
-                        height={15}
-                        bgcolor="#E8E8E8"
-                        borderRadius={15}
-                        mt={5}
+                        sx={{
+                            marginTop: '30px',
+                            borderRadius: '10px',
+                            backgroundColor: 'white',
+                            padding: '25px',
+                        }}
                     >
-                        {/* 또래 */}
-                        <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${(secondValue / total) * 100}%` }}
-                            transition={{ duration: 1.2, ease: 'easeOut' }}
-                            style={{
-                                backgroundColor: '#A2D39C',
-                                height: '100%',
-                                borderRadius: '15px',
-                                position: 'absolute',
-                            }}
-                        />
-                        {/* 나 */}
-                        <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${(firstValue / total) * 100}%` }}
-                            transition={{ duration: 1.5, ease: 'easeOut' }}
-                            style={{
-                                backgroundColor: '#4B9460',
-                                height: '100%',
-                                borderRadius: '15px',
-                                position: 'absolute',
-                            }}
-                        />
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <Icon
+                                icon="ri:tree-fill"
+                                width="50px"
+                                height="50px"
+                                style={{ color: '#4B9460' }}
+                            />
+                            <Box sx={{ textAlign: 'center', marginLeft: '10px', marginTop: '5px' }}>
+                                <Typography sx={{ fontSize: '14px' }}>
+                                    챌린지로 기후 행동 실천하고
+                                </Typography>
+                                <Typography sx={{ fontSize: '14px' }}>
+                                    탄소 배출량{' '}
+                                    <span style={{ color: '#4B9460' }}>{rankingInfo.carbon}g</span>
+                                    을 줄였어요!
+                                </Typography>
+                            </Box>
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
-
-            {/* 통계 */}
-            <Box
-                sx={{
-                    marginTop: '30px',
-                    borderRadius: '10px',
-                    backgroundColor: 'white',
-                    padding: '25px',
-                }}
-            >
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Icon
-                        icon="ri:tree-fill"
-                        width="50px"
-                        height="50px"
-                        style={{ color: '#4B9460' }}
-                    />
-                    <Box sx={{ textAlign: 'center', marginLeft: '10px', marginTop: '5px' }}>
-                        <Typography sx={{ fontSize: '14px' }}>
-                            챌린지로 기후 행동 실천하고
-                        </Typography>
-                        <Typography sx={{ fontSize: '14px' }}>
-                            탄소 배출량 <span style={{ color: '#4B9460' }}>280g</span>을 줄였어요!
-                        </Typography>
-                    </Box>
-                </Box>
-            </Box>
-        </Box>
+            )}
+        </>
     );
 };
 
