@@ -3,9 +3,9 @@ import { Tabs, Tab } from '@mui/material';
 import Header from '../../components/header/Header';
 import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
-import MaturityPage from './MaturityPage'; // 만기일 이자조회 Page
-import TodayPage from './TodayPage'; // 오늘 이자조회 Page
-import CustomDatePage from './CustomDatePage'; // 직접입력 이자조회 Page
+import MaturityPage from '../../page/interest/MaturityPage'; // 만기일 이자조회 Page
+import TodayPage from '../../page/interest/TodayPage'; // 오늘 이자조회 Page
+import CustomDatePage from '../../page/interest/CustomDatePage'; // 직접입력 이자조회 Page
 import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
 
 // axios 인스턴스(api) 및 인터셉터 자동추가됨 -> api이름으로 사용
@@ -25,7 +25,7 @@ const CustomTabs = ({ value, onChange }) => {
                 },
                 '& .Mui-selected': {
                     backgroundColor: '#4CAF50',
-                    color: 'white',
+                    color: 'white !important', // 왜인지 모르겠는데 글자색상 하얀색으로 적용안됨. . // !important를 추가해 우선순위 높였음
                 },
                 marginBottom: 2,
             }}

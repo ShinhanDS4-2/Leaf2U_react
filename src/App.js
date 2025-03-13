@@ -24,6 +24,7 @@ import ManageAccount from './page/account/ManageAccount';
 import Termination from './page/account/Termination';
 import InterestMainPage from './page/interest/InterestMainPage';
 import Aaa from './page/account/Aaa';
+import Paymentaaaaa from './page/account/Paymentaaaaa';
 import Deposit from './page/deposit/Deposit';
 import Image from './page/deposit/Image';
 
@@ -64,11 +65,12 @@ function App() {
                     {/* 후원내역 상세 페이지 (동적 라우팅) */}
                     <Route path="/historyDetail/:idx" element={<HistoryDetail />} />
                     <Route path="/termination" element={<Termination />} />
-
-                    {/* 해야할페이지 */}
                     <Route path="/interestMainPage" element={<InterestMainPage />} />
+
+                    {/* 시온 해야함 */}
                     <Route path="/manageAccount" element={<ManageAccount />} />
                     <Route path="/aaa" element={<Aaa />} />
+                    <Route path="/paymentaaaaa" element={<Paymentaaaaa />} />
 
                     {/* 시온 페이지 END */}
 

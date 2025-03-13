@@ -18,6 +18,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 import Header from '../../components/header/Header';
+import Button from '../../components/button/Button';
 
 const TabPanel = ({ children, value, index }) => {
     return value === index ? <div>{children}</div> : null;
@@ -76,6 +77,13 @@ const OrganizationDetailModal = ({ open, onClose, donation }) => {
                                 </Typography>
                                 <Typography variant="body2">{donation.description}</Typography>
                             </Box>
+                            <Button
+                                text="홈페이지 바로가기"
+                                onClick={() =>
+                                    // donation.url이 null, undefined가 아닐때만 처리
+                                    donation.url && (window.location.href = donation.url)
+                                }
+                            />
                         </CardContent>
                     </Card>
                 )}
@@ -155,28 +163,77 @@ const Tap1Page = ({ selectedOrganizationIdx }) => {
             <Box className="p-0 mt-4">
                 {donations.map((donation) => (
                     <Card
-                        key={donation.organizationIdx} // idx값을 사용하여 각 항목을 식별
-                        variant="outlined" // 카드위에 마우스 올리면 elevation으로 변하게 해도 좋을듯
-                        onClick={() => handleOpenModal(donation)} // 카드 클릭 시 모달 열기
-                        sx={{ borderRadius: 2, marginBottom: 1, height: 'auto' }}
+                        key={donation.organizationIdx}
+                        variant="outlined"
+                        onClick={() => handleOpenModal(donation)}
+                        sx={{
+                            borderRadius: 2,
+                            marginBottom: 1,
+                            height: 'auto',
+                            display: 'flex',
+                            alignItems: 'center',
+                            padding: 1,
+                            cursor: 'pointer',
+                        }}
                     >
-                        <CardContent>
-                            {/* 제목 + 화살표 아이콘 */}
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                }}
+                        {/* 왼쪽: 이미지 (고정 크기) */}
+                        <Box
+                            sx={{
+                                width: 50,
+                                height: 50,
+                                backgroundColor: '#F0F0F0',
+                                borderRadius: 2,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginRight: 2,
+                                flexShrink: 0, // 크기 고정 (늘어나지 않도록)
+                            }}
+                        >
+                            <img
+                                src={require(`../../image/${donation.icon}`)}
+                                // require() 를 사용해서 이미지 동적으로 불러오기
+                                alt={donation.name}
+                                style={{ width: 50, height: 50 }}
+                            />
+                        </Box>
+
+                        {/* 가운데: 제목 + 설명 (세로로만 늘어나도록 설정) */}
+                        <Box
+                            sx={{
+                                flexGrow: 1, // 가능한 공간 차지
+                                display: 'flex',
+                                flexDirection: 'column', // 세로 배치
+                                minWidth: 0, // 가로 크기 제한 (늘어나지 않도록)
+                            }}
+                        >
+                            <Typography
+                                variant="subtitle1"
+                                fontWeight="bold"
+                                sx={{ wordBreak: 'break-word' }} // 긴 글이 줄바꿈되도록 설정
                             >
-                                <Typography variant="h6" fontWeight="bold" marginTop={1}>
-                                    {donation.name}
-                                </Typography>
-                                <Typography variant="h6" color="text.secondary">
-                                    &gt;
-                                </Typography>
-                            </Box>
-                        </CardContent>
+                                {donation.name}
+                            </Typography>
+                            {/* <Typography  설명 넣을지말지
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{ wordBreak: 'break-word' }} // 긴 글이 줄바꿈되도록 설정
+                            >
+                                {donation.description}
+                            </Typography> */}
+                        </Box>
+
+                        {/* 오른쪽: 화살표 아이콘 (고정 크기) */}
+                        <Typography
+                            variant="h6"
+                            color="text.secondary"
+                            sx={{
+                                flexShrink: 0, // 크기 고정 (늘어나지 않도록)
+                                marginLeft: 2, // 왼쪽 여백 추가
+                            }}
+                        >
+                            &gt;
+                        </Typography>
                     </Card>
                 ))}
             </Box>

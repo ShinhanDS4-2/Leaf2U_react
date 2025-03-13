@@ -161,6 +161,10 @@ const CustomDatePage = ({ interestData }) => {
             <Typography variant="caption" display="block" color="text.secondary">
                 * 중도해지 시 우대금리가 적용되지 않습니다.
             </Typography>
+            <Typography variant="h6" display="block" color="error">
+                *react-mobile-picker 라이브러리 사용해서 휠(스크롤) 형태의 날짜 선택 UI(iOS 스타일
+                휠 피커) 사용 하는거 구현중
+            </Typography>
         </>
     );
 };

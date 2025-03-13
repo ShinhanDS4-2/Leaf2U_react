@@ -1,113 +1,113 @@
-import React, { useState } from 'react';
-import { Tabs, Tab, Box, Card, CardContent, Typography, Button } from '@mui/material';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from 'react';
+import { Tabs, Tab, Box, Typography, Card, CardContent } from '@mui/material';
+import Header from '../../components/header/Header';
+import Content from '../../components/content/Content';
+import Footer from '../../components/footer/Footer';
+import CardInfoPage from '../../page/account/CardInfoPage'; // 카드정보 Page
+import AccountInfoPage from '../../page/account/AccountInfoPage'; // 계좌정보 Page
+import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
 
-const TabPanel = ({ value, index, children }) => {
+// axios 인스턴스(api) 및 인터셉터 자동추가됨 -> api이름으로 사용
+
+// 커스텀 탭
+const CustomTabs = ({ value, onChange }) => {
     return (
-        <div role="tabpanel" hidden={value !== index} style={{ padding: '20px' }}>
-            {value === index && <>{children}</>}
-        </div>
+        <Tabs
+            value={value} // 탭 인덱스 값
+            onChange={onChange} // 부모에서 받은 onChange 사용
+            variant="fullWidth"
+            sx={{
+                '& .MuiTabs-indicator': { display: 'none' },
+                '& .MuiTab-root': {
+                    borderRadius: '10px',
+                    fontWeight: 'bold',
+                },
+                '& .Mui-selected': {
+                    backgroundColor: '#4CAF50',
+                    color: 'white !important', // 왜인지 모르겠는데 글자색상 하얀색으로 적용안됨. . // !important를 추가해 우선순위 높였음
+                },
+                marginBottom: 2,
+            }}
+        >
+            <Tab label="연결 카드" /> {/* 0 */}
+            <Tab label="적금 계좌" /> {/* 1 */}
+        </Tabs>
     );
 };
 
-const CardInfoPage = () => {
-    return (
-        <>
-            <Card variant="outlined" sx={{ borderRadius: 2, boxShadow: 1 }}>
-                <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                        신한카드 Leaf2U
-                    </Typography>
-                    <Typography variant="body1" color="gray">
-                        - MUI 공부하기 - 리액트 컴포넌트 만들기 - API 연동 테스트
-                    </Typography>
-                    <Typography variant="body2">카드 번호: 110-123-456789</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        적금 입금 시, 연결카드에서 출금되며 해지할 경우 원금과 이자가 연결카드로
-                        입금됩니다.
-                    </Typography>
-                </CardContent>
-            </Card>
-            <div> a</div>
-            <Card variant="outlined" sx={{ borderRadius: 2 }}>
-                <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                        카드 버전2
-                    </Typography>
-                    <Typography variant="body1" color="gray">
-                        - MUI 공부하기 - 리액트 컴포넌트 만들기 - API 연동 테스트
-                    </Typography>
-                    <Typography variant="body2">카드 번호: 110-123-456789</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        적금 입금 시, 연결카드에서 출금되며 해지할 경우 원금과 이자가 연결카드로
-                        입금됩니다.
-                    </Typography>
-                </CardContent>
-            </Card>
-        </>
-    );
-};
-
-const AccountInfoPage = () => {
-    return (
-        <>
-            <Card variant="outlined">
-                <CardContent>
-                    <Typography variant="h6" gutterBottom>
-                        리프적금
-                    </Typography>
-                    <Typography variant="body2">계좌번호: 235-987-654321</Typography>
-                    <Typography variant="body2">잔액: 360,000원</Typography>
-                    <Typography variant="body2">기본금리: 1.00% / 우대금리: 5.40%</Typography>
-                    <Box mt={2}>
-                        <Button variant="contained" color="primary" fullWidth>
-                            납입금액 설정 (매일 30,000원)
-                        </Button>
-                    </Box>
-                </CardContent>
-            </Card>
-            <Card variant="outlined" sx={{ borderRadius: 2, boxShadow: 1 }}>
-                <CardContent>
-                    <div>
-                        <Typography variant="h5" gutterBottom>
-                            🎉 축하합니다! 출석 완료 🎉
-                        </Typography>
-                        <Typography variant="body1" color="gray">
-                            지금까지 총 5일 연속 출석했어요!
-                        </Typography>
-                        <Button variant="contained" color="primary">
-                            확인
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
-        </>
-    );
-};
-
+// 메인 함수
 const ManageAccount = () => {
-    const [tabIndex, setTabIndex] = useState(0);
+    const [tabIndex, setTabIndex] = useState(0); // 선택된 탭의 인덱스를 관리
+    const [interestData, setInterestData] = useState(null); // API에서 가져온 데이터
+
+    // 현재 선택된 탭의 index와 비교하여 렌더링
+    const TabPanel = ({ children, value, index }) => {
+        return value === index ? <div>{children}</div> : null;
+    }; // value와 index 값이 같으면 children(탭에 들어올 페이지 지정) 반환
+
+    // ★★★★★ 카드 기본정보 조회 API 안만든거같은데  . . . . . .
+
+    // (1) 계좌 기본정보 조회 API
+    // @param 없음
+    // @return accountDTO
+    const getAccountInfo = () => {
+        api.get('/account/info')
+            .then((response) => {
+                const data = response.data; // API 호출 응답값: accountDTO
+                setInterestData(data);
+
+                console.log('(1) 계좌 기본정보 조회 API 응답값: ', data); // 🔥 확인용 로그
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    // (2) 납입금액 변경 API
+    // @param accountDTO (accountPassword, paymentAmount) -> 계좌 비번이랑 변경할 납입금액 입력받아야함
+    // @return 1(성공), 0(실패), 401(비밀번호 불일치)
+    const updatePaymentAmount = () => {
+        api.get('/account/update/paymentAmount')
+            .then((response) => {
+                const data = response.data; // API 호출 응답값: 1(성공), 0(실패), 401(비밀번호 불일치)
+                setInterestData(data);
+
+                console.log('(2) 납입금액 변경 API 응답값: ', data); // 🔥 확인용 로그
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    useEffect(() => {
+        if (tabIndex === 0) {
+            // ??? 카드 기본정보 조회 API 호출해서 정보 뿌려야함
+        } else if (tabIndex === 1) {
+            getAccountInfo(); // (1) 계좌 기본정보 조회 API
+        }
+    }, [tabIndex]); // tabIndex가 변경될 때마다 호출됨
 
     return (
-        <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-            <Tabs
-                value={tabIndex}
-                onChange={(e, newIndex) => setTabIndex(newIndex)}
-                centered
-                indicatorColor="primary"
-                textColor="primary"
-            >
-                <Tab label="연결 카드" />
-                <Tab label="적금 계좌" />
-            </Tabs>
-
-            <TabPanel value={tabIndex} index={0}>
-                <CardInfoPage />
-            </TabPanel>
-            <TabPanel value={tabIndex} index={1}>
-                <AccountInfoPage />
-            </TabPanel>
-        </Box>
+        <>
+            {/* 뒤로가기 아이콘 없는 헤더 */}
+            <Header title="카드 / 계좌" />
+            <Content>
+                {/* ✅ CustomTabs에 상태와 변경 함수 전달 */}
+                <CustomTabs
+                    value={tabIndex}
+                    onChange={(event, newValue) => setTabIndex(newValue)}
+                />
+                {/* TabPanel은 value와 index를 props로 받아, value와 index가 같을 때 해당 내용을 보여줌 */}
+                <TabPanel value={tabIndex} index={0}>
+                    {/* 각 api 호출하고 나온 결과 값 interestData 넘겨줌 */}
+                    <CardInfoPage interestData={interestData} />
+                </TabPanel>
+                <TabPanel value={tabIndex} index={1}>
+                    <AccountInfoPage interestData={interestData} />
+                </TabPanel>
+            </Content>
+            <Footer />
+        </>
     );
 };
 
