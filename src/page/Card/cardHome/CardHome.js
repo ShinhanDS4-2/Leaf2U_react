@@ -6,6 +6,10 @@ import BottomModal from '../../../components/modal/BottomModal';
 import mainImg from '../../../image/leaf2u-card.png';
 import './CardHome.css';
 import DoubleButton from '../../../components/button/DoubleButton';
+import axios from 'axios';
+import PwdModal6 from '../../../components/modal/PwdModal6';
+import AlertModal from '../../../components/modal/AlertModal';
+
 
 const CardHome = () => {
     
@@ -13,41 +17,117 @@ const CardHome = () => {
     const navigate = useNavigate();
     const modalRef = useRef();
     const modalRef2 = useRef();
+    const pwdModalRef1 = useRef(null);
+    const pwdModalRef2 = useRef(null);
+    const [firstPwd, setFirstPwd] = useState('');
+    const successModalRef = useRef();
+    const alertRef = useRef();
 
-    const cardYn = location.state?.cardYn || 'Y';
+    const cardYn = location.state.cardYn;
+    const existAccount=location.state.existAccount;
+    const amount=localStorage.getItem("amount");
 
-    const [amount,setAmount]=useState(()=>{
-
-        return localStorage.getItem("amount");
-    })
-
-    const [accountNumber,setAccountNumber]=useState(()=>{
-
-        return localStorage.getItem("accountNumber");
-    })
-
-    const [bankName,setbankName]=useState(()=>{
-
-        return localStorage.getItem("bankName");
-    })
-
-    const [maturityDate,setMaturityDate]=useState('');
+    const [cardName,setCardName]=useState('');
+    const [accountNumber,setAccountNumber]=useState('');
 
     useEffect(() => {
+
         if (cardYn === 'N') {
+
             modalRef.current.openModal();
-        }
-        else if(cardYn=='Y'){
+            
+        } else if (cardYn === 'Y' && existAccount=='N') {
+            fetchCardInfo(); 
             modalRef2.current.openModal();
+        }else{
+            fetchCardInfo();
         }
-
-        const today=new Date();
-        today.setMonth(today.getMonth()+1);
-        const formattedDate=today.toISOString().split('T')[0];
-
-        setMaturityDate(formattedDate);
-
+    
+    
     }, [cardYn]);
+    
+    const fetchCardInfo = async () => {
+
+        try {
+            const response = await axios.get('http://localhost:8090/api/card/card-info', {
+                params: { memberIdx: localStorage.getItem('memberIdx') },
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+    
+            console.log("반환 데이터: ", response.data);
+            console.log("카드 이름 : ",response.data.cardName);
+
+            
+            setCardName(response.data.cardName);
+            setAccountNumber(response.data.accountNumber);
+        } catch (error) {
+            console.error("카드 정보 못 가져옴:", error);
+        }
+    };
+    
+    const handleConfirmClick = () => {
+        modalRef.current.closeModal();
+        pwdModalRef1.current.openModal();
+    };
+
+    const handleFirstPwdSubmit = (pwd) => {
+        setFirstPwd(pwd);
+        pwdModalRef1.current.closeModal();
+        pwdModalRef2.current.openModal();
+    };
+
+    const handleSecondPwdSubmit = async (pwd) => {
+            
+            if(pwd==firstPwd){
+    
+                pwdModalRef2.current.closeModal();
+                modalRef2.current.closeModal();
+                successModalRef.current.openModal();
+    
+                console.log("멤버 idx 살아있니?",localStorage.getItem('memberIdx'));
+                console.log("amount 살아있니??",localStorage.getItem('amount'));
+
+                const token = localStorage.getItem('jwtToken');
+                console.log('전송할 토큰:', token);
+                
+                
+                // 토큰이 없는 경우 처리
+                if (!token) {
+                    alert('로그인이 필요합니다.');
+                    return;
+                }
+    
+                try{
+                    const response = await axios.post('http://localhost:8090/api/account/create', {
+                    
+                       memberIdx:localStorage.getItem('memberIdx'),
+                       accountPassword:pwd,
+                       paymentAmount:localStorage.getItem('amount')
+                    },{
+                        headers:{
+                            'Content-Type':'application/json',
+                            Authorization: `Bearer ${token}`,
+                        }
+                    });
+    
+                    console.log("적금 계좌 생성 성공:",response.data);
+    
+                }catch(error){
+                    console.error("적금 생성 실패:",error);
+                    
+                }
+                
+            }else{
+                
+                alertRef.current.openModal();
+                setFirstPwd('');
+    
+                pwdModalRef2.current.closeModal();
+                pwdModalRef1.current.openModal();
+            }
+        };
 
     return (
         <div className="card-container">
@@ -69,8 +149,9 @@ const CardHome = () => {
                 <label className="card-label">카드 연결</label>
                 <select className="card-select">
                     <option>선택</option>
+                    {cardName && <option selectd>{cardName}</option>}
                 </select>
-                <input type="text" className="card-input" placeholder="카드번호 (- 없이 숫자만)" />
+                <input type="text" className="card-input" placeholder="계좌번호 (- 없이 숫자만)" value={accountNumber} readOnly/>
             </div>
 
             {/* 기후 동행 카드 옵션 */}
@@ -90,21 +171,11 @@ const CardHome = () => {
             {/* 적금 정보 요약 */}
             <div className="summary-card">
                 <div className="summary">
-                    <p>
-                        매일 납입 금액 <span>{amount}원</span>
-                    </p>
-                    <p>
-                        적금기간 <span>30일</span>
-                    </p>
-                    <p>
-                        적금방식 <span>1일 1회 입금</span>
-                    </p>
-                    <p>
-                        최고 적용금리 <span>연 9.00%</span>
-                    </p>
-                    <p>
-                        만기설정 <span>만기 시 자동 해지</span>
-                    </p>
+                    <p>매일 납입 금액 <span>{amount}원</span></p>
+                    <p>적금기간 <span>30일</span></p>
+                    <p>적금방식 <span>1일 1회 입금</span></p>
+                    <p>최고 적용금리 <span>연 9.00%</span></p>
+                    <p>만기설정 <span>만기 시 자동 해지</span></p>
                 </div>
             </div>
             <div className="explain-card">
@@ -165,11 +236,11 @@ const CardHome = () => {
                         </div>
                         <div className="summary-row">
                             <span className="summary-label">만기일자</span>
-                            <span className="summary-value">{maturityDate}</span>
+                            <span className="summary-value">maturityDate</span>
                         </div>
                         <div className="summary-row">
                             <span className="summary-label">연결계좌</span>
-                            <span className="summary-value">{bankName} {accountNumber}</span>
+                            <span className="summary-value">{cardName} {accountNumber}</span>
                         </div>
                         <div className="summary-row">
                             <span className="summary-label">적용금리</span>
@@ -184,10 +255,25 @@ const CardHome = () => {
                     <DoubleButton
                         confirmText="예"
                         cancelText="아니요"
-                        cancelOnClick={() => modalRef.current.closeModal()}
+                        confirmOnClick={handleConfirmClick}
+                        cancelOnClick={() => modalRef2.current.closeModal()}
                     />
                 </div>
             </BottomModal>
+
+            <PwdModal6 ref={pwdModalRef1} onSubmit={handleFirstPwdSubmit} />
+            <PwdModal6 ref={pwdModalRef2} onSubmit={handleSecondPwdSubmit} />
+
+            <BottomModal ref={successModalRef} maxHeight="70%">
+                <div className="agree-item2">
+                    <p>
+                        한달적금이 개설되었습니다.
+                    </p>
+                    <Button text="확인"/>
+                </div>
+            </BottomModal>
+
+            <AlertModal ref={alertRef} text="비밀번호가 일치하지 않습니다. 다시 입력해주세요." />
         </div>
     );
 };

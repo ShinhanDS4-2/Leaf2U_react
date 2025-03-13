@@ -10,6 +10,7 @@ import AlertModal from '../../../components/modal/AlertModal';
 import axios from 'axios';
 
 const CardDetail = () => {
+
     const navigate = useNavigate();
     const location = useLocation();
     const formData = location.state || {};
@@ -36,13 +37,8 @@ const CardDetail = () => {
         pwdModalRef2.current.openModal();
     };
 
-    const handleSecondPwdSubmit = (pwd) => {
-        if (pwd == firstPwd) {
-            pwdModalRef2.current.closeModal();
-            successModalRef.current.openModal();
-        } else {
-    const handleSecondPwdSubmit= async(pwd)=>{
-
+    const handleSecondPwdSubmit = async (pwd) => {
+        
         if(pwd==firstPwd){
 
             pwdModalRef2.current.closeModal();
@@ -87,13 +83,11 @@ const CardDetail = () => {
 
             pwdModalRef2.current.closeModal();
             pwdModalRef1.current.openModal();
-
-            //여기서 axios로
         }
     };
 
     const handleNextPage = () => {
-        navigate('/cardHome', { state: { cardYn: 'Y' } });
+        navigate('/cardHome', { state: { cardYn: 'Y',existAccount:'N' } });
     };
 
     return (
@@ -102,28 +96,7 @@ const CardDetail = () => {
 
             <div className="card-detail-container">
                 <h3>가입 정보 확인</h3>
-
-                <div className="info-container">
-                    <div className="info-box">
-                        <p>
-                            <strong>이름</strong> <span>{formData.name}</span>
-                        </p>
-                        <p>
-                            <strong>영문 성</strong> <span>{formData.lastName}</span>
-                        </p>
-                        <p>
-                            <strong>영문 이름</strong> <span>{formData.firstName}</span>
-                        </p>
-                        <p>
-                            <strong>연락처</strong> <span>{formData.phone}</span>
-                        </p>
-                        <p>
-                            <strong>계좌번호</strong>{' '}
-                            <span>
-                                ({formData.selectedBank}) {formData.cardNumber}
-                            </span>
-                        </p>
-                    </div>
+                
                 <div className="info-box">
                     <p><strong>이름</strong> <span>{formData.name}</span></p>
                     <p><strong>영문 성</strong> <span>{formData.lastName}</span></p>
@@ -133,10 +106,10 @@ const CardDetail = () => {
                 </div>
 
                 <p className="notice">* 위 정보가 사실과 다름이 없음을 확인합니다.</p>
-                <Button text="확인" onClick={handleNextClick} />
-                <div className="p-3">
-                    <Button text="확인" onClick={handleNextClick} />
-                </div>
+            </div>
+
+            <div className='p-3'>
+                <Button text={'다음'} onClick={handleNextClick}/>
             </div>
 
             <BottomModal ref={modalRef} maxHeight="50%">

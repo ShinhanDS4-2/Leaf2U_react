@@ -14,7 +14,6 @@ import KakaoImg from '../../../image/kakao.png';
 
 const CardJoin = () => {
 
-    const [accountNumber, setAccountNumber] = useState('');
     const navigate = useNavigate();
     const modalRef=useRef();
     const alertRef=useRef();
@@ -46,10 +45,6 @@ const CardJoin = () => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
 
-        if(name==="accountNumber"){
-            setAccountNumber(value);
-        }
-
     };
 
     const handleNext = () => {
@@ -70,7 +65,6 @@ const CardJoin = () => {
             return;
         }
 
-        localStorage.setItem('accountNumber',accountNumber);
         localStorage.setItem('bankName',selectedBank);
         navigate('/cardDetail',{state:{...form,selectedBank}});
     };
@@ -89,7 +83,6 @@ const CardJoin = () => {
                         type="text"
                         name="name"
                         placeholder="이름을 입력해 주세요."
-                        value={form.name}
                         onChange={handleChange}
                     />
                 </div>
@@ -101,7 +94,6 @@ const CardJoin = () => {
                         type="text"
                         name="lastName"
                         placeholder="영문 성"
-                        value={form.lastName}
                         onChange={handleChange}
                     />
                 </div>
@@ -113,7 +105,6 @@ const CardJoin = () => {
                         type="text"
                         name="firstName"
                         placeholder="여권 이름과 동일하게 작성해 주세요."
-                        value={form.firstName}
                         onChange={handleChange}
                     />
                 </div>
@@ -125,7 +116,6 @@ const CardJoin = () => {
                         type="text"
                         name="phone"
                         placeholder="- 없이 숫자만"
-                        value={form.phone}
                         onChange={handleChange}
                     />
                 </div>
@@ -148,9 +138,11 @@ const CardJoin = () => {
                     </ul>
                 </div>
             </div>
+
             <div className='p-3'>
                 <Button text={'다음'} onClick={handleNext}/>
             </div>
+            
             <BottomModal ref={modalRef} maxHeight="40%">
                 <div className="modal-content">
                     <div className="bank-select">
