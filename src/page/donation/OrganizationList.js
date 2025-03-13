@@ -331,17 +331,15 @@ const Tap2Page = () => {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    {rankingInfo.ranking.length == 2 && (
-                                        <Box>
-                                            <Typography color="white" variant="h6">
-                                                {rankingInfo.ranking[1].name}
-                                            </Typography>
-                                            <Typography color="white" variant="caption">
-                                                {rankingInfo.ranking[1].total_donation.toLocaleString()}
-                                                원
-                                            </Typography>
-                                        </Box>
-                                    )}
+                                    <Box>
+                                        <Typography color="white" variant="h6">
+                                            {rankingInfo.ranking[1]?.name || '-'}
+                                        </Typography>
+                                        <Typography color="white" variant="caption">
+                                            {rankingInfo.ranking[1]?.total_donation?.toLocaleString() || 0}
+                                            원
+                                        </Typography>
+                                    </Box>
                                 </motion.div>
                             </Box>
 
@@ -374,17 +372,15 @@ const Tap2Page = () => {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    {rankingInfo.ranking.length == 1 && (
-                                        <Box>
-                                            <Typography color="white" variant="h6">
-                                                {rankingInfo.ranking[0].name}
-                                            </Typography>
-                                            <Typography color="white" variant="caption">
-                                                {rankingInfo.ranking[0].total_donation.toLocaleString()}
-                                                원
-                                            </Typography>
-                                        </Box>
-                                    )}
+                                    <Box>
+                                        <Typography color="white" variant="h6">
+                                            {rankingInfo.ranking[0]?.name || '-'}
+                                        </Typography>
+                                        <Typography color="white" variant="caption">
+                                            {rankingInfo.ranking[0]?.total_donation?.toLocaleString() || 0}
+                                            원
+                                        </Typography>
+                                    </Box>
                                 </motion.div>
                             </Box>
 
@@ -417,17 +413,15 @@ const Tap2Page = () => {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    {rankingInfo.ranking.length == 3 && (
-                                        <Box>
-                                            <Typography color="white" variant="h6">
-                                                {rankingInfo.ranking[2].name}
-                                            </Typography>
-                                            <Typography color="white" variant="caption">
-                                                {rankingInfo.ranking[2].total_donation.toLocaleString()}
-                                                원
-                                            </Typography>
-                                        </Box>
-                                    )}
+                                    <Box>
+                                        <Typography color="white" variant="h6">
+                                            {rankingInfo.ranking[2]?.name || '-'}
+                                        </Typography>
+                                        <Typography color="white" variant="caption">
+                                            {rankingInfo.ranking[2]?.total_donation?.toLocaleString() || 0}
+                                            원
+                                        </Typography>
+                                    </Box>
                                 </motion.div>
                             </Box>
                         </Box>

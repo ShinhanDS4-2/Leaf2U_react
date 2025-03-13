@@ -11,6 +11,9 @@ const MaturityRate = () => {
     const navigate = useNavigate();
     const { accountInfo, point, setDonationInfo } = useMaturity(); // context
 
+    console.log(accountInfo);
+    console.log(point);
+    console.log(setDonationInfo);
     const [interestDonation, setInterestDonation] = useState(50); // 이자 후원 비율
     const [additionalDonation, setAdditionalDonation] = useState(0); // 개별 후원금
     const [pointDonation, setPointDonation] = useState(0); // 포인트 후원
