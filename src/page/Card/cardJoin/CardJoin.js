@@ -64,7 +64,8 @@ const CardJoin = () => {
             alertRef2.current.openModal();
             return;
         }
-
+        
+        
         localStorage.setItem('bankName',selectedBank);
         navigate('/cardDetail',{state:{...form,selectedBank}});
     };
@@ -83,7 +84,8 @@ const CardJoin = () => {
                         type="text"
                         name="name"
                         placeholder="이름을 입력해 주세요."
-                        onChange={handleChange}
+                        value={form.name} 
+                        onChange={handleChange} 
                     />
                 </div>
 
@@ -94,6 +96,7 @@ const CardJoin = () => {
                         type="text"
                         name="lastName"
                         placeholder="영문 성"
+                        value={form.lastName}
                         onChange={handleChange}
                     />
                 </div>
@@ -105,21 +108,23 @@ const CardJoin = () => {
                         type="text"
                         name="firstName"
                         placeholder="여권 이름과 동일하게 작성해 주세요."
+                        value={form.firstName}
                         onChange={handleChange}
                     />
                 </div>
 
                 {/* 연락처 */}
                 <div className="input-container">
-                    <label>연락처</label>
                     <input
                         type="text"
                         name="phone"
                         placeholder="- 없이 숫자만"
+                        value={form.phone}
                         onChange={handleChange}
                     />
                 </div>
 
+                
                 {/*계좌*/}
                 <div className="input-container">
                     <label className="card-label">카드 연결</label>
@@ -129,7 +134,7 @@ const CardJoin = () => {
                         {selectedBank ? selectedBank : '은행 선택'}
                     </div>
 
-                    <input type="text" name="accountNumber" placeholder="계좌번호 (- 없이 숫자만)" onChange={handleChange}/>
+                    <input type="text" name="accountNumber" placeholder="계좌번호 (- 없이 숫자만)" value={form.accountNumber} onChange={handleChange}/>
                 </div>
 
                 <div className="explain-card">
@@ -159,7 +164,7 @@ const CardJoin = () => {
                                     modalRef.current.closeModal();
                                 }}
                             >
-                                <img src={bank.logo} alt={bank.name} className={`bank-logo ${bank.className}`} /> 
+                                <img src={bank.logo} alt={bank.name} className={`bank-logo ${bank.className}`} onChange={handleChange}/> 
                             </button>
                         ))}
                     </div>

@@ -39,13 +39,6 @@ const CardDetail = () => {
 
     const handleSecondPwdSubmit = async (pwd) => {
         
-        if(pwd==firstPwd){
-
-            pwdModalRef2.current.closeModal();
-            successModalRef.current.openModal();
-
-            console.log("멤버 idx 살아있니?",localStorage.getItem('memberIdx'));
-            console.log("계좌번호는?",formData.accountNumber);
         if (pwd == firstPwd) {
             pwdModalRef2.current.closeModal();
             successModalRef.current.openModal();
@@ -101,7 +94,7 @@ const CardDetail = () => {
             <Header title={'카드 가입'} />
 
             <div className="card-detail-container">
-                <h3>가입 정보 확인</h3>
+                <h3 className="section-title">가입 정보 확인</h3>
                 <div className="info-box">
                     <p>
                         <strong>이름</strong> <span>{formData.name}</span>
@@ -158,6 +151,6 @@ const CardDetail = () => {
         </div>
     );
 };
-};
+
 
 export default CardDetail;
