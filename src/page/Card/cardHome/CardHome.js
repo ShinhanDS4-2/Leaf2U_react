@@ -8,7 +8,6 @@ import './CardHome.css';
 import DoubleButton from '../../../components/button/DoubleButton';
 
 const CardHome = () => {
-    
     const location = useLocation();
     const navigate = useNavigate();
     const modalRef = useRef();
@@ -16,37 +15,35 @@ const CardHome = () => {
 
     const cardYn = location.state?.cardYn || 'Y';
 
-    const [amount,setAmount]=useState(()=>{
+    const [amount, setAmount] = useState(() => {
+        return localStorage.getItem('amount');
+    });
 
-        return localStorage.getItem("amount");
-    })
+    const [accountNumber, setAccountNumber] = useState(() => {
+        return localStorage.getItem('accountNumber');
+    });
 
-    const [accountNumber,setAccountNumber]=useState(()=>{
+    const [bankName, setbankName] = useState(() => {
+        return localStorage.getItem('bankName');
+    });
 
-        return localStorage.getItem("accountNumber");
-    })
+    const [maturityDate, setMaturityDate] = useState('');
 
-    const [bankName,setbankName]=useState(()=>{
-
-        return localStorage.getItem("bankName");
-    })
-
-    const [maturityDate,setMaturityDate]=useState('');
+    // 숫자 포맷
+    const formattedAmount = amount ? Number(amount).toLocaleString() : '';
 
     useEffect(() => {
         if (cardYn === 'N') {
             modalRef.current.openModal();
-        }
-        else if(cardYn=='Y'){
+        } else if (cardYn == 'Y') {
             modalRef2.current.openModal();
         }
 
-        const today=new Date();
-        today.setMonth(today.getMonth()+1);
-        const formattedDate=today.toISOString().split('T')[0];
+        const today = new Date();
+        today.setMonth(today.getMonth() + 1);
+        const formattedDate = today.toISOString().split('T')[0];
 
         setMaturityDate(formattedDate);
-
     }, [cardYn]);
 
     return (
@@ -56,7 +53,7 @@ const CardHome = () => {
             <div className="payment">
                 <h3>
                     매일
-                    <input type="text" className="payment-input" value={amount} readOnly />
+                    <input type="text" className="payment-input" value={formattedAmount} readOnly />
                     원씩 납입
                 </h3>
                 <p className="card-info">
@@ -116,7 +113,7 @@ const CardHome = () => {
                 </ul>
             </div>
 
-            <div className='p-3'>
+            <div className="p-3">
                 <Button text="다음" />
             </div>
 
@@ -125,7 +122,7 @@ const CardHome = () => {
                     <div className="modal-title-box">
                         <h2 className="modal-title">안내</h2>
                     </div>
-                    
+
                     <img src={mainImg} alt="Leaf2U 카드" className="card-image" />
                     <p className="modal-text">
                         <strong>Leaf2U 카드를 발급 받으시겠습니까?</strong>
@@ -144,7 +141,6 @@ const CardHome = () => {
                         cancelText="아니요"
                         cancelOnClick={() => modalRef.current.closeModal()}
                         confirmOnClick={() => {
-
                             navigate('/leaf');
                         }}
                     />
@@ -153,11 +149,13 @@ const CardHome = () => {
 
             <BottomModal ref={modalRef2} maxHeight="70%">
                 <div className="agree-item-modal">
-
                     <div className="summary-title-container">
-                        <h2 className="summary-title">Leaf2U 한달적금을<br/> 개설하시겠습니까?</h2>
+                        <h2 className="summary-title">
+                            Leaf2U 한달적금을
+                            <br /> 개설하시겠습니까?
+                        </h2>
                     </div>
-                    
+
                     <div className="summary-table">
                         <div className="summary-row">
                             <span className="summary-label">매일 납입 금액</span>
@@ -169,7 +167,9 @@ const CardHome = () => {
                         </div>
                         <div className="summary-row">
                             <span className="summary-label">연결계좌</span>
-                            <span className="summary-value">{bankName} {accountNumber}</span>
+                            <span className="summary-value">
+                                {bankName} {accountNumber}
+                            </span>
                         </div>
                         <div className="summary-row">
                             <span className="summary-label">적용금리</span>
@@ -177,8 +177,9 @@ const CardHome = () => {
                         </div>
                     </div>
                     <p className="modal-description">
-                        * 개설일부터 매일 30회 납입 후 만기해지 시 최고 우대금리가 적용됩니다.<br />
-                        * 입금 일정진 진행을 통해 직접 입금하는 상품으로, 위 계획에서 조정됩니다.
+                        * 개설일부터 매일 30회 납입 후 만기해지 시 최고 우대금리가 적용됩니다.
+                        <br />* 입금 일정진 진행을 통해 직접 입금하는 상품으로, 위 계획에서
+                        조정됩니다.
                     </p>
 
                     <DoubleButton
