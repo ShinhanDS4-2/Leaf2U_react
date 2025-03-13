@@ -12,7 +12,6 @@
     text-align: center;
     color: gray;
     font-size: 14px;
-    margin-bottom: 20px;
 }
 
 .notice-item {
@@ -29,25 +28,33 @@
 }
 
 .notice-header {
-    display: flex;
     width: 100%;
-    gap: 10px;
 }
 
 .check-box {
-    width: 20px; /* 고정 크기 */
-    height: 20px; /* 고정 크기 */
-    border: 2px solid #000; /* 체크박스 스타일 */
+    width: 20px;
+    height: 20px;
+    border: 2px solid #343434;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     flex-shrink: 0;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .check-box.checked {
-    background-color:#5DB075 /* 체크 시 색상 변경 */
+    background-color: #5db075;
+    border: 2px solid #5db075;
+    position: relative;
+}
+
+.check-box.checked::after {
+    content: '✔';
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .notice-header h3 {
@@ -57,11 +64,7 @@
 }
 
 .arrow-icon {
-    font-size: 20px;
-    color: gray;
     cursor: pointer;
-    margin-left: auto; /* 오른쪽 끝으로 이동 */
-    flex-shrink: 0; /* 크기 유지 */
 }
 
 .arrow-icon:hover {
@@ -72,9 +75,6 @@ button:disabled {
     background: lightgray;
     cursor: not-allowed;
 }
-.agree-item-modal {
-    padding-top: 50px;
-}
 
 .agree-item {
     font-size: 20px;
@@ -83,4 +83,14 @@ button:disabled {
     padding-right: 50px;
     padding-top: 10px;
     padding-bottom: 30px;
+}
+
+.notice-ul {
+    margin-bottom: 5px;
+}
+
+.notice-text {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
 }
