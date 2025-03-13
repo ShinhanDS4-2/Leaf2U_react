@@ -25,7 +25,7 @@
 .cloud1 {
     position: fixed;
     top: 100px;
-    left: 100vw; 
+    left: 100vw;
     width: 250px;
     height: 150px;
     background-image: url('../../image/cloud.png');
@@ -53,16 +53,16 @@
         left: 100vw;
     }
     to {
-        left: -250px; 
+        left: -250px;
     }
 }
 
 @keyframes cloud-slide2 {
     from {
-        left: 200vw; 
+        left: 200vw;
     }
     to {
-        left: -500px; 
+        left: -500px;
     }
 }
 
@@ -203,8 +203,7 @@
 .feedback-box {
     position: absolute;
     top: 10px;
-    left: 50%;
-    transform: translateX(-50%); /* X축 기준으로 중앙 정렬 */
+    left: 12%;
     background-color: white;
     padding: 24px 12px; /* 내부 여백 증가 // 박스 크기 */
     margin-top: 100px; /* 위치 조정 */
@@ -238,11 +237,4 @@
     font-size: 14px;
     font-weight: bold;
     color: black;
-}
-
-/* 피드백이 사라질 때 */
-.feedback-hidden {
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-    pointer-events: none;
 }

@@ -37,6 +37,7 @@ import Image from './page/deposit/Image';
 
 import Example from './page/Example';
 import Topic from './page/topic/Topic';
+import Point from './page/point/Point';
 
 const theme = createTheme({
     typography: {
@@ -95,9 +96,14 @@ function AppContent() {
                         <Route path="/deposit" element={<Deposit />} />
                         <Route path="/image" element={<Image />} />
 
+                        <Route path="/example" element={<Example />} />
+
                         <Route path="/topic" element={<Topic />} />
 
-                        <Route path="/example" element={<Example />} />
+                        {/*상욱 페이지 START */}
+                        <Route path="/point" element={<Point />} />
+                        {/* <Route path="/pedometer" element={<Pedometer />} />
+                        <Route path="/quiz" element={<Quiz />} /> */}
                     </Routes>
                 </MaturityProvider>
             </div>

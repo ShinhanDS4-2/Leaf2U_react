@@ -10,6 +10,7 @@ import AlertModal from '../../../components/modal/AlertModal';
 import axios from 'axios';
 
 const CardDetail = () => {
+
     const navigate = useNavigate();
     const location = useLocation();
     const formData = location.state || {};
@@ -37,6 +38,7 @@ const CardDetail = () => {
     };
 
     const handleSecondPwdSubmit = async (pwd) => {
+        
         if (pwd == firstPwd) {
             pwdModalRef2.current.closeModal();
             successModalRef.current.openModal();
@@ -80,13 +82,11 @@ const CardDetail = () => {
 
             pwdModalRef2.current.closeModal();
             pwdModalRef1.current.openModal();
-
-            //여기서 axios로
         }
     };
 
     const handleNextPage = () => {
-        navigate('/cardHome', { state: { cardYn: 'Y', cardType: 'L' } });
+        navigate('/cardHome', { state: { cardYn: 'Y',existAccount:'N' } });
     };
 
     return (
@@ -94,8 +94,7 @@ const CardDetail = () => {
             <Header title={'카드 가입'} />
 
             <div className="card-detail-container">
-                <h3>가입 정보 확인</h3>
-
+                <h3 className="section-title">가입 정보 확인</h3>
                 <div className="info-box">
                     <p>
                         <strong>이름</strong> <span>{formData.name}</span>
@@ -118,10 +117,10 @@ const CardDetail = () => {
                 </div>
 
                 <p className="notice">* 위 정보가 사실과 다름이 없음을 확인합니다.</p>
-                <Button text="확인" onClick={handleNextClick} />
-                <div className="p-3">
-                    <Button text="확인" onClick={handleNextClick} />
-                </div>
+            </div>
+
+            <div className='p-3'>
+                <Button text={'다음'} onClick={handleNextClick}/>
             </div>
 
             <BottomModal ref={modalRef} maxHeight="50%">
@@ -152,5 +151,6 @@ const CardDetail = () => {
         </div>
     );
 };
+
 
 export default CardDetail;

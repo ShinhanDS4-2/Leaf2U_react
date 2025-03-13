@@ -1,10 +1,50 @@
 import Button from '../../../components/button/Button';
 import mainImg from '../../../image/tree.png';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import './Start.css';
+import { jwtDecode } from 'jwt-decode';
+import { useEffect } from 'react';
 
 const Start = () => {
+
     const navigate = useNavigate();
+    const location = useLocation(); // URL 파라미터를 가져오기 위해 추가
+
+    const isTokenValid = (token) => {
+        try {
+            const decoded = jwtDecode(token);
+            const now = Date.now() / 1000; // 현재 시간 (초 단위)
+            return decoded.exp > now;
+        } catch (error) {
+            return false;
+        }
+    };
+
+    useEffect(() => {
+        let token = localStorage.getItem('jwtToken'); // 로컬스토리지에서 토큰 가져오기
+
+        // ✅ 자동 로그인 처리
+        if (token) {
+            if (isTokenValid(token)) {
+                console.log("✅ 자동 로그인 성공, 홈으로 이동");
+                navigate('/home'); // 🔥 토큰이 유효하면 홈으로 이동
+                return;
+            } else {
+                console.log("⏳ 토큰 만료됨, 로그아웃 처리");
+                localStorage.removeItem('jwtToken'); // 만료된 토큰 제거
+            }
+        }
+
+        // ✅ 카카오 로그인 후 토큰 처리
+        const searchParams = new URLSearchParams(location.search);
+        token = searchParams.get('token');
+
+        if (token) {
+            localStorage.setItem('jwtToken', token); // 새 JWT 토큰 저장
+            console.log("✅ 카카오 로그인 성공, 토큰 저장 완료");
+            navigate('/home'); // 🔥 로그인 성공 후 홈으로 이동
+        }
+    }, [location, navigate]);
 
     return (
         <div className="h-100 start-field">

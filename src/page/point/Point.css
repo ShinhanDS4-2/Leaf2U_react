@@ -1,0 +1,51 @@
+.point-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh; /* 화면 전체 높이 */
+    max-width: 390px; /* 기존 390*844 해상도 기준 */
+    margin: 0 auto; /* 가운데 정렬 */
+    padding: 5rem;
+    box-sizing: border-box; /* 패딩 포함 크기 유지 */
+}
+
+.point-box {
+    color: forestgreen;
+    width: 150%; /* 전체 너비 사용 */
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.point-card {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 0.7rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem; /* 카드 간격 조정 */
+}
+
+.card-text-container {
+    flex: 1;
+    text-align: left;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+.card-text {
+    font-size: 0.85rem;
+    color: #4b5563;
+}
+
+.point-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}

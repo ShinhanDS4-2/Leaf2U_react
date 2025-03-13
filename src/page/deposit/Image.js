@@ -126,11 +126,15 @@ const Image = () => {
 
                     <p className="image-upload-note">{notice}</p>
                 </div>
+                <div className="maturity-button-field">
+                    <Button
+                        text="다음"
+                        bgColor="#5DB075"
+                        textColor="white"
+                        onClick={handleSubmit}
+                    />
+                </div>
             </Content>
-
-            <div className="button-container">
-                <Button text="다음" bgColor="#5DB075" textColor="white" onClick={handleSubmit} />
-            </div>
 
             <Footer />
 

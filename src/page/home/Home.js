@@ -13,8 +13,9 @@ import Footer from '../../components/footer/Footer';
 import AlertModal from '../../components/modal/AlertModal';
 import CustomCalendar from '../../components/calendar/CustomCalendar';
 import ChallengeItem from '../../components/item/ChallengeItem';
-import { motion } from 'framer-motion';
 import api from '../../utils/api';
+import { AnimatePresence, motion } from 'framer-motion';
+import CustomConfetti from '../../components/effect/CustomConfetti';
 
 function Home() {
     const navigate = useNavigate();
@@ -97,17 +98,6 @@ function Home() {
         }, 10000);
     };
 
-    // Feedback API 호출 함수
-    const getFeedback = async () => {
-        try {
-            const response = await api.post('/openai/feedback');
-            setFeedback(response.data.feedback);
-            console.log('AI 피드백:', response.data.feedback);
-        } catch (error) {
-            console.error('Feedback API 호출 실패:', error);
-        }
-    };
-
     // 챌린지 완료 후 적금 납입 체크 함수
     const challengeCheckRate = () => {
         if (deposit == 'Y') {
@@ -134,11 +124,25 @@ function Home() {
                         console.log(' 서버 응답 상태 코드:', error.response.status);
                         console.log(' 서버 응답 데이터:', error.response.data);
                     }
+                });
+        }
+    };
+
+    // Feedback API 호출 함수
+    const getFeedback = async () => {
+        try {
+            const response = await api
+                .post('/openai/feedback')
+                .then((response) => {
+                    setFeedback(response.data.feedback);
+                    console.log('AI 피드백:', response.data.feedback);
                 })
                 .finally(() => {
                     setCurrentDeposit('N');
                     navigate(location.pathname, { state: { deposit: 'N', type } });
                 });
+        } catch (error) {
+            console.error('Feedback API 호출 실패:', error);
         }
     };
 
@@ -313,14 +317,22 @@ function Home() {
 
     useEffect(() => {
         if (deposit == 'Y') {
+            CustomConfetti();
             setIsChallengeCompleted(true); // 우대금리 UI 보이기
             setIsFeedbackVisible(false); // 피드백 UI는 절대 뜨지 않음
             setIsFeedbackAllowed(false); // 피드백 UI가 떠도 되는 상태 초기화
         }
         getAccountInfo();
         checkToday();
-        challengeCheckRate();
-        getFeedback();
+
+        if (deposit == 'Y') {
+            challengeCheckRate();
+
+            // DB 업데이트 후 약간의 딜레이 후 실행
+            setTimeout(() => {
+                getFeedback();
+            }, 500);
+        }
     }, [deposit]);
 
     return (
@@ -350,7 +362,11 @@ function Home() {
 
                             {/* 확인 버튼 클릭 시 우대금리 UI 사라지고 피드백 UI 나타남*/}
                             <Box className="challenge-button">
-                                <Button text="확인" onClick={handleChallengeConfirm} />
+                                <Button
+                                    text="확인"
+                                    onClick={handleChallengeConfirm}
+                                    className="challenge-button-item"
+                                />
                             </Box>
                         </Box>
                     </Box>
@@ -358,19 +374,27 @@ function Home() {
             )}
 
             {/* AI 피드백 UI 추가 */}
-            {isFeedbackAllowed && isFeedbackVisible && (
-                <Box className={`feedback-box ${!isFeedbackVisible ? 'feedback-hidden' : ''}`}>
-                    {/* 새싹 이미지 영역 */}
-                    <div className="feedback-icon-box">
-                        <img src={Tree} className="feedback-icon" alt="tree icon" />
-                    </div>
+            <AnimatePresence>
+                {isFeedbackAllowed && isFeedbackVisible && (
+                    <motion.div
+                        className="feedback-box"
+                        initial={{ opacity: 0, y: -10 }} // 처음에는 살짝 위에 있고 투명한 상태
+                        animate={{ opacity: 1, y: 0 }} // 부드럽게 내려오면서 투명도 증가
+                        exit={{ opacity: 0, y: -10, transition: { duration: 0.5 } }} // 부드럽게 사라짐
+                        transition={{ duration: 0.5 }} // 애니메이션 속도 설정
+                    >
+                        {/* 새싹 이미지 영역 */}
+                        <div className="feedback-icon-box">
+                            <img src={Tree} className="feedback-icon" alt="tree icon" />
+                        </div>
 
-                    {/* AI 피드백 내용 */}
-                    <Typography className="feedback-text">
-                        {feedback || '피드백 생성 중...'} {/* 피드백 없으면 기본 메시지 */}
-                    </Typography>
-                </Box>
-            )}
+                        {/* AI 피드백 내용 */}
+                        <Typography className="feedback-text">
+                            {feedback || '피드백 생성 중...'} {/* 피드백 없으면 기본 메시지 */}
+                        </Typography>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <Footer />
 
