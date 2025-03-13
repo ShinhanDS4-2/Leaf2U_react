@@ -124,10 +124,6 @@ function Home() {
                         console.log(' 서버 응답 상태 코드:', error.response.status);
                         console.log(' 서버 응답 데이터:', error.response.data);
                     }
-                })
-                .finally(() => {
-                    setCurrentDeposit('N');
-                    navigate(location.pathname, { state: { deposit: 'N', type } });
                 });
         }
     };
@@ -135,9 +131,16 @@ function Home() {
     // Feedback API 호출 함수
     const getFeedback = async () => {
         try {
-            const response = await api.post('/openai/feedback');
-            setFeedback(response.data.feedback);
-            console.log('AI 피드백:', response.data.feedback);
+            const response = await api
+                .post('/openai/feedback')
+                .then((response) => {
+                    setFeedback(response.data.feedback);
+                    console.log('AI 피드백:', response.data.feedback);
+                })
+                .finally(() => {
+                    setCurrentDeposit('N');
+                    navigate(location.pathname, { state: { deposit: 'N', type } });
+                });
         } catch (error) {
             console.error('Feedback API 호출 실패:', error);
         }
