@@ -7,7 +7,7 @@ import OrganizationButton from '../../components/item/OrganizationButton';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { useMaturity } from '../../context/MaturityContext';
-import axios from 'axios';
+import api from '../../utils/api';
 
 const MaturityList = () => {
     const navigate = useNavigate();
@@ -23,25 +23,6 @@ const MaturityList = () => {
             alertRef.current.openModal();
         }
     };
-
-    // axios 인스턴스
-    const api = axios.create({
-        baseURL: '/api',
-    });
-
-    // 인터셉터
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken');
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        },
-    );
 
     // 알림 리스트
     const getOrganizationList = () => {
