@@ -7,7 +7,7 @@ const Start = () => {
     const navigate = useNavigate();
 
     return (
-        <>
+        <div className="h-100 start-field">
             <div className="top-container">
                 <div className="TextBox">
                     <h2 className="leaf">Leaf2U</h2>
@@ -39,7 +39,7 @@ const Start = () => {
                     />
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

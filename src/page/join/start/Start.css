@@ -42,11 +42,10 @@
     font-weight: bold;
 }
 .top-container {
-    height: 45%;
+    background-color: #fafafa;
 }
 .container2 {
     background-color: #a2d39c;
-    height: 55%;
 }
 .image-section {
     text-align: center;
@@ -54,4 +53,8 @@
 .image-section img {
     padding-top: 50px;
     width: 80%;
+}
+
+.start-field {
+    background-color: #a2d39c;
 }
