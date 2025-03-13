@@ -359,15 +359,17 @@ const Termination = () => {
             {/* 간편 비밀번호 입력 모달 END */}
             {/* 적금해지 완료 모달 START */}
             <BottomModal ref={completeModalRef}>
-                <Typography variant="h6" className="fw-bold m-4 ">
+                <Typography variant="h6" className="fw-bold m-4 mb-5 ">
                     적금 해지가 완료되었습니다.
                 </Typography>
-                <Button
-                    text="확인"
-                    onClick={(e) => {
-                        CloseCompleteModal();
-                    }}
-                />
+                <div className="ms-3 me-3">
+                    <Button
+                        text="확인"
+                        onClick={(e) => {
+                            CloseCompleteModal();
+                        }}
+                    />
+                </div>
             </BottomModal>
             {/* 적금해지 완료 모달 END */}
             {/* 비밀번호 불일치 모달 START */}

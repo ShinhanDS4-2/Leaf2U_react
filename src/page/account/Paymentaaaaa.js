@@ -166,9 +166,6 @@ const Paymentaaaaa = () => {
                     <div className="p-3">
                         <Button text={'변경'} onClick={handleNextPage} />
                     </div>
-                    <Typography variant="body2" color="error" className="text-center mt-2">
-                        **디자인 수정중인 페이지**
-                    </Typography>
                 </Content>
 
                 <Keypad onKeyPress={handleKeypadClick} onDelete={handleDelete} />
