@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '../../../components/button/Button';
 import Header from '../../../components/header/Header';
 import BottomModal from '../../../components/modal/BottomModal';
-import mainImg from '../../../image/leaf2u-card.png';
+import cardImg from '../../../image/leafcard.png';
 import './CardHome.css';
 import DoubleButton from '../../../components/button/DoubleButton';
 
@@ -132,7 +132,11 @@ const CardHome = () => {
                         <h2 className="modal-title">안내</h2>
                     </div>
 
-                    <img src={mainImg} alt="Leaf2U 카드" className="card-image" />
+                    <div className="d-flex justify-content-center">
+                        <div className="card-img-div mb-4 mt-2 w-50">
+                            <img src={cardImg} alt="카드 이미지" />
+                        </div>
+                    </div>
                     <p className="modal-text">
                         <strong>Leaf2U 카드를 발급 받으시겠습니까?</strong>
                         <br />
