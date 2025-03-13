@@ -3,8 +3,9 @@ import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 import { Card, Box, CardContent, Divider, Typography } from '@mui/material';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMaturity } from '../../context/MaturityContext';
 import axios from 'axios';
 
 // axios 인스턴스
@@ -38,6 +39,7 @@ const Maturity = () => {
     const [accountDTO, setAccountDTO] = useState(null); // API 응답값 accountDTO
     const [rateSumMap, setRateSumMap] = useState(null); // API 응답값 rateSumMap
     const navigate = useNavigate();
+    const { setAccountInfo, setPoint } = useMaturity(); // context
 
     // (3-1) 예상이자조회(만기일 해지) API
     const getMaturityInterest = () => {
@@ -46,6 +48,8 @@ const Maturity = () => {
                 const data = response.data; // API 호출 응답값: rateSumMap, accountDTO
                 setAccountDTO(data.accountDTO);
                 setRateSumMap(data.rateSumMap);
+                setAccountInfo(data.accountDTO);
+                setPoint(data.point);
                 console.log('data.accountDTO?? ', data.accountDTO); // 🔥 확인용 로그
                 console.log('rateSumMap?? ', data.rateSumMap); // 🔥 확인용 로그
             })

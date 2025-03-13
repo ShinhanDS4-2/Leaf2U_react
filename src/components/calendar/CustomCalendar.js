@@ -1,28 +1,47 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './CustomCalendar.css';
 import { Icon } from '@iconify/react/dist/iconify.js';
+import dayjs from 'dayjs';
+import Coin from '../../image/coin_gold.png';
 
 const CustomCalendar = ({ minDate, maxDate, stickerDates }) => {
     const [value, onChange] = useState(new Date());
+    const [displayedDates, setDisplayedDates] = useState({});
+
+    useEffect(() => {
+        if (!stickerDates || Object.keys(stickerDates).length === 0) return;
+
+        setDisplayedDates({}); // 기존 데이터 초기화
+        const datesArray = Object.keys(stickerDates);
+
+        const addStickers = async () => {
+            for (let i = 0; i < datesArray.length; i++) {
+                setDisplayedDates((prev) => ({
+                    ...prev,
+                    [datesArray[i]]: true, // 새로운 날짜 추가
+                }));
+
+                await new Promise((resolve) => setTimeout(resolve, 200)); // 0.1초 대기 후 다음 실행
+            }
+        };
+
+        addStickers();
+    }, [stickerDates]);
 
     const formatDay = (locale, date) => date.getDate();
 
     const tileContent = ({ date, view }) => {
         if (view === 'month') {
-            const day = date.getDate();
-            const month = date.getMonth() + 1;
+            const formattedDate = dayjs(date).format('YYYY-MM-DD');
 
-            // 날짜를 'YYYY-MM-DD' 형식으로 변환
-            const key = `2025-${month.toString().padStart(2, '0')}-${day
-                .toString()
-                .padStart(2, '0')}`;
-
-            if (stickerDates[key]) {
+            if (displayedDates[formattedDate]) {
+                // 변경된 상태 사용
                 return (
-                    <span className="calendar-sticker">
-                        <Icon icon="fluent-emoji:coin" width="20" height="20" />
+                    <span className="calendar-sticker animate-fade-in">
+                        <img src={Coin} width={20}/>
+                        {/* <Icon icon="fluent-emoji:coin" width="20" height="20" /> */}
                     </span>
                 );
             }
