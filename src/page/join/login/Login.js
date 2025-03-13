@@ -4,7 +4,6 @@ import { Icon } from "@iconify/react";
 import { useNavigate,useLocation } from 'react-router-dom';
 import axios from 'axios';
 import mainImg from '../../../image/새싹-하양.png';
-import {jwtDecode} from 'jwt-decode';
 
 
 function Login() {
@@ -21,35 +20,10 @@ function Login() {
         }
     };  
 
-    const isTokenValid=(token)=>{
-
-        try{
-            const decoded=jwtDecode(token);
-            const now=Date.now()/1000;
-            return decoded.exp>now;
-        }catch(error){
-            return false;
-        }
-    }
-
     useEffect(()=>{
 
-        const token = localStorage.getItem('jwtToken'); // 로컬스토리지에서 토큰 가져오기
-
-        if (token) {
-            if(isTokenValid(token)){
-                console.log("로그인 유지, 홈으로 이동");
-                navigate('/home');  // 토큰이 있으면 /home으로 이동
-                return;
-            }else{
-                console.log("토큰 만료됨, 로그아웃");
-                localStorage.removeItem('jwtToken');
-            }
-            
-        }
-
         const searchParams=new URLSearchParams(location.search);
-        token=searchParams.get('token');
+        const token=searchParams.get('token');
 
         if(token){
 
