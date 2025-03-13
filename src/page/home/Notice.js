@@ -3,30 +3,30 @@ import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 import NoticeBox from '../../components/box/NoticeBox';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../utils/api';
 
 const Notice = () => {
     const [prevList, setPrevList] = useState([]);
     const [todayList, setTodayList] = useState([]);
 
-    // axios 인스턴스
-    const api = axios.create({
-        baseURL: '/api',
-    });
+    // // axios 인스턴스
+    // const api = axios.create({
+    //     baseURL: '/api',
+    // });
 
-    // 인터셉터
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken');
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        },
-    );
+    // // 인터셉터
+    // api.interceptors.request.use(
+    //     (config) => {
+    //         const token = localStorage.getItem('jwtToken');
+    //         if (token) {
+    //             config.headers.Authorization = `Bearer ${token}`;
+    //         }
+    //         return config;
+    //     },
+    //     (error) => {
+    //         return Promise.reject(error);
+    //     },
+    // );
 
     // 알림 리스트
     const getNoticeList = () => {

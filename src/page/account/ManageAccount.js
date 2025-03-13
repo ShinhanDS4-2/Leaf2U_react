@@ -5,7 +5,7 @@ import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 import CardInfoPage from '../../page/account/CardInfoPage'; // 카드정보 Page
 import AccountInfoPage from '../../page/account/AccountInfoPage'; // 계좌정보 Page
-import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
+// import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
 
 // axios 인스턴스(api) 및 인터셉터 자동추가됨 -> api이름으로 사용
 
@@ -50,42 +50,42 @@ const ManageAccount = () => {
     // (1) 계좌 기본정보 조회 API
     // @param 없음
     // @return accountDTO
-    const getAccountInfo = () => {
-        api.get('/account/info')
-            .then((response) => {
-                const data = response.data; // API 호출 응답값: accountDTO
-                setInterestData(data);
+    // const getAccountInfo = () => {
+    //     api.get('/account/info')
+    //         .then((response) => {
+    //             const data = response.data; // API 호출 응답값: accountDTO
+    //             setInterestData(data);
 
-                console.log('(1) 계좌 기본정보 조회 API 응답값: ', data); // 🔥 확인용 로그
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
+    //             console.log('(1) 계좌 기본정보 조회 API 응답값: ', data); // 🔥 확인용 로그
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    // };
 
     // (2) 납입금액 변경 API
     // @param accountDTO (accountPassword, paymentAmount) -> 계좌 비번이랑 변경할 납입금액 입력받아야함
     // @return 1(성공), 0(실패), 401(비밀번호 불일치)
-    const updatePaymentAmount = () => {
-        api.get('/account/update/paymentAmount')
-            .then((response) => {
-                const data = response.data; // API 호출 응답값: 1(성공), 0(실패), 401(비밀번호 불일치)
-                setInterestData(data);
+    // const updatePaymentAmount = () => {
+    //     api.get('/account/update/paymentAmount')
+    //         .then((response) => {
+    //             const data = response.data; // API 호출 응답값: 1(성공), 0(실패), 401(비밀번호 불일치)
+    //             setInterestData(data);
 
-                console.log('(2) 납입금액 변경 API 응답값: ', data); // 🔥 확인용 로그
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
+    //             console.log('(2) 납입금액 변경 API 응답값: ', data); // 🔥 확인용 로그
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    // };
 
-    useEffect(() => {
-        if (tabIndex === 0) {
-            // ??? 카드 기본정보 조회 API 호출해서 정보 뿌려야함
-        } else if (tabIndex === 1) {
-            getAccountInfo(); // (1) 계좌 기본정보 조회 API
-        }
-    }, [tabIndex]); // tabIndex가 변경될 때마다 호출됨
+    // useEffect(() => {
+    //     if (tabIndex === 0) {
+    //         // ??? 카드 기본정보 조회 API 호출해서 정보 뿌려야함
+    //     } else if (tabIndex === 1) {
+    //         getAccountInfo(); // (1) 계좌 기본정보 조회 API
+    //     }
+    // }, [tabIndex]); // tabIndex가 변경될 때마다 호출됨
 
     return (
         <>

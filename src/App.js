@@ -1,6 +1,10 @@
 import './App.css';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { LoadingProvider, useLoading } from './context/LoadingContext';
+import Loading from './components/loading/Loading';
+import { setupAxiosInterceptors } from './utils/api';
 import { MaturityProvider } from './context/MaturityContext';
 
 import Login from './page/join/login/Login';
@@ -33,6 +37,7 @@ import Image from './page/deposit/Image';
 
 import Example from './page/Example';
 import Topic from './page/topic/Topic';
+import Point from './page/point/Point';
 
 const theme = createTheme({
     typography: {
@@ -40,9 +45,16 @@ const theme = createTheme({
     },
 });
 
-function App() {
+function AppContent() {
+    const { isLoading, startLoading, stopLoading } = useLoading();
+
+    useEffect(() => {
+        setupAxiosInterceptors(startLoading, stopLoading);
+    }, []);
+
     return (
-        <ThemeProvider theme={theme}>
+        <>
+            {isLoading && <Loading />}
             <div className="w-100 h-100">
                 <MaturityProvider>
                     <Routes>
@@ -84,13 +96,28 @@ function App() {
                         <Route path="/deposit" element={<Deposit />} />
                         <Route path="/image" element={<Image />} />
 
+                        <Route path="/example" element={<Example />} />
+
                         <Route path="/topic" element={<Topic />} />
 
-                        <Route path="/example" element={<Example />} />
+                        {/*상욱 페이지 START */}
+                        <Route path="/point" element={<Point />} />
+                        {/* <Route path="/pedometer" element={<Pedometer />} />
+                        <Route path="/quiz" element={<Quiz />} /> */}
                     </Routes>
                 </MaturityProvider>
             </div>
-        </ThemeProvider>
+        </>
+    );
+}
+
+function App() {
+    return (
+        <LoadingProvider>
+            <ThemeProvider theme={theme}>
+                <AppContent />
+            </ThemeProvider>
+        </LoadingProvider>
     );
 }
 

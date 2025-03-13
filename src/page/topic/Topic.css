@@ -1,6 +1,7 @@
 /* 기본 설정 */
 .topic-container {
     background-color: white;
+    align-items: center;
     padding: 16px;
     min-height: 100vh;
 }

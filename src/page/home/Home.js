@@ -15,6 +15,7 @@ import CustomCalendar from '../../components/calendar/CustomCalendar';
 import ChallengeItem from '../../components/item/ChallengeItem';
 import { AnimatePresence, motion } from 'framer-motion';
 import PwdModal from '../../components/modal/PwdModal6';
+import CustomConfetti from '../../components/effect/CustomConfetti';
 
 function Home() {
     const navigate = useNavigate();
@@ -178,10 +179,6 @@ function Home() {
                         console.log(' 서버 응답 상태 코드:', error.response.status);
                         console.log(' 서버 응답 데이터:', error.response.data);
                     }
-                })
-                .finally(() => {
-                    setCurrentDeposit('N');
-                    navigate(location.pathname, { state: { deposit: 'N', type } });
                 });
         }
     };
@@ -189,9 +186,16 @@ function Home() {
     // Feedback API 호출 함수
     const getFeedback = async () => {
         try {
-            const response = await api.post('/openai/feedback');
-            setFeedback(response.data.feedback);
-            console.log('AI 피드백:', response.data.feedback);
+            const response = await api
+                .post('/openai/feedback')
+                .then((response) => {
+                    setFeedback(response.data.feedback);
+                    console.log('AI 피드백:', response.data.feedback);
+                })
+                .finally(() => {
+                    setCurrentDeposit('N');
+                    navigate(location.pathname, { state: { deposit: 'N', type } });
+                });
         } catch (error) {
             console.error('Feedback API 호출 실패:', error);
         }
@@ -369,6 +373,7 @@ function Home() {
 
     useEffect(() => {
         if (deposit == 'Y') {
+            CustomConfetti();
             setIsChallengeCompleted(true); // 우대금리 UI 보이기
             setIsFeedbackVisible(false); // 피드백 UI는 절대 뜨지 않음
             setIsFeedbackAllowed(false); // 피드백 UI가 떠도 되는 상태 초기화
@@ -418,7 +423,11 @@ function Home() {
 
                             {/* 확인 버튼 클릭 시 우대금리 UI 사라지고 피드백 UI 나타남*/}
                             <Box className="challenge-button">
-                                <Button text="확인" onClick={handleChallengeConfirm} />
+                                <Button
+                                    text="확인"
+                                    onClick={handleChallengeConfirm}
+                                    className="challenge-button-item"
+                                />
                             </Box>
                         </Box>
                     </Box>
@@ -551,7 +560,7 @@ function Home() {
                                 <img
                                     src={Tree}
                                     style={{
-                                        width: '15%',
+                                        width: '13%',
                                         display: 'inline',
                                         marginLeft: '5px',
                                         verticalAlign: 'middle',

@@ -7,6 +7,7 @@ import DoubleButton from '../components/button/DoubleButton';
 import BottomModal from '../components/modal/BottomModal';
 import AlertModal from '../components/modal/AlertModal';
 import CustomCalendar from '../components/calendar/CustomCalendar';
+import CustomConfetti from '../components/effect/CustomConfetti';
 
 function Home() {
     // 🟢 모달 참조용 ref 생성
@@ -36,10 +37,17 @@ function Home() {
         }
     };
 
+    const handleConfetti = () => {
+        CustomConfetti();
+    };
+
     return (
         <div>
             <Content>
                 <div>
+                    <div className="border m-2 p-4" onClick={handleConfetti}>
+                        클릭 시 이벤트 발생
+                    </div>
                     <div className="border m-2 p-4" onClick={handleOpenModal}>
                         클릭 시 이벤트 발생
                     </div>
