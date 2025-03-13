@@ -2,10 +2,10 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-areas:
-        "num1 num2 num3"
-        "num4 num5 num6"
-        "num7 num8 num9"
-        ".    num0 del";
+        'num1 num2 num3'
+        'num4 num5 num6'
+        'num7 num8 num9'
+        '.    num0 del';
     gap: 10px;
     padding: 20px;
     position: fixed;
@@ -15,7 +15,7 @@
     width: 100%;
     background: #fff;
     border-radius: 10px 10px 0 0;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .keypad button {
@@ -31,14 +31,36 @@
     background: #ddd;
 }
 
-.keypad .num1 { grid-area: num1; }
-.keypad .num2 { grid-area: num2; }
-.keypad .num3 { grid-area: num3; }
-.keypad .num4 { grid-area: num4; }
-.keypad .num5 { grid-area: num5; }
-.keypad .num6 { grid-area: num6; }
-.keypad .num7 { grid-area: num7; }
-.keypad .num8 { grid-area: num8; }
-.keypad .num9 { grid-area: num9; }
-.keypad .num0 { grid-area: num0; }
-.keypad .delete { grid-area: del; }
+.keypad .num1 {
+    grid-area: num1;
+}
+.keypad .num2 {
+    grid-area: num2;
+}
+.keypad .num3 {
+    grid-area: num3;
+}
+.keypad .num4 {
+    grid-area: num4;
+}
+.keypad .num5 {
+    grid-area: num5;
+}
+.keypad .num6 {
+    grid-area: num6;
+}
+.keypad .num7 {
+    grid-area: num7;
+}
+.keypad .num8 {
+    grid-area: num8;
+}
+.keypad .num9 {
+    grid-area: num9;
+}
+.keypad .num0 {
+    grid-area: num0;
+}
+.keypad .delete {
+    grid-area: del;
+}

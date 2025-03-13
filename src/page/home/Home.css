@@ -2,7 +2,6 @@
     background-image: url('../../image/background.png');
     background-size: cover;
     background-repeat: no-repeat;
-    /* height: 100vh;  */
 }
 
 .tree-div {
@@ -26,20 +25,20 @@
 .cloud1 {
     position: fixed;
     top: 100px;
-    left: -250px;
+    left: 100vw;
     width: 250px;
     height: 150px;
     background-image: url('../../image/cloud.png');
     background-repeat: repeat-x;
     background-size: contain;
-    animation: cloud-slide 15s linear infinite;
+    animation: cloud-slide 10s linear infinite;
     z-index: 1;
 }
 
 .cloud2 {
     position: fixed;
     top: 200px;
-    left: -250px;
+    left: 100vw;
     width: 250px;
     height: 150px;
     background-image: url('../../image/cloud.png');
@@ -49,22 +48,21 @@
     z-index: 1;
 }
 
-/* 구름이 슬라이드 되는 애니메이션 */
 @keyframes cloud-slide {
     from {
-        left: -250px;
+        left: 100vw;
     }
     to {
-        left: 100vh;
+        left: -250px;
     }
 }
 
 @keyframes cloud-slide2 {
     from {
-        left: -500px;
+        left: 200vw;
     }
     to {
-        left: 100vh;
+        left: -500px;
     }
 }
 
@@ -143,4 +141,100 @@
 
 .rate-operator {
     padding-top: 14px;
+}
+
+/* 회색 배경 */
+.home-overlay {
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 회색 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 챌린지 완료 UI */
+.challenge-popup {
+    background-color: transparent; /* 완전 투명 */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 100;
+    box-shadow: none;
+    margin-top: -150px;
+}
+
+/* 챌린지 횟수 %d 회 */
+.challenge-count {
+    font-size: 18px !important;
+    font-weight: bold;
+    color: white !important;
+    margin-top: 5px;
+}
+
+/* 매일금리 - 노란색 강조 */
+.challenge-text {
+    font-size: 30px !important;
+    font-weight: bold;
+    color: #fee500 !important;
+    margin-top: 5px;
+}
+
+/* 우대금리 텍스트 */
+.challenge-rate {
+    font-size: 22px !important;
+    font-weight: bold;
+    color: white;
+    margin-top: 5px !important;
+}
+
+/* 챌린지 확인 버튼 */
+.challenge-button {
+    margin-top: 15px; /* 버튼 위쪽 여백 */
+    display: flex;
+    justify-content: center;
+}
+
+/* 피드백 박스 스타일 */
+.feedback-box {
+    position: absolute;
+    top: 10px;
+    left: 12%;
+    background-color: white;
+    padding: 24px 12px; /* 내부 여백 증가 // 박스 크기 */
+    margin-top: 100px; /* 위치 조정 */
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: flex-start; /* 새싹 이미지 텍스트 첫 줄 맞춤 */
+    width: 80%;
+    max-width: 300px;
+    z-index: 1000; /* 화면의 가장 앞쪽 배치 (구름보다 우선) */
+    transition: opacity 1s ease-in-out; /* 부드러운 사라짐 효과 */
+}
+
+/* 피드백 아이콘 박스 영역 */
+.feedback-icon-box {
+    display: flex;
+    align-items: center; /* 아이콘을 텍스트 첫 줄과 맞춤 */
+    flex-shrink: 0; /* 아이콘 크기 고정 */
+    margin-right: 8px; /* 텍스트와 간격 조정 */
+}
+
+/* 피드백 아이콘 (트리) */
+.feedback-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+/* 피드백 텍스트 */
+.feedback-text {
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
 }

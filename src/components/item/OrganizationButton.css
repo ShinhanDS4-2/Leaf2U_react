@@ -5,16 +5,25 @@
 }
 
 .organizatoin-list {
-    background-color: #4B9460;
+    background-color: #4b9460;
     border-radius: 60px;
     padding: 5px;
 }
 
 .organization-img {
     border-radius: 50%;
-    background-color: wheat;
+    background-color: #fafafa;
     width: 70px;
     height: 70px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.organization-img img {
+    width: 100%;
+    object-fit: cover;
 }
 
 .organization-title {

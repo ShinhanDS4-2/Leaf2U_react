@@ -14,7 +14,6 @@ import KakaoImg from '../../../image/kakao.png';
 
 const CardJoin = () => {
 
-    const [cardNumber, setCardNumber] = useState('');
     const navigate = useNavigate();
     const modalRef=useRef();
     const alertRef=useRef();
@@ -26,7 +25,7 @@ const CardJoin = () => {
         lastName: '',
         firstName: '',
         phone: '',
-        cardNumber:'',
+        accountNumber:'',
     });
 
     const [selectedBank,setSelectedBank]=useState('');
@@ -45,10 +44,6 @@ const CardJoin = () => {
 
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
-
-        if(name==="cardNumber"){
-            setCardNumber(value);
-        }
 
     };
 
@@ -69,9 +64,8 @@ const CardJoin = () => {
             alertRef2.current.openModal();
             return;
         }
-
-        console.log("카드넘버",cardNumber);
-        localStorage.setItem('cardNumber',cardNumber);
+        
+        
         localStorage.setItem('bankName',selectedBank);
         navigate('/cardDetail',{state:{...form,selectedBank}});
     };
@@ -90,8 +84,8 @@ const CardJoin = () => {
                         type="text"
                         name="name"
                         placeholder="이름을 입력해 주세요."
-                        value={form.name}
-                        onChange={handleChange}
+                        value={form.name} 
+                        onChange={handleChange} 
                     />
                 </div>
 
@@ -121,7 +115,6 @@ const CardJoin = () => {
 
                 {/* 연락처 */}
                 <div className="input-container">
-                    <label>연락처</label>
                     <input
                         type="text"
                         name="phone"
@@ -131,6 +124,7 @@ const CardJoin = () => {
                     />
                 </div>
 
+                
                 {/*계좌*/}
                 <div className="input-container">
                     <label className="card-label">카드 연결</label>
@@ -140,7 +134,7 @@ const CardJoin = () => {
                         {selectedBank ? selectedBank : '은행 선택'}
                     </div>
 
-                    <input type="text" name="cardNumber" placeholder="카드번호 (- 없이 숫자만)" onChange={handleChange}/>
+                    <input type="text" name="accountNumber" placeholder="계좌번호 (- 없이 숫자만)" value={form.accountNumber} onChange={handleChange}/>
                 </div>
 
                 <div className="explain-card">
@@ -149,9 +143,11 @@ const CardJoin = () => {
                     </ul>
                 </div>
             </div>
+
             <div className='p-3'>
                 <Button text={'다음'} onClick={handleNext}/>
             </div>
+            
             <BottomModal ref={modalRef} maxHeight="40%">
                 <div className="modal-content">
                     <div className="bank-select">
@@ -168,14 +164,14 @@ const CardJoin = () => {
                                     modalRef.current.closeModal();
                                 }}
                             >
-                                <img src={bank.logo} alt={bank.name} className={`bank-logo ${bank.className}`} /> 
+                                <img src={bank.logo} alt={bank.name} className={`bank-logo ${bank.className}`} onChange={handleChange}/> 
                             </button>
                         ))}
                     </div>
                 </div>
             </BottomModal>
             <AlertModal ref={alertRef} text="모든 항목을 입력해 주세요." />
-            <AlertModal ref={alertRef2} text="은행을 선택해 주세요" />
+            <AlertModal ref={alertRef2} text="은행을 선택해 주세요." />
 
         </div>
     );

@@ -7,15 +7,14 @@ import Header from '../../../components/header/Header';
 import AlertModal from '../../../components/modal/AlertModal';
 
 const Payment = () => {
-
     const navigate = useNavigate();
-    const alertRef=useRef();
+    const alertRef = useRef();
     const [amount, setAmount] = useState('');
 
     // 페이지가 새로고침되거나 처음 접속할 때마다 amount를 빈 문자열로 초기화
     useEffect(() => {
-        setAmount('');                                   // sessionStorage에서 값을 가져오지 않고, 항상 빈 문자열로 초기화
-        sessionStorage.removeItem('paymentAmount');      // 필요하다면 sessionStorage도 초기화
+        setAmount(''); // sessionStorage에서 값을 가져오지 않고, 항상 빈 문자열로 초기화
+        sessionStorage.removeItem('paymentAmount'); // 필요하다면 sessionStorage도 초기화
     }, []);
 
     const handleChange = (e) => {
@@ -24,7 +23,6 @@ const Payment = () => {
     };
 
     const handleNextPage = async () => {
-        
         const numAmount = Number(amount);
 
         if (numAmount < 100 || numAmount > 30000) {
@@ -51,6 +49,7 @@ const Payment = () => {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
                 },
+                
             });
 
             if (!response.ok) {
@@ -61,9 +60,10 @@ const Payment = () => {
             const data = await response.json();
             console.log('서버 응답:', data);
 
-            localStorage.setItem("amount",amount);
-            navigate("/cardHome",{state:{cardYn:data.cardYn}});
-            
+            localStorage.setItem('amount', amount);
+            localStorage.setItem('memberIdx', data.memberIdx); //멤버 Idx 저장
+
+            navigate('/cardHome', { state: { cardYn: data.cardYn } });
         } catch (error) {
             console.error('API 요청 실패: ', error);
         }
@@ -71,8 +71,14 @@ const Payment = () => {
 
     // 키패드 버튼 클릭 시 숫자 추가
     const handleKeypadClick = (num) => {
-        setAmount((prev) => (prev + num).slice(0, 5)); // 최대 5자리까지만 입력
+        setAmount((prev) => {
+            const newAmount = (prev + num).replace(/[^0-9]/g, '').slice(0, 5); // 최대 5자리까지만 입력
+            return newAmount;
+        });
     };
+
+    // 숫자 포맷
+    const formattedAmount = amount ? Number(amount).toLocaleString() : '';
 
     // 입력 지우기
     const handleDelete = () => {
@@ -83,27 +89,29 @@ const Payment = () => {
         <div>
             <Header title={'한달적금 개설'} />
 
-            <div className="payment">
-                <h3>
-                    매일{' '}
-                    <input
-                        type="text"
-                        value={amount}
-                        onChange={handleChange}
-                        placeholder="1,000"
-                        className="payment-input"
-                    />
-                    원씩 납입
-                </h3>
+            <div className="content ps-0 pe-0">
+                <div className="payment">
+                    <h3>
+                        매일{' '}
+                        <input
+                            type="text"
+                            value={formattedAmount}
+                            onChange={handleChange}
+                            placeholder="1,000"
+                            className="payment-input"
+                        />
+                        원씩 납입
+                    </h3>
+                </div>
+                <div className="payment-info">
+                    <p>100원부터 30,000원까지 입력 가능</p>
+                </div>
+                <div className="p-3">
+                    <Button text={'개설정보 확인'} onClick={handleNextPage} />
+                </div>
+                <Keypad onKeyPress={handleKeypadClick} onDelete={handleDelete} />
+                <AlertModal ref={alertRef} text="100원부터 30,000원까지 입력 가능합니다." />
             </div>
-            <div className="payment-info">
-                <p>100원부터 30,000원까지 입력 가능</p>
-            </div>
-            <div className='p-3'>
-                <Button text={'개설정보 확인'} onClick={handleNextPage} />
-            </div>
-            <Keypad onKeyPress={handleKeypadClick} onDelete={handleDelete} />
-            <AlertModal ref={alertRef} text="100원부터 30,000원까지 입력 가능합니다."/>
         </div>
     );
 };
