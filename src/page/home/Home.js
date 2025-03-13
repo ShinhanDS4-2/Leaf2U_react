@@ -15,6 +15,7 @@ import CustomCalendar from '../../components/calendar/CustomCalendar';
 import ChallengeItem from '../../components/item/ChallengeItem';
 import api from '../../utils/api';
 import { AnimatePresence, motion } from 'framer-motion';
+import CustomConfetti from '../../components/effect/CustomConfetti';
 
 function Home() {
     const navigate = useNavigate();
@@ -313,6 +314,7 @@ function Home() {
 
     useEffect(() => {
         if (deposit == 'Y') {
+            CustomConfetti();
             setIsChallengeCompleted(true); // 우대금리 UI 보이기
             setIsFeedbackVisible(false); // 피드백 UI는 절대 뜨지 않음
             setIsFeedbackAllowed(false); // 피드백 UI가 떠도 되는 상태 초기화
@@ -357,7 +359,11 @@ function Home() {
 
                             {/* 확인 버튼 클릭 시 우대금리 UI 사라지고 피드백 UI 나타남*/}
                             <Box className="challenge-button">
-                                <Button text="확인" onClick={handleChallengeConfirm} />
+                                <Button
+                                    text="확인"
+                                    onClick={handleChallengeConfirm}
+                                    className="challenge-button-item"
+                                />
                             </Box>
                         </Box>
                     </Box>
