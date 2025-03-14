@@ -52,14 +52,14 @@ const Quiz = () => {
 
     // 🚨 `return`이 함수 안으로 들어가도록 수정
     return (
-        <div className="point-container">
+        <div className="point1-container">
             <Header title="포인트" />
             <div className="quiz-title">{new Date().toLocaleDateString()} QUIZ</div>{' '}
             {/* 🚨 여백 조정 */}
             {quiz ? (
                 <>
                     <div className="quiz-content">
-                        <p className="point-text">{quiz.question}</p>
+                        <p className="point1-text">{quiz.question}</p>
                     </div>
 
                     <div className="quiz-buttons">
@@ -80,8 +80,8 @@ const Quiz = () => {
                     <div className="hint-container" onClick={handleHintClick}>
                         <img src={HintImage} alt="Hint" className="hint-icon" />
                         <div className="hint-content">
-                            <p className="point-text-title">힌트 보기</p>
-                            <p className="point-text-description">
+                            <p className="point1-text-title">힌트 보기</p>
+                            <p className="point1-text-description">
                                 관련 기사를 읽고 힌트를 얻을 수 있어요! +5P
                             </p>
                         </div>
@@ -91,13 +91,13 @@ const Quiz = () => {
                         variant="contained"
                         color="success"
                         onClick={handleSubmitAnswer}
-                        className="point-button"
+                        className="point1-button"
                     >
                         정답 확인
                     </Button>
                 </>
             ) : (
-                <p className="point-text">퀴즈를 로딩 중입니다...</p>
+                <p className="point1-text">퀴즈를 로딩 중입니다...</p>
             )}
             <AlertModal ref={useRef()} text={message} />
             <Footer />
