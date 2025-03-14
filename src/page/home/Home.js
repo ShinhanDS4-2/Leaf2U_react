@@ -58,6 +58,7 @@ function Home() {
     const bottomModalRef = useRef();
     const alertRef = useRef();
     const pwdModalRef = useRef();
+    const alertRefPwd = useRef(); // 비밀번호 불일치 모달
 
     const handleOpenBottomModal = () => {
         if (bottomModalRef.current) {
@@ -94,11 +95,12 @@ function Home() {
     const handlePasswordSubmit = async (inputPwd) => {
         const isMatch = await verifyPassword(inputPwd);
         if (isMatch) {
-            console.log('✅ 비밀번호 일치! 입금 진행');
+            console.log('비밀번호 일치! 입금 진행');
             navigate('/deposit');
             // TODO: 입금 API 호출 (납입 로직 연결)
         } else {
-            alert('❌ 비밀번호가 일치하지 않습니다.');
+            pwdModalRef.current?.closeModal(); // 비밀번호 입력 모달 닫기
+            alertRefPwd.current?.openModal(); // 비밀번호 불일치 모달 띄우기
         }
     };
 
@@ -404,6 +406,13 @@ function Home() {
             <div>
                 {/* 비밀번호 입력 모달 */}
                 <PwdModal ref={pwdModalRef} onSubmit={handlePasswordSubmit} />
+
+                {/* 비밀번호 불일치 모달 */}
+                <AlertModal
+                    ref={alertRefPwd}
+                    text={'<span>비밀번호가 일치하지 않습니다.<br/>다시 시도해주세요.<span>'}
+                    onClick={handleCloseAlertModal}
+                />
             </div>
 
             {/* 챌린지 deposit */}
