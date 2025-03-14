@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './Point.css';
 import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import ArrowImg from '../../image/Arrow.jpg';
-import BottomModal from '../../components/modal/BottomModal'; // 모달 컴포넌트 추가
 import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 navigate
+import AlertModal from '../../components/modal/AlertModal'; // 알림 모달 컴포넌트 임포트
+import Pedometer from './Pedometer';
 
 const box = [
     { title: '출석 체크 📅', description: '출석 체크 시 10포인트 적립', type: 'checkin' },
@@ -33,8 +34,8 @@ const PointCard = ({ title, description, type, onCheckIn, onPedometer, onQuiz })
 
 const Point = () => {
     const [totalPoints, setTotalPoints] = useState(0);
-    const [modalOpen, setModalOpen] = useState(false); // 모달 상태 관리
-    const [modalContent, setModalContent] = useState(''); // 모달에 표시할 내용
+    const [alertMessage, setAlertMessage] = useState(''); // 알림 모달에 표시할 메시지
+    const alertRef = useRef(); // 알림 모달 참조
     const navigate = useNavigate();
 
     const api = axios.create({
@@ -42,7 +43,7 @@ const Point = () => {
         headers: { 'Content-Type': 'application/json' },
     });
 
-    //요청 인터셉터
+    // 요청 인터셉터
     api.interceptors.request.use(
         (config) => {
             const token = localStorage.getItem('jwtToken');
@@ -72,12 +73,18 @@ const Point = () => {
     const checkIn = async () => {
         try {
             const response = await api.post('/point/checkin');
-            setModalContent(response.data.message); // 응답 메시지를 모달에 설정
-            setModalOpen(true); // 모달 열기
-            setTotalPoints((prev) => prev + 10); // 포인트 적립
+            const { success, message } = response.data;
+
+            if (success) {
+                setAlertMessage('출석체크 완료! 🎯');
+                setTotalPoints((prev) => prev + 10); // 포인트 적립
+            } else {
+                setAlertMessage('이미 출석체크 완료되었습니다. 😊');
+            }
+
+            alertRef.current.openModal();
         } catch (error) {
-            setModalContent('출석 체크 중 오류가 발생했습니다.');
-            setModalOpen(true); // 오류 발생 시 모달 열기
+            console.error('출석 체크 중 오류가 발생했습니다.');
         }
     };
 
@@ -107,11 +114,12 @@ const Point = () => {
                     />
                 ))}
             </div>
-            {/* 모달창 컴포넌트 */}
-            <BottomModal
-                open={modalOpen}
-                onClose={() => setModalOpen(false)} // 모달 닫기
-                content={modalContent} // 모달에 내용 전달
+            {/* 알림 모달 */}
+            <AlertModal
+                ref={alertRef}
+                title="출석 체크 확인"
+                text={alertMessage}
+                onClick={() => alertRef.current.closeModal()} // 알림 닫기만 수행
             />
             <Footer />
         </div>

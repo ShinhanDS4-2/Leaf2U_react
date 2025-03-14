@@ -38,7 +38,7 @@ import Image from './page/deposit/Image';
 import Example from './page/Example';
 import Topic from './page/topic/Topic';
 import Point from './page/point/Point';
-
+import Pedometer from './page/point/Pedometer';
 const theme = createTheme({
     typography: {
         fontFamily: 'MapoPeacefull, sans-serif',
@@ -102,8 +102,8 @@ function AppContent() {
 
                         {/*상욱 페이지 START */}
                         <Route path="/point" element={<Point />} />
-                        {/* <Route path="/pedometer" element={<Pedometer />} />
-                        <Route path="/quiz" element={<Quiz />} /> */}
+                        <Route path="/pedometer" element={<Pedometer />} />
+                        {/*<Route path="/quiz" element={<Quiz />} /> */}
                     </Routes>
                 </MaturityProvider>
             </div>
