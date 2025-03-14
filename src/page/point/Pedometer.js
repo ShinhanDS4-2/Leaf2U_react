@@ -73,7 +73,7 @@ const Pedometer = () => {
 
     return (
         <div>
-            <Header title="만보기 챌린지" />
+            <Header title="만보기 인증" />
 
             <Content>
                 <div className="image-upload-container">
