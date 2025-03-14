@@ -29,7 +29,7 @@
     display: flex;
     justify-content: center;
     gap: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 .quiz-button {
@@ -55,7 +55,7 @@
     padding: 0.8rem;
     width: 100%;
     text-align: left;
-    margin-bottom: 6rem;
+    margin-bottom: 9rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
@@ -87,4 +87,17 @@
     text-align: center;
     font-weight: bold;
     cursor: pointer;
+}
+.point1-text {
+    font-weight: bold;
+    text-align: left;
+    flex-grow: 1;
+    padding: 0 10px;
+}
+
+.point1-text-description {
+    font-size: 13px;
+    color: #777;
+    margin: 5px 0 0;
+    font-weight: 500;
 }
