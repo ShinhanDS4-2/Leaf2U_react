@@ -63,16 +63,13 @@
 
 .news-title {
     font-weight: bold;
-}
-
-.news-title a {
-    text-decoration: none;
     color: #4B9460;
     white-space: nowrap; 
     overflow: hidden; 
     text-overflow: ellipsis; 
     display: block; 
     width: 100%; 
+    font-size: 15px;
 }
 
 .tip-title {

@@ -4,7 +4,6 @@ import BottomModal from '../../components/modal/BottomModal';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 import './Topic.css';
-// import axios from 'axios';
 import api from '../../utils/api';
 import Content from '../../components/content/Content';
 import { Icon } from '@iconify/react/dist/iconify.js';
@@ -16,28 +15,6 @@ const Topic = () => {
     const [modalContent, setModalContent] = useState(null);
 
     const modalRef = useRef();
-
-    // //axios
-    // const api = axios.create({
-    //     baseURL: '/api', // 백엔드 API 주소
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    // });
-
-    // //요청 인터셉터
-    // api.interceptors.request.use(
-    //     (config) => {
-    //         const token = localStorage.getItem('jwtToken');
-    //         if (token) {
-    //             config.headers.Authorization = `Bearer ${token}`;
-    //         }
-    //         return config;
-    //     },
-    //     (error) => {
-    //         return Promise.reject(error);
-    //     },
-    // );
 
     //미세먼지 정보 가져오기
     const getFineDustInfo = async () => {
@@ -140,7 +117,7 @@ const Topic = () => {
 
                     <div className='mt-2'>
                         {news.map((news, index) => (
-                            <div key={index} className="news-item">
+                            <div key={index} className="news-item" onClick={() => {window.location.href = news.url}}>
                                 <div className='row d-flex'>
                                     <div className='col-3 align-content-center'>
                                         <div className='news-img'>
@@ -148,11 +125,9 @@ const Topic = () => {
                                         </div>
                                     </div>
                                     <div className='col-9'>
-                                        <p className='news-title'>
-                                            <a href={news.url} target="_blank" rel="noopener noreferrer">
-                                                {news.title}
-                                            </a>
-                                        </p>
+                                        <span className='news-title'>
+                                            {news.title}
+                                        </span>
                                         <span className='news-date'>
                                             {news.date}
                                         </span>
