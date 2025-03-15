@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
-//import { getFineDustInfo, getNewsList, getEcoTips } from '../api/topic';
 import Header from '../../components/header/Header';
 import BottomModal from '../../components/modal/BottomModal';
 import Footer from '../../components/footer/Footer';
-import { Button } from '@mui/material';
+import Button from '../../components/button/Button';
 import './Topic.css';
-import axios from 'axios';
+// import axios from 'axios';
+import api from '../../utils/api';
+import Content from '../../components/content/Content';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 const Topic = () => {
     const [fineDust, setFineDust] = useState(null);
@@ -15,26 +17,27 @@ const Topic = () => {
 
     const modalRef = useRef();
 
-    //axios
-    const api = axios.create({
-        baseURL: '/api', // 백엔드 API 주소
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-    //요청 인터셉터
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken');
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        },
-    );
+    // //axios
+    // const api = axios.create({
+    //     baseURL: '/api', // 백엔드 API 주소
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //     },
+    // });
+
+    // //요청 인터셉터
+    // api.interceptors.request.use(
+    //     (config) => {
+    //         const token = localStorage.getItem('jwtToken');
+    //         if (token) {
+    //             config.headers.Authorization = `Bearer ${token}`;
+    //         }
+    //         return config;
+    //     },
+    //     (error) => {
+    //         return Promise.reject(error);
+    //     },
+    // );
 
     //미세먼지 정보 가져오기
     const getFineDustInfo = async () => {
@@ -57,16 +60,10 @@ const Topic = () => {
     };
 
     //환경 팁 가져오기
-    const getEcoTips = async (category) => {
+    const getEcoTips = async () => {
         try {
-            const response = await axios.get(`/api/topic/tips?category=${category}`);
-            const allTips = response.data;
-
-            // 무작위로 3개 선택하는 로직
-            const shuffled = allTips.sort(() => 0.5 - Math.random());
-            const selectedTips = shuffled.slice(0, 3);
-
-            setEcoTips(selectedTips);
+            const response = await api.get('/topic/tips');
+            setEcoTips(response.data);
         } catch (error) {
             console.error('환경 팁 가져오기 실패!', error);
         }
@@ -76,7 +73,7 @@ const Topic = () => {
     useEffect(() => {
         getFineDustInfo();
         getNews();
-        getEcoTips('h&c&s&r');
+        getEcoTips();
     }, []);
 
     //모달 열기
@@ -87,54 +84,102 @@ const Topic = () => {
         }
     };
 
+    // 오늘 날짜 
+    const getFormattedDate = () => {
+        const now = new Date();
+        
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        
+        return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+    }
+
     return (
-        <div className="topic-container">
+        <div>
             <Header title="토픽" back={false} />
 
-            {fineDust && (
-                <div className={`fine-dust ${fineDust.pm10Status}`}>
-                    <h2>현재 미세먼지 정보</h2>
-                    <p>미세먼지: {fineDust.pm10} µg/m³</p>
-                    <p>초미세먼지: {fineDust.pm25} µg/m³</p>
+            <Content>
+                {fineDust && (
+                    <div className={`fine-dust ${fineDust.pm10Status}`}>
+                        <div className='d-flex justify-content-between row'>
+                            <div className='col-8 ps-3'>
+                                <div className='text-start'>
+                                    <span className='dust-title'>현재 미세먼지 정보</span>
+                                </div>
+                                <div className='text-end pe-1 pt-0 mt-0 dust-date-div'>
+                                    <span className='dust-date'>{getFormattedDate()}</span>
+                                </div>
+                                <div className='d-flex justify-content-start'>
+                                    <div className='text-start'>
+                                        <span className='dust-subtitle'>미세먼지</span>
+                                        <span className='dust-num'>{fineDust.pm10} µg/m³</span>
+                                    </div>
+                                    <div className='text-start ps-4'>
+                                        <span className='dust-subtitle'>초미세먼지</span>
+                                        <span className='dust-num'>{fineDust.pm25} µg/m³</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-4 p-1">
+                                {fineDust.pm10Status === 'good'
+                                    ? <Icon icon="icon-park-outline:grinning-face" width="100px" height="100px"  style={{color: '#fdfdfd'}} />
+                                    : fineDust.pm10Status === 'moderate'
+                                    ? <Icon icon="icon-park-outline:confused-face" width="100px" height="100px"  style={{color: '#fdfdfd'}} />
+                                    : <Icon icon="akar-icons:face-very-sad" width="100px" height="100px"  style={{color: '#fdfdfd'}} />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                )}
 
-                    <div className="emoji">
-                        {fineDust.pm10Status === 'good'
-                            ? '😊'
-                            : fineDust.pm10Status === 'moderate'
-                            ? '😐'
-                            : '😢'}
+                <div className="news-section">
+                    <span className='news-main ps-1'>오늘의 녹색 뉴스</span>
+
+                    <div className='mt-2'>
+                        {news.map((news, index) => (
+                            <div key={index} className="news-item">
+                                <div className='row d-flex'>
+                                    <div className='col-3 align-content-center'>
+                                        <div className='news-img'>
+                                            <img src={news.urlToImage}/>
+                                        </div>
+                                    </div>
+                                    <div className='col-9'>
+                                        <p className='news-title'>
+                                            <a href={news.url} target="_blank" rel="noopener noreferrer">
+                                                {news.title}
+                                            </a>
+                                        </p>
+                                        <span className='news-date'>
+                                            {news.date}
+                                        </span>
+                                        <p className='news-desc'>{news.description}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
-            )}
 
-            <div className="news-section">
-                <h3>🌱 뉴스</h3>
-                {news.map((news, index) => (
-                    <div key={index} className="news-item">
-                        <h3>
-                            <a href={news.url} target="_blank" rel="noopener noreferrer">
-                                {news.title}
-                            </a>
-                        </h3>
-                        <p>{news.summary}</p>
-                    </div>
-                ))}
-            </div>
-
-            <div className="eco-tips">
-                <h3>🌱 환경 팁</h3>
-                {ecoTips.map((tip, index) => (
-                    <div key={index} className="eco-tip-item" onClick={() => openModal(tip)}>
-                        <h3>{tip.title}</h3>
-                    </div>
-                ))}
-            </div>
+                <div className="eco-tips mt-3">
+                    {ecoTips.map((tip, index) => (
+                        <div key={index} className="eco-tip-item" onClick={() => openModal(tip)}>
+                            <Icon icon="mdi:sprout" width="2em" height="2em"  style={{color: '#5DB075'}} />
+                            <p className='ms-2 me-2'>TIP</p>
+                            <span className='tip-title'>{tip.title}</span>
+                        </div>
+                    ))}
+                </div>
+            </Content>
 
             <BottomModal ref={modalRef}>
                 {modalContent && (
-                    <div>
-                        <p>{modalContent.content}</p>
-                        <Button variant="contained" onClick={() => modalRef.current.closeModal()}>
+                    <div className='p-3'>
+                        <p className='pt-4 pb-5'>{modalContent.content}</p>
+                        <Button text={'확인'} onClick={() => modalRef.current.closeModal()}>
                             닫기
                         </Button>
                     </div>
