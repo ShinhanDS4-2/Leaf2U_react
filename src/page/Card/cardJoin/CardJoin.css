@@ -20,6 +20,7 @@
 
     
 }
+
 .modal-content h3{
     font-size: 20px;
     font-weight: bold;
@@ -95,9 +96,12 @@
     font-size: 10px;
     padding-left: 15px;
 }
-
-
-/* select 박스 스타일 */
+.bank-modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 60px;
+}
 .select-box {
     width: 100%;
     padding: 10px;
@@ -109,32 +113,53 @@
     margin-bottom: 7px;
 }
 .bank-select{
-    padding-bottom: 25px;
+
+    padding-top: 9px;
+    margin-bottom: -5px;
 }
-.bank-list {
-    display: flex;
-    flex-wrap: wrap; /* 줄 바꿈 허용 */
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 10px;
-    max-width: 300px; /* 한 줄에 3개 배치될 수 있도록 제한 */
-    margin: 0 auto; /* 가운데 정렬 */
+.bank-select h3 {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 50px;
 }
 
-.bank-button {
-    width: calc(33.33% - 10px); /* 한 줄에 3개 배치 */
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: white;
-    cursor: pointer;
-    display: flex;
+/* 한 줄에 3개씩 정렬 */
+.bank-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    justify-content: center;
     align-items: center;
 }
 
-/* 은행 버튼 hover */
+.bank-button {
+    display: flex;
+    flex-direction: row; /* 가로 정렬 */
+    align-items: center;
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    width: 100px;
+    height: 50px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding-left: 13px;
+}
+
 .bank-button:hover {
     background-color: #f0f0f0;
+}
+.bank-logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px; 
+}
+.bank-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
 }
 .shinhan-logo {
     width: 60px;
