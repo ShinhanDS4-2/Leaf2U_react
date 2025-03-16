@@ -8,6 +8,7 @@ import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 import AlertModal from '../../components/modal/AlertModal';
+import ChallengeLoading from '../../components/loading/ChallengeLoading';
 
 const api = axios.create({
     baseURL: '/api/point',
@@ -17,6 +18,7 @@ const Pedometer = () => {
     const navigate = useNavigate();
     const [selectedImage, setSelectedImage] = useState(null);
     const [file, setFile] = useState(null);
+    const [loading, setLoading] = useState(false); // 로딩
 
     // 모달 관련 상태 및 ref 생성
     const alertRef = useRef();
@@ -55,9 +57,13 @@ const Pedometer = () => {
         );
 
         try {
+            setLoading(true); 
+
             const response = await api.post('/pedometer', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
+
+            setLoading(false); 
 
             const { message, earnedPoints } = response.data;
             setAlertText(
@@ -109,6 +115,9 @@ const Pedometer = () => {
 
             {/* Alert Modal */}
             <AlertModal ref={alertRef} text={alertText} />
+
+            {/* 로딩 화면 */}
+            {loading && <ChallengeLoading />}
         </div>
     );
 };

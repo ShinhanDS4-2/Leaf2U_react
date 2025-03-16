@@ -1,5 +1,4 @@
 import './Home.css';
-import axios from 'axios';
 import React, { useRef, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Typography, Box, List, ListItem, Divider, Fade } from '@mui/material';
@@ -16,6 +15,7 @@ import ChallengeItem from '../../components/item/ChallengeItem';
 import api from '../../utils/api';
 import { AnimatePresence, motion } from 'framer-motion';
 import CustomConfetti from '../../components/effect/CustomConfetti';
+import CoinConfetti from '../../components/effect/CoinConfetti';
 
 function Home() {
     const navigate = useNavigate();
@@ -255,7 +255,8 @@ function Home() {
 
     // 나무 클릭
     const handleAccountInfoClick = () => {
-        setIsInfoOpen(true);
+        CoinConfetti();
+        setIsInfoOpen(true); 
         setTimeout(() => {
             setIsInfoOpen(false);
         }, 5000);

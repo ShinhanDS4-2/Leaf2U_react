@@ -8,6 +8,7 @@ import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 import AlertModal from '../../components/modal/AlertModal'; // AlertModal import
+import ChallengeLoading from '../../components/loading/ChallengeLoading';
 
 const api = axios.create({
     baseURL: '/api/openai',
@@ -22,6 +23,8 @@ const Image = () => {
     const type = location.state?.type;
     const [selectedImage, setSelectedImage] = useState(null);
     const [file, setFile] = useState(null);
+
+    const [loading, setLoading] = useState(false); // 로딩
 
     // 모달 관련 상태 및 ref 생성
     const alertRef = useRef();
@@ -76,12 +79,16 @@ const Image = () => {
         );
 
         try {
+            setLoading(true); 
+
             const response = await api.post(apiUrl, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             let result = response.data.result.trim().toLowerCase();
             console.log('API 응답:', result);
+
+            setLoading(false);
 
             if (type === 'tumblr' && result.includes('yes')) {
                 navigate('/home', { state: { deposit: 'Y', type } }); // 타입을 여기서 넘겨줘야함 밑에도 마찬가지
@@ -95,6 +102,7 @@ const Image = () => {
             }
         } catch (error) {
             console.error('API 요청 실패:', error);
+            setLoading(false); 
             setAlertText('<span>이미지 인증에 실패했습니다.</span>'); // 모달 메시지 설정
             alertRef.current.openModal(); // 모달 열기
         }
@@ -140,6 +148,9 @@ const Image = () => {
 
             {/* Alert Modal */}
             <AlertModal ref={alertRef} text={alertText} />
+
+            {/* 로딩 화면 */}
+            {loading && <ChallengeLoading />}
         </div>
     );
 };

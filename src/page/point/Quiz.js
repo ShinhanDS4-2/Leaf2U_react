@@ -13,6 +13,7 @@ import Lottie from 'lottie-react';
 import correctEmoji from '../../image/point_correct.json';
 import wrongEmoji from '../../image/point_wrong.json';
 import { useNavigate } from 'react-router-dom';
+import ChallengeLoading from '../../components/loading/ChallengeLoading';
 
 const Quiz = () => {
     const navigate = useNavigate();
@@ -22,6 +23,7 @@ const Quiz = () => {
     const [correct, setCorrect] = useState('');
     const [section, setSection] = useState('');
     const [hintUrl, setHintUrl] = useState('');
+    const [loading, setLoading] = useState(false); // 로딩
 
     // 모달의 동적 내용 관리
     const [modalContent, setModalContent] = useState({
@@ -58,6 +60,8 @@ const Quiz = () => {
     };
 
     useEffect(() => {
+        setLoading(true); 
+
         api.get('/point/quiz')
             .then((res) => {
                 setQuiz(res.data.question.quiz);
@@ -67,6 +71,8 @@ const Quiz = () => {
             })
             .catch((err) => {
                 console.log(err);
+            }).finally(() => {
+                setLoading(false); 
             });
     }, []);
 
@@ -184,6 +190,8 @@ const Quiz = () => {
                 text={'<span>정답을 선택해 주세요.</span>'}
                 onClick={() => {}}
             />
+            {/* 로딩 화면 */}
+            {loading && <ChallengeLoading />}
         </div>
     );
 };
