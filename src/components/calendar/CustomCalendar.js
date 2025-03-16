@@ -4,7 +4,8 @@ import 'react-calendar/dist/Calendar.css';
 import './CustomCalendar.css';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import dayjs from 'dayjs';
-import Coin from '../../image/coin_gold.png';
+import coin from '../../image/coin.json';
+import Lottie from 'lottie-react';
 
 const CustomCalendar = ({ minDate, maxDate, stickerDates }) => {
     const [value, onChange] = useState(new Date());
@@ -40,7 +41,7 @@ const CustomCalendar = ({ minDate, maxDate, stickerDates }) => {
                 // 변경된 상태 사용
                 return (
                     <span className="calendar-sticker animate-fade-in">
-                        <img src={Coin} width={20}/>
+                        <Lottie animationData={coin} loop={true} className='coin-emoji'/>
                         {/* <Icon icon="fluent-emoji:coin" width="20" height="20" /> */}
                     </span>
                 );

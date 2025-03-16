@@ -5,11 +5,11 @@ import Button from '../../components/button/Button';
 import { Card, Box, CardContent, Divider, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useMaturity } from '../../context/MaturityContext';
-import axios from 'axios';
+import api from '../../utils/api';
 
 const MaturityResult = () => {
     const navigate = useNavigate();
-    const { accountInfo = {}, donationInfo = {}, organizationIdx } = useMaturity(); // context
+    const { accountInfo = {}, donationInfo = {}, organizationIdx, setFinalBalance } = useMaturity(); // context
 
     const interestAmount = accountInfo?.interestAmount ?? 0;
     const balance = accountInfo?.balance ?? 0;
@@ -21,25 +21,7 @@ const MaturityResult = () => {
     // 최종 수령 금액 계산 (원금 + 이자 - 후원금)
     const donationAmount = interestDonation + additionalDonation + point;
     const finalAmount = balance + interestAmount - donationAmount;
-
-    // axios 인스턴스
-    const api = axios.create({
-        baseURL: '/api',
-    });
-
-    // 인터셉터
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken');
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        },
-    );
+    setFinalBalance(finalAmount);
 
     // 해지하기 클릭
     const handleClickTermination = () => {
@@ -49,6 +31,7 @@ const MaturityResult = () => {
             interest: interestDonation,
             principal: additionalDonation,
             point: point,
+            finalAmount: finalAmount
         };
 
         api.post('/account/maturity', param, { headers: { 'Content-Type': 'application/json' } })

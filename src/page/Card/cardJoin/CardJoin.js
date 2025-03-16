@@ -148,13 +148,13 @@ const CardJoin = () => {
                 <Button text={'다음'} onClick={handleNext}/>
             </div>
             
-            <BottomModal ref={modalRef} maxHeight="40%">
-                <div className="modal-content">
+            <BottomModal ref={modalRef} maxHeight="60%">
+                <div className="bank-modal-content">
                     <div className="bank-select">
                         <h3>은행 선택</h3>
                     </div>
                     
-                    <div className="bank-list pb-5 mb-5">
+                    <div className="bank-list">
                         {banks.map((bank, index) => (
                             <button 
                                 key={index} 
@@ -164,10 +164,12 @@ const CardJoin = () => {
                                     modalRef.current.closeModal();
                                 }}
                             >
-                                <img src={bank.logo} alt={bank.name} className={`bank-logo ${bank.className}`} onChange={handleChange}/> 
+                                <img src={bank.logo} alt={bank.name} className="bank-logo" />
+                                <span className="bank-name">{bank.name}</span>
                             </button>
                         ))}
                     </div>
+
                 </div>
             </BottomModal>
             <AlertModal ref={alertRef} text="모든 항목을 입력해 주세요." />

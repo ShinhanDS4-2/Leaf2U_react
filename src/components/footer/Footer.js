@@ -18,7 +18,7 @@ const Footer = () => {
                     </Link>
                 </div>
                 <div className="col">
-                    <Link to="/card">
+                    <Link to="/manageAccount">
                         <Icon icon="majesticons:creditcard" className="footer-icon" />
                     </Link>
                 </div>

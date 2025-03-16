@@ -1,11 +1,3 @@
-/* 기본 설정 */
-.topic-container {
-    background-color: white;
-    align-items: center;
-    padding: 16px;
-    min-height: 100vh;
-}
-
 /* 미세먼지 정보 */
 .fine-dust {
     padding: 16px;
@@ -13,45 +5,120 @@
     color: white;
     text-align: center;
     font-size: 18px;
-    margin-top: 50px;
 }
 
 /* 상태별 배경색 */
 .fine-dust.good {
-    background-color: #4caf50;
+    background-color: #59B14F;
 }
 
 .fine-dust.moderate {
-    background-color: #ff9800;
+    background-color: #FC9E1B;
 }
 
 .fine-dust.bad {
-    background-color: #f44336;
+    background-color: #DD2E44;
 }
 
 .finedust-text {
     text-align: left;
 }
-/* 이모지 스타일 */
-.emoji {
-    font-size: 30px;
+
+.dust-title {
+    font-size: 25px;
+    display: block;
 }
+
+.dust-subtitle {
+    font-size: 13px;
+    display: block;
+}
+
+.dust-num {
+    font-size: 16px;
+    font-weight: bold;
+    display: block;
+}
+
+.dust-date {
+    color: white;
+    font-size: 12px;
+    margin-left: auto;
+}
+
+.dust-date-div {
+    position: relative;
+    top: -10px
+}
+
 .news-section {
     margin-top: 20px;
 }
 /* 뉴스 섹션 */
-.news-section h2,
-.eco-tips-section h2 {
-    font-size: 18px;
+
+.news-main {
+    font-size: 20px;
     font-weight: bold;
-    margin-bottom: 10px;
 }
 
-.news-item,
+.news-title {
+    font-weight: bold;
+    color: #4B9460;
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    display: block; 
+    width: 100%; 
+    font-size: 15px;
+}
+
+.tip-title {
+    white-space: nowrap; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    display: block; 
+    width: 100%; 
+}
+
+.news-date {
+    font-size: 12px;
+    color: #BDBDBD;
+    position: relative;
+    top: -5px;
+}
+
+.news-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.news-item {
+    background: #f5f5f5;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.news-img {
+    width: 100%;
+}
+
+.news-img img {
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+}
+
 .eco-tip-item {
     display: flex;
     align-items: center;
-    background: #f9f9f9;
+    background: #f5f5f5;
     border-radius: 10px;
     padding: 12px;
     margin-bottom: 10px;

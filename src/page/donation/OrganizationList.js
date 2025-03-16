@@ -22,11 +22,36 @@ import Button from '../../components/button/Button';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { motion } from 'framer-motion';
 import Loading from '../../components/loading/Loading';
+import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
 
 const TabPanel = ({ children, value, index }) => {
     return value === index ? <div>{children}</div> : null;
 };
-
+// 커스텀 탭
+const CustomTabs = ({ value, onChange }) => {
+    return (
+        <Tabs
+            value={value} // 탭 인덱스 값
+            onChange={onChange} // 부모에서 받은 onChange 사용
+            variant="fullWidth"
+            sx={{
+                '& .MuiTabs-indicator': { display: 'none' },
+                '& .MuiTab-root': {
+                    borderRadius: '10px',
+                    fontWeight: 'bold',
+                },
+                '& .Mui-selected': {
+                    backgroundColor: '#4CAF50',
+                    color: 'white !important', // 왜인지 모르겠는데 글자색상 하얀색으로 적용안됨. . // !important를 추가해 우선순위 높였음
+                },
+                marginBottom: 2,
+            }}
+        >
+            <Tab label="후원 기관 리스트" /> {/* 0 */}
+            <Tab label="기여도" /> {/* 1 */}
+        </Tabs>
+    );
+};
 const OrganizationDetailModal = ({ open, onClose, donation }) => {
     return (
         // open 속성에 true가 전달되면 모달이 표시됨. open 속성이 false이면 모달이 숨겨짐.
@@ -94,27 +119,6 @@ const OrganizationDetailModal = ({ open, onClose, donation }) => {
         </Dialog>
     );
 };
-
-// axios 인스턴스
-const api = axios.create({
-    baseURL: '/api', // API 기본 URL
-});
-// 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
-api.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
-        console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
-
-        if (token) {
-            console.log('보내는 토큰:', token); // 🔥 확인용 로그
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    },
-);
 
 const Tap1Page = ({ selectedOrganizationIdx }) => {
     const [openModal, setOpenModal] = useState(false); // 모달 열기/닫기 상태
@@ -331,17 +335,16 @@ const Tap2Page = () => {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    {rankingInfo.ranking.length == 2 && (
-                                        <Box>
-                                            <Typography color="white" variant="h6">
-                                                {rankingInfo.ranking[1].name}
-                                            </Typography>
-                                            <Typography color="white" variant="caption">
-                                                {rankingInfo.ranking[1].total_donation.toLocaleString()}
-                                                원
-                                            </Typography>
-                                        </Box>
-                                    )}
+                                    <Box>
+                                        <Typography color="white" variant="h6">
+                                            {rankingInfo.ranking[1]?.name || '-'}
+                                        </Typography>
+                                        <Typography color="white" variant="caption">
+                                            {rankingInfo.ranking[1]?.total_donation?.toLocaleString() ||
+                                                0}
+                                            원
+                                        </Typography>
+                                    </Box>
                                 </motion.div>
                             </Box>
 
@@ -374,17 +377,16 @@ const Tap2Page = () => {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    {rankingInfo.ranking.length == 1 && (
-                                        <Box>
-                                            <Typography color="white" variant="h6">
-                                                {rankingInfo.ranking[0].name}
-                                            </Typography>
-                                            <Typography color="white" variant="caption">
-                                                {rankingInfo.ranking[0].total_donation.toLocaleString()}
-                                                원
-                                            </Typography>
-                                        </Box>
-                                    )}
+                                    <Box>
+                                        <Typography color="white" variant="h6">
+                                            {rankingInfo.ranking[0]?.name || '-'}
+                                        </Typography>
+                                        <Typography color="white" variant="caption">
+                                            {rankingInfo.ranking[0]?.total_donation?.toLocaleString() ||
+                                                0}
+                                            원
+                                        </Typography>
+                                    </Box>
                                 </motion.div>
                             </Box>
 
@@ -417,17 +419,16 @@ const Tap2Page = () => {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    {rankingInfo.ranking.length == 3 && (
-                                        <Box>
-                                            <Typography color="white" variant="h6">
-                                                {rankingInfo.ranking[2].name}
-                                            </Typography>
-                                            <Typography color="white" variant="caption">
-                                                {rankingInfo.ranking[2].total_donation.toLocaleString()}
-                                                원
-                                            </Typography>
-                                        </Box>
-                                    )}
+                                    <Box>
+                                        <Typography color="white" variant="h6">
+                                            {rankingInfo.ranking[2]?.name || '-'}
+                                        </Typography>
+                                        <Typography color="white" variant="caption">
+                                            {rankingInfo.ranking[2]?.total_donation?.toLocaleString() ||
+                                                0}
+                                            원
+                                        </Typography>
+                                    </Box>
                                 </motion.div>
                             </Box>
                         </Box>
@@ -702,17 +703,11 @@ const OrganizationList = () => {
             {/* 뒤로가기 아이콘 없는 헤더 */}
             <Header title="리프보드" back={false} />
             <Content>
-                <Tabs
+                {/* ✅ CustomTabs에 상태와 변경 함수 전달 */}
+                <CustomTabs
                     value={tabIndex}
-                    onChange={(e, newIndex) => setTabIndex(newIndex)}
-                    centered
-                    indicatorColor="primary"
-                    textColor="primary"
-                >
-                    <Tab label="후원 기관 리스트" />
-                    <Tab label="기여도" />
-                </Tabs>
-
+                    onChange={(event, newValue) => setTabIndex(newValue)}
+                />
                 {/* TabPanel은 value와 index를 props로 받아, value와 index가 같을 때 해당 내용을 보여줌 */}
                 <TabPanel value={tabIndex} index={0}>
                     <Tap1Page selectedOrganizationIdx={selectedOrganizationIdx} />

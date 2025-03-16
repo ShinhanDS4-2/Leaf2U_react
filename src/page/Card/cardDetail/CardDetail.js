@@ -14,7 +14,7 @@ const CardDetail = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const formData = location.state || {};
-    const modalRef = useRef();
+    const cardRef = useRef();
     const pwdModalRef1 = useRef(null);
     const pwdModalRef2 = useRef(null);
     const successModalRef = useRef();
@@ -23,11 +23,11 @@ const CardDetail = () => {
     const [firstPwd, setFirstPwd] = useState('');
 
     const handleNextClick = () => {
-        modalRef.current.openModal();
+        cardRef.current.openModal();
     };
 
     const handleConfirmClick = () => {
-        modalRef.current.closeModal();
+        cardRef.current.closeModal();
         pwdModalRef1.current.openModal();
     };
 
@@ -43,11 +43,11 @@ const CardDetail = () => {
             pwdModalRef2.current.closeModal();
             successModalRef.current.openModal();
 
-            console.log('멤버 idx 살아있니?', localStorage.getItem('memberIdx'));
-            console.log('계좌번호는?', formData.accountNumber);
+            //console.log('멤버 idx 살아있니?', localStorage.getItem('memberIdx'));
+            //console.log('계좌번호는?', formData.accountNumber);
 
             const token = localStorage.getItem('jwtToken');
-            console.log('전송할 토큰:', token);
+            //console.log('전송할 토큰:', token);
 
             // 토큰이 없는 경우 처리
             if (!token) {
@@ -72,9 +72,9 @@ const CardDetail = () => {
                     },
                 );
 
-                console.log('카드 발급 성공:', response.data);
+                //console.log('카드 발급 성공:', response.data);
             } catch (error) {
-                console.error('카드 발급 실패:', error);
+                //console.error('카드 발급 실패:', error);
             }
         } else {
             alertRef.current.openModal();
@@ -86,7 +86,7 @@ const CardDetail = () => {
     };
 
     const handleNextPage = () => {
-        navigate('/cardHome', { state: { cardYn: 'Y',existAccount:'N' } });
+        navigate('/cardHome', { state: { cardYn: 'Y',bankName:formData.bankName,accountNumber:formData.accountNumber} });
     };
 
     return (
@@ -123,13 +123,13 @@ const CardDetail = () => {
                 <Button text={'다음'} onClick={handleNextClick}/>
             </div>
 
-            <BottomModal ref={modalRef} maxHeight="50%">
+            <BottomModal ref={cardRef} maxHeight="50%">
                 <div className="agree-item-modal">
                     <p className="agree-item2">카드를 발급하시겠습니까?</p>
                     <DoubleButton
                         cancelText="아니요"
                         confirmText="예"
-                        cancelOnClick={() => modalRef.current.closeModal()}
+                        cancelOnClick={() => cardRef.current.closeModal()}
                         confirmOnClick={handleConfirmClick}
                     />
                 </div>
