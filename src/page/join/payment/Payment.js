@@ -34,7 +34,7 @@ const Payment = () => {
 
         try {
             const token = localStorage.getItem('jwtToken');
-            console.log('전송할 토큰:', token);
+            //console.log('전송할 토큰:', token);
 
             // 토큰이 없는 경우 처리
             if (!token) {
@@ -58,7 +58,7 @@ const Payment = () => {
             }
 
             const data = await response.json();
-            console.log('서버 응답:', data);
+            //console.log('서버 응답:', data);
 
             localStorage.setItem('amount', amount);
             localStorage.setItem('memberIdx', data.memberIdx); //멤버 Idx 저장

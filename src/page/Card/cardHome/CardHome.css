@@ -76,6 +76,17 @@
 .checkbox {
     margin-right: 10px;
     accent-color: #5db075;
+    transition: background-color 0.2s ease-in-out;
+}
+.checkbox.checked {
+    background-color: #5db075;
+}
+
+.checkbox.checked::after {
+    content: '✔';
+    color: white;
+    font-size: 5px;
+    font-weight: bold;
 }
 
 .checkbox-label {

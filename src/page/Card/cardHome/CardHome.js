@@ -15,6 +15,7 @@ import KakaoImg from '../../../image/kakao.png';
 import PwdModal6 from '../../../components/modal/PwdModal6';
 import axios from 'axios';
 import AlertModal from '../../../components/modal/AlertModal';
+import PwdModal from '../../../components/modal/PwdModal';
 
 const CardHome = () => {
 
@@ -25,17 +26,33 @@ const CardHome = () => {
     const modalRef2 = useRef();
     const pwdModalRef1 = useRef(null);
     const pwdModalRef2 = useRef(null);
+    const cardPwdModalRef1 = useRef(null);
+    const cardPwdModalRef2 = useRef(null);
     const successModalRef = useRef();
     const alertRef = useRef();
+    const cardRef=useRef();
+    const cardSuccessModalRef=useRef();
 
     const cardYn = location.state?.cardYn || 'Y';
 
     const amount=localStorage.getItem('amount');
-    const bankName=localStorage.getItem('bankName');
 
     const [maturityDate, setMaturityDate] = useState('');
-    const [selectedBank,setSelectedBank]=useState('');
     const [accountNumber,setAccountNumber]=useState('');
+    const [bankName,setBankName]=useState('');
+    const [cardType,setCardType]=useState('C');
+
+    const handleChange = (e) => {
+        setAccountNumber(e.target.value);    };
+    
+    const handleCheckboxChange = (e) => {
+        setCardType(e.target.checked ? 'E' : 'C');
+    };
+
+    const handleBankSelect=(bank)=>{
+        setBankName(bank);
+        modalRef.current.closeModal();
+    }
 
     const banks=[
         { name: '신한', logo: ShinhanImg, className: "shinhan-logo" },
@@ -57,8 +74,9 @@ const CardHome = () => {
                 leafRef.current.openModal();
             } else if (cardYn == 'Y') {
                 
-                modalRef2.current.openModal();
                 getCardInfo();
+                modalRef2.current.openModal();
+                
             }
         }
         
@@ -72,7 +90,7 @@ const CardHome = () => {
 
     const getCardInfo=async()=>{
 
-        console.log("멤버 idx : ",localStorage.getItem('memberIdx'));
+        //console.log("멤버 idx : ",localStorage.getItem('memberIdx'));
 
         try {
             const response = await axios.post(
@@ -88,18 +106,80 @@ const CardHome = () => {
                 },
             );
 
-            console.log('카드 발급 성공:', response.data);
-
-            setSelectedBank(response.data.cardName);
+            setBankName(response.data.cardName);
             setAccountNumber(response.data.accountNumber);
 
         } catch (error) {
-            console.error('카드 발급 실패:', error);
+            //console.error('카드 발급 실패:', error);
         }
     }
 
     const [firstPwd, setFirstPwd] = useState('');
 
+    {/*카드 등록*/}
+    const handleCardClick = () => {
+
+        cardPwdModalRef1.current.openModal();
+    };
+
+    const handleCardFirstPwdSubmit = (pwd) => {
+        setFirstPwd(pwd);
+        cardPwdModalRef1.current.closeModal();
+        cardPwdModalRef2.current.openModal();
+    };
+    
+    const handleCardSecondPwdSubmit = async (pwd) => {
+        
+        if (pwd == firstPwd) {
+            cardPwdModalRef2.current.closeModal();
+            cardRef.current.closeModal();
+
+            //console.log('멤버 idx 살아있니?', localStorage.getItem('memberIdx'));
+
+            const token = localStorage.getItem('jwtToken');
+            //console.log('전송할 토큰:', token);
+
+            // 토큰이 없는 경우 처리
+            if (!token) {
+                alert('로그인이 필요합니다.');
+                return;
+            }
+
+            try {
+                const response = await axios.post(
+                    'http://localhost:8090/api/card/exist',
+                    {
+                        memberIdx: localStorage.getItem('memberIdx'),
+                        accountNumber: accountNumber,
+                        cardPassword: pwd,
+                        cardName: bankName,
+                        cardType:cardType
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${token}`,
+                        },
+                    },
+                );
+
+                //console.log('카드 발급 성공:', response.data);
+                cardSuccessModalRef.current.openModal();
+
+            } catch (error) {
+                //console.error('카드 발급 실패:', error);
+            }
+        } else {
+            alertRef.current.openModal();
+            setFirstPwd('');
+
+            cardPwdModalRef2.current.closeModal();
+            cardPwdModalRef1.current.openModal();
+        }
+    };
+
+
+    {/*적금 등록*/}
     const handleConfirmClick = () => {
         modalRef.current.closeModal();
         pwdModalRef1.current.openModal();
@@ -117,10 +197,10 @@ const CardHome = () => {
             pwdModalRef2.current.closeModal();
             successModalRef.current.openModal();
 
-            console.log('멤버 idx 살아있니?', localStorage.getItem('memberIdx'));
+            //console.log('멤버 idx 살아있니?', localStorage.getItem('memberIdx'));
 
             const token = localStorage.getItem('jwtToken');
-            console.log('전송할 토큰:', token);
+            //console.log('전송할 토큰:', token);
 
             // 토큰이 없는 경우 처리
             if (!token) {
@@ -144,11 +224,11 @@ const CardHome = () => {
                     },
                 );
 
-                console.log('카드 발급 성공:', response.data);
+                //console.log('적금 발급 성공:', response.data);
                 modalRef2.current.closeModal();
 
             } catch (error) {
-                console.error('카드 발급 실패:', error);
+                //console.error('적금금 발급 실패:', error);
             }
         } else {
             alertRef.current.openModal();
@@ -159,9 +239,14 @@ const CardHome = () => {
         }
     };
 
-    const handleAccountOpen = ()=>{
+    const handleNextClick = () => {
+        cardRef.current.openModal();
+    };
+
+    const handleMakeLeafAccount = () => {
+        cardSuccessModalRef.current.closeModal();
         modalRef2.current.openModal();
-    }
+    };
 
     const handleNextPage = () => {
         navigate('/home');
@@ -193,16 +278,16 @@ const CardHome = () => {
                     
                     {/* 은행 선택 */}
                     <div className="select-box" onClick={() => modalRef.current.openModal()}>
-                        {selectedBank ? selectedBank : '은행 선택'}
+                        {bankName ? bankName : '은행 선택'}
                     </div>
 
-                    <input type="text" name="accountNumber" placeholder="계좌번호 (- 없이 숫자만)" value={accountNumber} readOnly/>
+                    <input type="text" name="accountNumber" placeholder="계좌번호 (- 없이 숫자만)" value={accountNumber} onChange={handleChange}/>
                 </div>
 
                 {/* 기후 동행 카드 옵션 */}
                 <div className="eco-card">
                     <div className="eco-card-in">
-                        <input type="checkbox" className="checkbox" />
+                        <input type="checkbox" id="donation" className="checkbox" onChange={handleCheckboxChange}/>
                         <label htmlFor="donation" className="checkbox-label">
                             기후 동행 카드
                         </label>
@@ -232,31 +317,30 @@ const CardHome = () => {
                     </ul>
                 </div>
 
-                <div className="p-3">
-                    <Button text="다음" onClick={handleAccountOpen}/>
-                </div>
+                <div className='p-3'>
+                <Button text={'다음'} onClick={handleNextClick}/>
+            </div>
             </div>
 
-            <BottomModal ref={modalRef} maxHeight="40%">
-                <div className="modal-content">
+            <BottomModal ref={modalRef} maxHeight="60%">
+                <div className="bank-modal-content">
                     <div className="bank-select">
                         <h3>은행 선택</h3>
                     </div>
                     
-                    <div className="bank-list pb-5 mb-5">
+                    <div className="bank-list">
                         {banks.map((bank, index) => (
                             <button 
                                 key={index} 
                                 className="bank-button"
-                                onClick={() => {
-                                    setSelectedBank(bank.name);
-                                    modalRef.current.closeModal();
-                                }}
+                                onClick={() => handleBankSelect(bank.name)}
                             >
-                                <img src={bank.logo} alt={bank.name} className={`bank-logo ${bank.className}`} /> 
+                                <img src={bank.logo} alt={bank.name} className="bank-logo" />
+                                <span className="bank-name">{bank.name}</span>
                             </button>
                         ))}
                     </div>
+
                 </div>
             </BottomModal>
 
@@ -286,10 +370,22 @@ const CardHome = () => {
                     <DoubleButton
                         confirmText="예"
                         cancelText="아니요"
-                        cancelOnClick={() => modalRef.current.closeModal()}
+                        cancelOnClick={() => leafRef.current.closeModal()}
                         confirmOnClick={() => {
                             navigate('/leaf');
                         }}
+                    />
+                </div>
+            </BottomModal>
+
+            <BottomModal ref={cardRef} maxHeight="50%">
+                <div className="agree-item-modal">
+                    <p className="agree-item2">카드를 등록하시겠습니까?</p>
+                    <DoubleButton
+                        cancelText="아니요"
+                        confirmText="예"
+                        cancelOnClick={() => cardRef.current.closeModal()}
+                        confirmOnClick={handleCardClick}
                     />
                 </div>
             </BottomModal>
@@ -333,6 +429,18 @@ const CardHome = () => {
                         cancelOnClick={() => modalRef2.current.closeModal()}
                         confirmOnClick={handleConfirmClick}
                     />
+                </div>
+            </BottomModal>
+
+            <PwdModal ref={cardPwdModalRef1} onSubmit={handleCardFirstPwdSubmit} />
+            <PwdModal ref={cardPwdModalRef2} onSubmit={handleCardSecondPwdSubmit} />
+
+            <BottomModal ref={cardSuccessModalRef} maxHeight="70%">
+                <div className="agree-item2">
+                    <p>
+                        카드 등록이 완료되었습니다! <br /> 적금 가입으로 이동합니다.
+                    </p>
+                    <Button text="확인" onClick={handleMakeLeafAccount} />
                 </div>
             </BottomModal>
 

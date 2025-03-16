@@ -28,7 +28,7 @@ function Login() {
         if(token){
 
             localStorage.setItem('jwtToken',token);         //로컬스토리지에 토큰 저장
-            console.log("카카오 로그인 성공, jwt 토큰 저장");
+            //console.log("카카오 로그인 성공, jwt 토큰 저장");
 
             navigate('/start');
         }
@@ -54,7 +54,8 @@ function Login() {
                         boxShadow: 'none',
                         width: '100%',
                         display: 'flex',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                
                     }}
                     onClick={getKakaoLoginUrl}
                 >
