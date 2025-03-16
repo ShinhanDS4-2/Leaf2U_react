@@ -30,6 +30,7 @@ import HistoryDetail from './page/donation/HistoryDetail';
 import ManageAccount from './page/account/ManageAccount';
 import Termination from './page/account/Termination';
 import InterestMainPage from './page/interest/InterestMainPage';
+import PickerTest from './page/interest/PickerTest';
 import Aaa from './page/account/Aaa';
 import Paymentaaaaa from './page/account/Paymentaaaaa';
 import Deposit from './page/deposit/Deposit';
@@ -89,6 +90,7 @@ function AppContent() {
                         <Route path="/manageAccount" element={<ManageAccount />} />
                         <Route path="/aaa" element={<Aaa />} />
                         <Route path="/paymentaaaaa" element={<Paymentaaaaa />} />
+                        <Route path="/pickerTest" element={<PickerTest />} />
 
                         {/* 시온 페이지 END */}
 

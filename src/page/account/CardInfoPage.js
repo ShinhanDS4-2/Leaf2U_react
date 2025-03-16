@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Divider, Typography } from '@mui/material';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 
 // 날짜형식 변환 YYYY-MM-DD
 const formatDate = (date) => {
@@ -6,9 +6,9 @@ const formatDate = (date) => {
 };
 
 // 카드 정보 페이지
-const CardInfoPage = ({ interestData }) => {
-    // ㄴ interestData에는 accountDTO 들어있음
-    const accountDTO = interestData?.accountDTO;
+const CardInfoPage = ({ apiData }) => {
+    // ㄴ apiData에는 cardDTO 들어있음
+    const cardDTO = apiData?.cardDTO;
     return (
         <>
             <Box sx={{ padding: 2, marginTop: 3 }}>
@@ -49,10 +49,10 @@ const CardInfoPage = ({ interestData }) => {
                 {/* 카드 정보 */}
                 <CardContent sx={{ padding: 0, marginTop: 1 }}>
                     <Typography variant="subtitle1" fontWeight="bold" sx={{ marginLeft: 1 }}>
-                        신한Leaf2U카드 (1367)
+                        {cardDTO?.cardName} ({cardDTO?.cardNumber})
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ marginLeft: 1 }}>
-                        110-123-456789
+                        {cardDTO?.accountNumber}
                     </Typography>
                     <Typography
                         variant="caption"

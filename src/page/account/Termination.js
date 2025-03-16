@@ -95,11 +95,9 @@ const Termination = () => {
         if (result === 1) {
             OpenCompleteModal(); // 해지 완료 모달 open
         } else if (result === 401) {
-            ClosePwdInputModal();
             OpenFailAlertRef1();
         } else {
             // 기타 오류
-            ClosePwdInputModal();
             OpenFailAlertRef2();
         }
     };

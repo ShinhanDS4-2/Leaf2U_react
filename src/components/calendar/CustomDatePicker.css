@@ -1,0 +1,10 @@
+.wheel-picker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* custom-picker: Picker에 설정한 className */
+.custom-picker > div:last-child > div {
+    display: none;
+}
