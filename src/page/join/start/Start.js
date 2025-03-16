@@ -4,7 +4,7 @@ import { useNavigate,useLocation } from 'react-router-dom';
 import './Start.css';
 import { useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-
+import api from '../../../utils/api';
 
 const Start = () => {
 
@@ -21,7 +21,21 @@ const Start = () => {
         }
     };
 
+    // 현재 활성화 중인 적금 계좌가 있을 경우 home으로 이동
+    const checkAccount = () => {
+        api.post('/account/check')
+            .then((response) => {
+                if (response.data) {
+                    navigate("/home");
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+    }
+
     useEffect(() => {
+        checkAccount();
+        
         /*let token = localStorage.getItem('jwtToken'); // 로컬스토리지에서 토큰 가져오기
 
         // ✅ 자동 로그인 처리
@@ -35,7 +49,6 @@ const Start = () => {
                 localStorage.removeItem('jwtToken'); // 만료된 토큰 제거
             }
         }*/
-
         
         // ✅ 카카오 로그인 후 토큰 처리
         const searchParams = new URLSearchParams(location.search);
