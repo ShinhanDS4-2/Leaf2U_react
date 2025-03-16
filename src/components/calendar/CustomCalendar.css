@@ -93,3 +93,8 @@
 .animate-fade-in {
     animation: fadeIn 0.5s ease-out;
 }
+
+.coin-emoji {
+    width: 20px;
+    height: 20px;
+}
