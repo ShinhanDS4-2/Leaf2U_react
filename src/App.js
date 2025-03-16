@@ -57,7 +57,7 @@ function AppContent() {
     return (
         <>
             {isLoading && <Loading />}
-            <div className="w-100 h-100">
+            <div className="w-100 h-100" style={{backgroundColor: '#FAFAFA'}}>
                 <MaturityProvider>
                     <Routes>
                         <Route path="/home" element={<Home />} />

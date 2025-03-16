@@ -56,7 +56,7 @@ const Start = () => {
                 <div className="start-container">
                     <div className="TextBox2">
                         <h2 className="text">최고금리</h2>
-                        <h2 className="text2">연 9.00%</h2>
+                        <h2 className="text2">연 10.00%</h2>
                         <h2 className="text3">기본 연 1.0%</h2>
                     </div>
                     <div className="TextBox3">
