@@ -122,19 +122,14 @@ function Home() {
     };
 
     // 비밀번호 검증 API 요청
-    const verifyPassword = (inputPassword) => {
-        api.post('/saving/password', {
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ inputPassword }),
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                return result; // true (비밀번호 일치) / false (불일치)
-            })
-            .catch((error) => {
-                console.error('비밀번호 검증 실패:', error);
-                return false;
-            });
+    const verifyPassword = async (inputPassword) => {
+        try {
+            const response = await api.post('/saving/password', { inputPassword });
+            return response.data; // true (비밀번호 일치) / false (불일치)
+        } catch (error) {
+            console.error('비밀번호 검증 실패:', error);
+            return false;
+        }
     };
 
     // 챌린지 완료 후 적금 납입 체크 함수
