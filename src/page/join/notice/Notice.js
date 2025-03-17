@@ -63,6 +63,14 @@ const Notice = () => {
 
                                 <h3 className="ms-2">상품 이용 약관</h3>
                             </div>
+                            <span className="arrow-icon">
+                                <Icon
+                                    icon="line-md:arrow-right"
+                                    width="20px"
+                                    height="20px"
+                                    style={{ color: 'gray' }}
+                                />
+                            </span>
                         </div>
                         <div className="mt-3">
                             <ul className="notice-ul">
@@ -86,7 +94,14 @@ const Notice = () => {
 
                                 <h3 className="ms-2">금융상품 가입 전 안내</h3>
                             </div>
-                            
+                            <span className="arrow-icon">
+                                <Icon
+                                    icon="line-md:arrow-right"
+                                    width="20px"
+                                    height="20px"
+                                    style={{ color: 'gray' }}
+                                />
+                            </span>
                         </div>
                         <div className="mt-3">
                             <ul className="notice-ul">

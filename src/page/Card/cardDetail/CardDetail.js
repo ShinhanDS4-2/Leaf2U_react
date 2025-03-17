@@ -86,18 +86,10 @@ const CardDetail = () => {
             <div className="card-detail-container">
                 <h3 className="section-title">가입 정보 확인</h3>
                 <div className="info-box">
-                    <p>
-                        <strong>이름</strong> <span>{formData.name}</span>
-                    </p>
-                    <p>
-                        <strong>영문 성</strong> <span>{formData.lastName}</span>
-                    </p>
-                    <p>
-                        <strong>영문 이름</strong> <span>{formData.firstName}</span>
-                    </p>
-                    <p>
-                        <strong>연락처</strong> <span>{formData.phone}</span>
-                    </p>
+                    <p><strong>이름</strong> <span>{formData.name}</span></p>
+                    <p><strong>영문 성</strong> <span>{formData.lastName}</span></p>
+                    <p><strong>영문 이름</strong> <span>{formData.firstName}</span></p>
+                    <p><strong>연락처</strong> <span>{formData.phone}</span></p>
                     <p>
                         <strong>계좌번호</strong>{' '}
                         <span>
@@ -129,7 +121,7 @@ const CardDetail = () => {
             <PwdModal ref={pwdModalRef2} onSubmit={handleSecondPwdSubmit} />
 
             <BottomModal ref={successModalRef} maxHeight="70%">
-                <div className="agree-item2 pb-4">
+                <div className="agree-item3">
                     <p>
                         카드 발급이 완료되었습니다! <br /> 적금 가입으로 이동합니다.
                     </p>
