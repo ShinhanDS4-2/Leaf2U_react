@@ -135,7 +135,7 @@ function Home() {
     // 챌린지 완료 후 적금 납입 체크 함수
     const challengeCheckRate = () => {
         if (deposit == 'Y') {
-            // React Deposit.js에서 선택한 type이 DB challengeType 저장될 형식 변환
+            // React Deposit.js에서 선택한 type이 DB saving_account_history테이블의 challengeType 저장될 형식 변환
             const typeMap = {
                 tumblr: 'T',
                 bicycle: 'C',

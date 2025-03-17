@@ -379,10 +379,10 @@ const Tap2Page = () => {
                                 >
                                     <Box>
                                         <Typography color="white" variant="h6">
-                                            {rankingInfo.ranking[0]?.name || '-'}
+                                            {rankingInfo.ranking[2]?.name || '-'}
                                         </Typography>
                                         <Typography color="white" variant="caption">
-                                            {rankingInfo.ranking[0]?.total_donation?.toLocaleString() ||
+                                            {rankingInfo.ranking[2]?.total_donation?.toLocaleString() ||
                                                 0}
                                             원
                                         </Typography>
@@ -421,10 +421,10 @@ const Tap2Page = () => {
                                 >
                                     <Box>
                                         <Typography color="white" variant="h6">
-                                            {rankingInfo.ranking[2]?.name || '-'}
+                                            {rankingInfo.ranking[0]?.name || '-'}
                                         </Typography>
                                         <Typography color="white" variant="caption">
-                                            {rankingInfo.ranking[2]?.total_donation?.toLocaleString() ||
+                                            {rankingInfo.ranking[0]?.total_donation?.toLocaleString() ||
                                                 0}
                                             원
                                         </Typography>
