@@ -24,22 +24,22 @@ api.interceptors.request.use(
 export const setupAxiosInterceptors = (startLoading, stopLoading) => {
     api.interceptors.request.use(
         (config) => {
-            // startLoading();
+            startLoading();
             return config;
         },
         (error) => {
-            // stopLoading();
+            stopLoading();
             return Promise.reject(error);
         },
     );
 
     api.interceptors.response.use(
         (response) => {
-            // stopLoading();
+            stopLoading();
             return response;
         },
         (error) => {
-            // stopLoading();
+            stopLoading();
             return Promise.reject(error);
         },
     );
