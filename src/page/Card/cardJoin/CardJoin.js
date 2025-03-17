@@ -11,13 +11,13 @@ import NonghyubImg from '../../../image/nonghyub.png';
 import HanaImg from '../../../image/hana.png';
 import WooriImg from '../../../image/woori.png';
 import KakaoImg from '../../../image/kakao.png';
+import { useRate } from '../../../context/RateContext';
 
 const CardJoin = () => {
-
     const navigate = useNavigate();
-    const modalRef=useRef();
-    const alertRef=useRef();
-    const alertRef2=useRef();
+    const modalRef = useRef();
+    const alertRef = useRef();
+    const alertRef2 = useRef();
 
     // 입력값 상태 관리
     const [form, setForm] = useState({
@@ -25,36 +25,36 @@ const CardJoin = () => {
         lastName: '',
         firstName: '',
         phone: '',
-        accountNumber:'',
+        accountNumber: '',
     });
 
-    const [selectedBank,setSelectedBank]=useState('');
+    const [selectedBank, setSelectedBank] = useState('');
+    const [memberName, setMemberName] = useState('');
+    const { setCardBankName } = useRate(); // context
 
-    const banks=[
-        { name: '신한', logo: ShinhanImg, className: "shinhan-logo" },
-        { name: '국민', logo: KookminImg, className: "kookmin-logo" },
-        { name: '농협', logo: NonghyubImg, className: "nonghyub-logo" },
-        { name: '하나', logo: HanaImg, className: "hana-logo" },
-        { name: '우리', logo: WooriImg, className: "woori-logo" },
-        { name: '카카오', logo: KakaoImg, className: "kakao-logo" },
+    const banks = [
+        { name: '신한', logo: ShinhanImg, className: 'shinhan-logo' },
+        { name: '국민', logo: KookminImg, className: 'kookmin-logo' },
+        { name: '농협', logo: NonghyubImg, className: 'nonghyub-logo' },
+        { name: '하나', logo: HanaImg, className: 'hana-logo' },
+        { name: '우리', logo: WooriImg, className: 'woori-logo' },
+        { name: '카카오', logo: KakaoImg, className: 'kakao-logo' },
     ];
 
     // 입력값 변경 핸들러
-    const handleChange = (e) => {
+    // const handleChange = (e) => {
+    //     const formattedNumber = formatCardNumber(e.target.value);
+    //     setAccountNumber(formattedNumber);
+    // };
 
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
-
     };
 
     const handleNext = () => {
-
-        //console.log("form = ",form);
-
-        for(const key in form){
-
-            if(!form[key].trim() && alertRef.current){
-
+        for (const key in form) {
+            if (!form[key].trim() && alertRef.current) {
                 alertRef.current.openModal();
                 return;
             }
@@ -64,10 +64,9 @@ const CardJoin = () => {
             alertRef2.current.openModal();
             return;
         }
-        
-        
-        localStorage.setItem('bankName',selectedBank);
-        navigate('/cardDetail',{state:{...form,selectedBank}});
+
+        setCardBankName('신한');
+        navigate('/cardDetail', { state: { ...form, selectedBank } });
     };
 
     return (
@@ -84,9 +83,29 @@ const CardJoin = () => {
                         type="text"
                         name="name"
                         placeholder="이름을 입력해 주세요."
-                        value={form.name} 
-                        onChange={handleChange} 
+                        value={form.name}
+                        onChange={handleChange}
                     />
+
+                    {/* <button
+                        type="button"
+                        onClick={convertToEnglish}
+                        style={{
+                            position: 'relative',
+                            right: '5px',
+                            padding: '5px 10px',
+                            fontSize: '12px',
+                            background: '#e8e8e8',
+                            color: 'black',
+                            border: 'none',
+                            borderRadius: '15px',
+                            width: '80px',
+                            top: '-36px',
+                            left: '230px',
+                        }}
+                    >
+                        영문 변환
+                    </button> */}
                 </div>
 
                 {/* 영문 성 */}
@@ -115,26 +134,32 @@ const CardJoin = () => {
 
                 {/* 연락처 */}
                 <div className="input-container">
+                    <label>연락처</label>
                     <input
                         type="text"
                         name="phone"
-                        placeholder="- 없이 숫자만"
+                        placeholder="010-0000-0000"
                         value={form.phone}
                         onChange={handleChange}
                     />
                 </div>
 
-                
                 {/*계좌*/}
                 <div className="input-container">
-                    <label className="card-label">카드 연결</label>
-                    
+                    <label className="card-label">계좌 연결</label>
+
                     {/* 은행 선택 */}
                     <div className="select-box" onClick={() => modalRef.current.openModal()}>
                         {selectedBank ? selectedBank : '은행 선택'}
                     </div>
 
-                    <input type="text" name="accountNumber" placeholder="계좌번호 (- 없이 숫자만)" value={form.accountNumber} onChange={handleChange}/>
+                    <input
+                        type="text"
+                        name="accountNumber"
+                        placeholder="계좌번호"
+                        value={form.accountNumber}
+                        onChange={handleChange}
+                    />
                 </div>
 
                 <div className="explain-card">
@@ -144,20 +169,20 @@ const CardJoin = () => {
                 </div>
             </div>
 
-            <div className='p-3'>
-                <Button text={'다음'} onClick={handleNext}/>
+            <div className="p-3">
+                <Button text={'다음'} onClick={handleNext} />
             </div>
-            
+
             <BottomModal ref={modalRef} maxHeight="60%">
                 <div className="bank-modal-content">
                     <div className="bank-select">
                         <h3>은행 선택</h3>
                     </div>
-                    
+
                     <div className="bank-list">
                         {banks.map((bank, index) => (
-                            <button 
-                                key={index} 
+                            <button
+                                key={index}
                                 className="bank-button"
                                 onClick={() => {
                                     setSelectedBank(bank.name);
@@ -169,12 +194,10 @@ const CardJoin = () => {
                             </button>
                         ))}
                     </div>
-
                 </div>
             </BottomModal>
             <AlertModal ref={alertRef} text="모든 항목을 입력해 주세요." />
             <AlertModal ref={alertRef2} text="은행을 선택해 주세요." />
-
         </div>
     );
 };

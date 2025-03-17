@@ -7,10 +7,10 @@ import './CardDetail.css';
 import DoubleButton from '../../../components/button/DoubleButton';
 import PwdModal from '../../../components/modal/PwdModal';
 import AlertModal from '../../../components/modal/AlertModal';
-import axios from 'axios';
+import api from '../../../utils/api';
+import { useRate } from '../../../context/RateContext';
 
 const CardDetail = () => {
-
     const navigate = useNavigate();
     const location = useLocation();
     const formData = location.state || {};
@@ -21,6 +21,7 @@ const CardDetail = () => {
     const alertRef = useRef();
 
     const [firstPwd, setFirstPwd] = useState('');
+    const { setPrevCardYN, setCardYN, setCardNum, rate, setRate } = useRate(); // context
 
     const handleNextClick = () => {
         cardRef.current.openModal();
@@ -38,16 +39,11 @@ const CardDetail = () => {
     };
 
     const handleSecondPwdSubmit = async (pwd) => {
-        
         if (pwd == firstPwd) {
             pwdModalRef2.current.closeModal();
             successModalRef.current.openModal();
 
-            //console.log('멤버 idx 살아있니?', localStorage.getItem('memberIdx'));
-            //console.log('계좌번호는?', formData.accountNumber);
-
             const token = localStorage.getItem('jwtToken');
-            //console.log('전송할 토큰:', token);
 
             // 토큰이 없는 경우 처리
             if (!token) {
@@ -55,27 +51,18 @@ const CardDetail = () => {
                 return;
             }
 
-            try {
-                const response = await axios.post(
-                    'http://localhost:8090/api/card/new',
-                    {
-                        memberIdx: localStorage.getItem('memberIdx'),
-                        accountNumber: formData.accountNumber,
-                        cardPassword: pwd,
-                        cardName: formData.selectedBank,
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`,
-                        },
-                    },
-                );
-
-                //console.log('카드 발급 성공:', response.data);
-            } catch (error) {
-                //console.error('카드 발급 실패:', error);
-            }
+            api.post('/card/new', {
+                memberIdx: localStorage.getItem('memberIdx'),
+                accountNumber: formData.accountNumber,
+                cardPassword: pwd,
+                cardName: formData.selectedBank,
+            })
+                .then((response) => {
+                    setCardNum(response.data.cardNumber);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         } else {
             alertRef.current.openModal();
             setFirstPwd('');
@@ -86,7 +73,10 @@ const CardDetail = () => {
     };
 
     const handleNextPage = () => {
-        navigate('/cardHome', { state: { cardYn: 'Y',bankName:formData.bankName,accountNumber:formData.accountNumber} });
+        setCardYN('Y');
+        setPrevCardYN('Y');
+        setRate(rate + 2);
+        navigate('/cardHome');
     };
 
     return (
@@ -119,13 +109,13 @@ const CardDetail = () => {
                 <p className="notice">* 위 정보가 사실과 다름이 없음을 확인합니다.</p>
             </div>
 
-            <div className='p-3'>
-                <Button text={'다음'} onClick={handleNextClick}/>
+            <div className="p-3">
+                <Button text={'다음'} onClick={handleNextClick} />
             </div>
 
             <BottomModal ref={cardRef} maxHeight="50%">
-                <div className="agree-item-modal">
-                    <p className="agree-item2">카드를 발급하시겠습니까?</p>
+                <div className="agree-item-modal p-3">
+                    <p className="agree-item2 pb-4">카드를 발급하시겠습니까?</p>
                     <DoubleButton
                         cancelText="아니요"
                         confirmText="예"
@@ -139,11 +129,13 @@ const CardDetail = () => {
             <PwdModal ref={pwdModalRef2} onSubmit={handleSecondPwdSubmit} />
 
             <BottomModal ref={successModalRef} maxHeight="70%">
-                <div className="agree-item2">
+                <div className="agree-item2 pb-4">
                     <p>
                         카드 발급이 완료되었습니다! <br /> 적금 가입으로 이동합니다.
                     </p>
-                    <Button text="확인" onClick={handleNextPage} />
+                    <div className="p-3">
+                        <Button text="확인" onClick={handleNextPage} />
+                    </div>
                 </div>
             </BottomModal>
 
@@ -151,6 +143,5 @@ const CardDetail = () => {
         </div>
     );
 };
-
 
 export default CardDetail;

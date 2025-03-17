@@ -1,14 +1,14 @@
-.card-detail-container{
+.card-detail-container {
     padding-top: 100px;
     padding-left: 30px;
     padding-right: 30px;
 }
-.section-title{
+.section-title {
     font-weight: bold;
     padding-left: 20px;
     font-size: 18px;
 }
-.info-container{
+.info-container {
     padding-top: 20px;
     padding-left: 30px;
     padding-right: 30px;
@@ -17,24 +17,24 @@
 .info-box {
     background: #f7f7f7;
     border-radius: 10px;
-    padding:20px 20px
+    padding: 20px 20px;
 }
 
 .info-box p {
-    display: flex; 
-    justify-content: space-between;                  /* 항목명과 데이터 값을 양쪽 끝으로 정렬 */
-    align-items: center; 
+    display: flex;
+    justify-content: space-between; /* 항목명과 데이터 값을 양쪽 끝으로 정렬 */
+    align-items: center;
     font-size: 16px;
     margin: 10px 0;
 }
 
 .info-box p strong {
-    color: #888; 
+    color: #888;
     font-weight: bold;
 }
 
 .info-box p span {
-    color: black; 
+    color: black;
     font-size: 15px;
     font-weight: bolder;
 }
@@ -44,11 +44,7 @@
     margin-top: 10px;
     padding-left: 30px;
 }
-.agree-item2{
-    font-size: 20px;
+.agree-item2 {
+    font-size: 18px;
     font-weight: bold;
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 10px;
-    padding-bottom: 45px;
 }
