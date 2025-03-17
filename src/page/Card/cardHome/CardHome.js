@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../../components/button/Button';
 import Header from '../../../components/header/Header';
 import BottomModal from '../../../components/modal/BottomModal';
@@ -16,9 +16,11 @@ import PwdModal6 from '../../../components/modal/PwdModal6';
 import axios from 'axios';
 import AlertModal from '../../../components/modal/AlertModal';
 import PwdModal from '../../../components/modal/PwdModal';
+import { useRate } from '../../../context/RateContext';
+import { formatCardNumber } from '../../../utils/util';
+import api from '../../../utils/api';
 
 const CardHome = () => {
-    const location = useLocation();
     const navigate = useNavigate();
     const leafRef = useRef();
     const modalRef = useRef();
@@ -32,17 +34,46 @@ const CardHome = () => {
     const cardRef = useRef();
     const cardSuccessModalRef = useRef();
 
-    const cardYn = location.state?.cardYn || 'Y';
-
     const amount = localStorage.getItem('amount');
 
     const [maturityDate, setMaturityDate] = useState('');
-    const [accountNumber, setAccountNumber] = useState('');
-    const [bankName, setBankName] = useState('');
+    // const [accountNumber, setAccountNumber] = useState('');
+    // const [bankName, setBankName] = useState('');
     const [cardType, setCardType] = useState('C');
+    const {
+        prevCardYN,
+        setPrevCardYN,
+        cardYN,
+        setCardYN,
+        firstYN,
+        rate,
+        setRate,
+        cardBankName,
+        setCardBankName,
+        cardNum,
+        setCardNum,
+    } = useRate(); // context
 
     const handleChange = (e) => {
-        setAccountNumber(e.target.value);
+        const formattedNumber = formatCardNumber(e.target.value);
+        setCardNum(formattedNumber);
+
+        if (e.target.value.length >= 19) {
+            api.post('/card/check/prev', {
+                cardNum: formattedNumber,
+            })
+                .then((response) => {
+                    if (response.data) {
+                        setCardYN('Y');
+                        setRate(rate + 2);
+                    } else {
+                        setCardYN('N');
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     };
 
     const handleCheckboxChange = (e) => {
@@ -50,7 +81,7 @@ const CardHome = () => {
     };
 
     const handleBankSelect = (bank) => {
-        setBankName(bank);
+        setCardBankName(bank);
         modalRef.current.closeModal();
     };
 
@@ -68,11 +99,8 @@ const CardHome = () => {
 
     useEffect(() => {
         const fetchCardInfo = async () => {
-            if (cardYn === 'N') {
+            if (prevCardYN === 'N') {
                 leafRef.current.openModal();
-            } else if (cardYn == 'Y') {
-                getCardInfo();
-                modalRef2.current.openModal();
             }
         };
 
@@ -82,30 +110,7 @@ const CardHome = () => {
         setMaturityDate(formattedDate);
 
         fetchCardInfo();
-    }, [cardYn]);
-
-    const getCardInfo = async () => {
-        //console.log("멤버 idx : ",localStorage.getItem('memberIdx'));
-
-        try {
-            const response = await axios.post(
-                '/api/card/card-info',
-                {
-                    memberIdx: localStorage.getItem('memberIdx'),
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                },
-            );
-
-            setBankName(response.data.cardName);
-            setAccountNumber(response.data.accountNumber);
-        } catch (error) {
-            //console.error('카드 발급 실패:', error);
-        }
-    };
+    }, [cardYN, prevCardYN]);
 
     const [firstPwd, setFirstPwd] = useState('');
 
@@ -127,10 +132,7 @@ const CardHome = () => {
             cardPwdModalRef2.current.closeModal();
             cardRef.current.closeModal();
 
-            //console.log('멤버 idx 살아있니?', localStorage.getItem('memberIdx'));
-
             const token = localStorage.getItem('jwtToken');
-            //console.log('전송할 토큰:', token);
 
             // 토큰이 없는 경우 처리
             if (!token) {
@@ -138,29 +140,19 @@ const CardHome = () => {
                 return;
             }
 
-            try {
-                const response = await axios.post(
-                    '/api/card/exist',
-                    {
-                        memberIdx: localStorage.getItem('memberIdx'),
-                        accountNumber: accountNumber,
-                        cardPassword: pwd,
-                        cardName: bankName,
-                        cardType: cardType,
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`,
-                        },
-                    },
-                );
-
-                //console.log('카드 발급 성공:', response.data);
-                cardSuccessModalRef.current.openModal();
-            } catch (error) {
-                //console.error('카드 발급 실패:', error);
-            }
+            api.post('/card/exist', {
+                memberIdx: localStorage.getItem('memberIdx'),
+                accountNumber: cardNum,
+                cardPassword: pwd,
+                cardName: cardBankName,
+                cardType: cardType,
+            })
+                .then((response) => {
+                    cardSuccessModalRef.current.openModal();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         } else {
             alertRef.current.openModal();
             setFirstPwd('');
@@ -189,10 +181,7 @@ const CardHome = () => {
             pwdModalRef2.current.closeModal();
             successModalRef.current.openModal();
 
-            //console.log('멤버 idx 살아있니?', localStorage.getItem('memberIdx'));
-
             const token = localStorage.getItem('jwtToken');
-            //console.log('전송할 토큰:', token);
 
             // 토큰이 없는 경우 처리
             if (!token) {
@@ -200,27 +189,17 @@ const CardHome = () => {
                 return;
             }
 
-            try {
-                const response = await axios.post(
-                    '/api/account/create',
-                    {
-                        memberIdx: localStorage.getItem('memberIdx'),
-                        accountPassword: pwd,
-                        paymentAmount: amount,
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            Authorization: `Bearer ${token}`,
-                        },
-                    },
-                );
-
-                //console.log('적금 발급 성공:', response.data);
-                modalRef2.current.closeModal();
-            } catch (error) {
-                //console.error('적금금 발급 실패:', error);
-            }
+            api.post('/account/create', {
+                memberIdx: localStorage.getItem('memberIdx'),
+                accountPassword: pwd,
+                paymentAmount: amount,
+            })
+                .then((response) => {
+                    modalRef2.current.closeModal();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         } else {
             alertRef.current.openModal();
             setFirstPwd('');
@@ -231,7 +210,13 @@ const CardHome = () => {
     };
 
     const handleNextClick = () => {
-        cardRef.current.openModal();
+        if (!cardNum.trim() || !cardBankName) {
+            alertRef.current.openModal();
+            return;
+        }
+
+        modalRef2.current.openModal();
+        // cardRef.current.openModal();
     };
 
     const handleMakeLeafAccount = () => {
@@ -269,14 +254,14 @@ const CardHome = () => {
 
                     {/* 은행 선택 */}
                     <div className="select-box" onClick={() => modalRef.current.openModal()}>
-                        {bankName ? bankName : '은행 선택'}
+                        {cardBankName != '' ? cardBankName : '은행 선택'}
                     </div>
 
                     <input
                         type="text"
                         name="accountNumber"
-                        placeholder="계좌번호 (- 없이 숫자만)"
-                        value={accountNumber}
+                        placeholder="카드번호 (- 없이 숫자만)"
+                        value={cardNum ? cardNum : ''}
                         onChange={handleChange}
                     />
                 </div>
@@ -289,6 +274,7 @@ const CardHome = () => {
                             id="donation"
                             className="checkbox"
                             onChange={handleCheckboxChange}
+                            disabled={cardYN === 'Y'}
                         />
                         <label htmlFor="donation" className="checkbox-label">
                             기후 동행 카드
@@ -304,7 +290,7 @@ const CardHome = () => {
                 <div className="summary-card">
                     <div className="summary">
                         <p>
-                            매일 납입 금액 <span>{amount}원</span>
+                            매일 납입 금액 <span>{amount.toLocaleString()}원</span>
                         </p>
                         <p>
                             적금기간 <span>30일</span>
@@ -313,18 +299,20 @@ const CardHome = () => {
                             적금방식 <span>1일 1회 입금</span>
                         </p>
                         <p>
-                            최고 적용금리 <span>연 9.00%</span>
+                            최고 적용금리 <span>연 {rate}.00%</span>
                         </p>
                         <p>
-                            만기설정 <span>만기 시 자동 해지</span>
+                            만기설정 <span>만기 시 직접 해지</span>
                         </p>
                     </div>
                 </div>
                 <div className="explain-card">
                     <ul className="explain">
                         <li>
-                            최고 적용금리 6.00% = 기본금리 1.00% + 30일 성공 시 3.00% + 연속 보너스
-                            2.00% + 최초 가입 2.00
+                            최고 적용금리 {rate}.00% = 기본금리 1.00% + 30일 성공 시 3.00% + 연속
+                            보너스 2.00% {firstYN === 'N' && ' + 최초 가입 2.00%'}{' '}
+                            {cardYN === 'Y' && prevCardYN === 'Y' && ' + Leaf 카드 2.00%'}
+                            {cardType === 'E' && ' + 기후 동행 카드 1.00%'}
                         </li>
                     </ul>
                 </div>
@@ -371,7 +359,7 @@ const CardHome = () => {
                         <br />
                         이런 혜택이 있어요!
                     </p>
-                    <p className="modal-benefits">
+                    <p className="modal-benefits pb-3">
                         <span className="highlight-text">우대 금리 + 연 2.00%</span>
                         <br />
                         대중교통 5% 캐시백
@@ -413,21 +401,21 @@ const CardHome = () => {
                     <div className="summary-table">
                         <div className="summary-row">
                             <span className="summary-label">매일 납입 금액</span>
-                            <span className="summary-value">{amount}원</span>
+                            <span className="summary-value">{amount.toLocaleString()}원</span>
                         </div>
                         <div className="summary-row">
                             <span className="summary-label">만기일자</span>
                             <span className="summary-value">{maturityDate}</span>
                         </div>
                         <div className="summary-row">
-                            <span className="summary-label">연결계좌</span>
+                            <span className="summary-label">연결카드</span>
                             <span className="summary-value">
-                                {bankName} {accountNumber}
+                                {cardBankName} {cardNum}
                             </span>
                         </div>
                         <div className="summary-row">
                             <span className="summary-label">적용금리</span>
-                            <span className="summary-value">연 9.00%</span>
+                            <span className="summary-value">연 {rate}.00%</span>
                         </div>
                     </div>
                     <p className="modal-description">
@@ -463,11 +451,14 @@ const CardHome = () => {
             <BottomModal ref={successModalRef} maxHeight="70%">
                 <div className="agree-item2">
                     <p>한달적금이 개설되었습니다.</p>
-                    <Button text="확인" onClick={handleNextPage} />
+                    <div className="p-3">
+                        <Button text="확인" onClick={handleNextPage} />
+                    </div>
                 </div>
             </BottomModal>
 
-            <AlertModal ref={alertRef} text="비밀번호가 일치하지 않습니다. 다시 입력해주세요." />
+            {/* <AlertModal ref={alertRef} text="비밀번호가 일치하지 않습니다. 다시 입력해주세요." /> */}
+            <AlertModal ref={alertRef} text="입력되지 않은 값이 있습니다." />
         </div>
     );
 };

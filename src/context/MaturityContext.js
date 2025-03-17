@@ -6,7 +6,7 @@ const MaturityContext = createContext();
 // Context Provider 컴포넌트
 export const MaturityProvider = ({ children }) => {
     const [accountInfo, setAccountInfo] = useState(null); // 원금, 금리, 이자
-    const [card, setCard] = useState(null); // 카드 계좌좌
+    const [card, setCard] = useState(null); // 카드 계좌
     const [point, setPoint] = useState(null); // 포인트
     const [organizationIdx, setOrganizationIdx] = useState(null); // 선택한 후원 단체
     const [donationInfo, setDonationInfo] = useState(null); // 후원 정보
@@ -25,8 +25,8 @@ export const MaturityProvider = ({ children }) => {
                 setOrganizationIdx,
                 donationInfo,
                 setDonationInfo,
-                finalBalance, 
-                setFinalBalance
+                finalBalance,
+                setFinalBalance,
             }}
         >
             {children}

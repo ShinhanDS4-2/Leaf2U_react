@@ -6,6 +6,7 @@ import { LoadingProvider, useLoading } from './context/LoadingContext';
 import Loading from './components/loading/Loading';
 import { setupAxiosInterceptors } from './utils/api';
 import { MaturityProvider } from './context/MaturityContext';
+import { RateProvider } from './context/RateContext';
 
 import Login from './page/join/login/Login';
 import Home from './page/home/Home';
@@ -58,57 +59,57 @@ function AppContent() {
     return (
         <>
             {isLoading && <Loading />}
-            <div className="w-100 h-100" style={{backgroundColor: '#FAFAFA'}}>
+            <div className="w-100 h-100" style={{ backgroundColor: '#FAFAFA' }}>
                 <MaturityProvider>
-                    <Routes>
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/home/notice" element={<HomeNotice />} />
-                        <Route path="/home/maturity" element={<Maturity />} />
-                        <Route path="/home/maturityList" element={<MaturityList />} />
-                        <Route path="/home/maturityRate" element={<MaturityRate />} />
-                        <Route path="/home/maturityResult" element={<MaturityResult />} />
-                        <Route path="/home/termination" element={<HomeTermination />} />
+                    <RateProvider>
+                        <Routes>
+                            <Route path="/home" element={<Home />} />
+                            <Route path="/home/notice" element={<HomeNotice />} />
+                            <Route path="/home/maturity" element={<Maturity />} />
+                            <Route path="/home/maturityList" element={<MaturityList />} />
+                            <Route path="/home/maturityRate" element={<MaturityRate />} />
+                            <Route path="/home/maturityResult" element={<MaturityResult />} />
+                            <Route path="/home/termination" element={<HomeTermination />} />
 
-                        {/* 현욱 페이지 START */}
-                        <Route path="/" element={<Login />} />
-                        <Route path="/start" element={<Start />} />
-                        <Route path="/payment" element={<Payment />} />
-                        <Route path="/notice" element={<Notice />} />
-                        <Route path="/payment" element={<Payment />} />
-                        <Route path="/cardHome" element={<CardHome />} />
-                        <Route path="/leaf" element={<CardNotice />} />
-                        <Route path="/cardjoin" element={<CardJoin />} />
-                        <Route path="/cardDetail" element={<CardDetail />} />
+                            {/* 현욱 페이지 START */}
+                            <Route path="/" element={<Login />} />
+                            <Route path="/start" element={<Start />} />
+                            <Route path="/payment" element={<Payment />} />
+                            <Route path="/notice" element={<Notice />} />
+                            <Route path="/payment" element={<Payment />} />
+                            <Route path="/cardHome" element={<CardHome />} />
+                            <Route path="/leaf" element={<CardNotice />} />
+                            <Route path="/cardjoin" element={<CardJoin />} />
+                            <Route path="/cardDetail" element={<CardDetail />} />
 
-                        {/* 시온 페이지 START */}
-                        <Route path="/organizationList" element={<OrganizationList />} />
-                        <Route path="/historyList" element={<HistoryList />} />
-                        {/* 후원내역 상세 페이지 (동적 라우팅) */}
-                        <Route path="/historyDetail/:idx" element={<HistoryDetail />} />
-                        <Route path="/termination" element={<Termination />} />
-                        <Route path="/interestMainPage" element={<InterestMainPage />} />
+                            {/* 시온 페이지 START */}
+                            <Route path="/organizationList" element={<OrganizationList />} />
+                            <Route path="/historyList" element={<HistoryList />} />
+                            {/* 후원내역 상세 페이지 (동적 라우팅) */}
+                            <Route path="/historyDetail/:idx" element={<HistoryDetail />} />
+                            <Route path="/termination" element={<Termination />} />
+                            <Route path="/interestMainPage" element={<InterestMainPage />} />
 
-                        {/* 시온 해야함 */}
-                        <Route path="/manageAccount" element={<ManageAccount />} />
-                        <Route path="/aaa" element={<Aaa />} />
-                        <Route path="/paymentaaaaa" element={<Paymentaaaaa />} />
-                        <Route path="/pickerTest" element={<PickerTest />} />
+                            {/* 시온 해야함 */}
+                            <Route path="/manageAccount" element={<ManageAccount />} />
+                            <Route path="/aaa" element={<Aaa />} />
+                            <Route path="/paymentaaaaa" element={<Paymentaaaaa />} />
+                            <Route path="/pickerTest" element={<PickerTest />} />
+                            {/* 시온 페이지 END */}
 
-                        {/* 시온 페이지 END */}
+                            {/* 동근 페이지 START */}
+                            <Route path="/deposit" element={<Deposit />} />
+                            <Route path="/image" element={<Image />} />
 
-                        {/* 동근 페이지 START */}
-                        <Route path="/deposit" element={<Deposit />} />
-                        <Route path="/image" element={<Image />} />
+                            {/*상욱 페이지 START */}
+                            <Route path="/point" element={<Point />} />
+                            <Route path="/pedometer" element={<Pedometer />} />
+                            <Route path="/quiz" element={<Quiz />} />
+                            <Route path="/topic" element={<Topic />} />
 
-                        <Route path="/example" element={<Example />} />
-
-                        <Route path="/topic" element={<Topic />} />
-
-                        {/*상욱 페이지 START */}
-                        <Route path="/point" element={<Point />} />
-                        <Route path="/pedometer" element={<Pedometer />} />
-                        <Route path="/quiz" element={<Quiz />} />
-                    </Routes>
+                            <Route path="/example" element={<Example />} />
+                        </Routes>
+                    </RateProvider>
                 </MaturityProvider>
             </div>
         </>

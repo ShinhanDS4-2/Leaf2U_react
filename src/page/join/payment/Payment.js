@@ -5,11 +5,14 @@ import Button from '../../../components/button/Button';
 import Keypad from '../../../components/Keypad';
 import Header from '../../../components/header/Header';
 import AlertModal from '../../../components/modal/AlertModal';
+import api from '../../../utils/api';
+import { useRate } from '../../../context/RateContext';
 
 const Payment = () => {
     const navigate = useNavigate();
     const alertRef = useRef();
     const [amount, setAmount] = useState('');
+    const { setPrevCardYN, setFirstYN, rate, setRate } = useRate(); // context
 
     // 페이지가 새로고침되거나 처음 접속할 때마다 amount를 빈 문자열로 초기화
     useEffect(() => {
@@ -34,7 +37,6 @@ const Payment = () => {
 
         try {
             const token = localStorage.getItem('jwtToken');
-            //console.log('전송할 토큰:', token);
 
             // 토큰이 없는 경우 처리
             if (!token) {
@@ -43,26 +45,25 @@ const Payment = () => {
                 return;
             }
 
-            const response = await fetch('http://localhost:8090/api/member-info', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            api.get('/member-info')
+                .then((response) => {
+                    const data = response.data;
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`서버 오류: ${response.status} - ${errorText}`);
-            }
+                    localStorage.setItem('amount', amount);
+                    localStorage.setItem('memberIdx', data.memberIdx); //멤버 Idx 저장
 
-            const data = await response.json();
-            //console.log('서버 응답:', data);
+                    setPrevCardYN(data.cardYn);
+                    setFirstYN(data.firstYn);
 
-            localStorage.setItem('amount', amount);
-            localStorage.setItem('memberIdx', data.memberIdx); //멤버 Idx 저장
+                    if (data.firstYn === 'N') {
+                        setRate(rate + 2);
+                    }
 
-            navigate('/cardHome', { state: { cardYn: data.cardYn } });
+                    navigate('/cardHome');
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         } catch (error) {
             console.error('API 요청 실패: ', error);
         }
