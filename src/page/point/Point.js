@@ -7,7 +7,7 @@ import CalendarImg from '../../image/Calendar.jpg';
 import PedometerImg from '../../image/Pedometer.jpg';
 import PointQuizImg from '../../image/PointQuiz.jpg';
 import ArrowImg from '../../image/Arrow.jpg';
-import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 navigate
+import { useNavigate } from 'react-router-dom';
 import AlertModal from '../../components/modal/AlertModal';
 import Pedometer from './Pedometer';
 import Quiz from './Quiz';
@@ -41,24 +41,20 @@ const PointCard = ({
     onCheckIn,
     onPedometer,
     onQuiz,
-}) => {
-    return (
-        <div
-            className="point-item"
-            onClick={type === 'checkin' ? onCheckIn : type === 'pedometer' ? onPedometer : onQuiz}
-            style={{ cursor: 'pointer' }}
-        >
-            <img src={pointImg} alt={pointTitle} className="point-icon" />
-
-            <div className="point-text">
-                <p className="point-text-title">{pointTitle}</p>
-                <p className="point-text-description">{pointDescription}</p>
-            </div>
-
-            <img src={ArrowImg} alt="arrow" className="point-arrow" />
+}) => (
+    <div
+        className="point-item"
+        onClick={type === 'checkin' ? onCheckIn : type === 'pedometer' ? onPedometer : onQuiz}
+        style={{ cursor: 'pointer' }}
+    >
+        <img src={pointImg} alt={pointTitle} className="point-icon" />
+        <div className="point-text">
+            <p className="point-text-title">{pointTitle}</p>
+            <p className="point-text-description">{pointDescription}</p>
         </div>
-    );
-};
+        <img src={ArrowImg} alt="arrow" className="point-arrow" />
+    </div>
+);
 
 const Point = () => {
     const [totalPoints, setTotalPoints] = useState(0);
@@ -94,30 +90,71 @@ const Point = () => {
         fetchTotalPoints();
     }, []);
 
+    // 출석 체크
     const checkIn = async () => {
         try {
             const response = await api.post('/point/checkin');
             const { success, message } = response.data;
 
-            if (success) {
-                setAlertMessage('출석체크 완료! 🎯');
-                setTotalPoints((prev) => prev + 10);
-            } else {
-                setAlertMessage('이미 출석체크 완료되었습니다. 😊');
-            }
-
+            setAlertMessage(message);
             alertRef.current.openModal();
+
+            if (success) {
+                setTotalPoints((prev) => prev + 10);
+            }
         } catch (error) {
             console.error('출석 체크 중 오류가 발생했습니다.');
         }
     };
 
-    const goToPedometerPage = () => {
-        navigate('/pedometer');
+    const goToPedometerPage = async () => {
+        try {
+            const response = await api.post('/point/pedometer');
+            const { success, message } = response.data;
+
+            setAlertMessage(message);
+            alertRef.current.openModal();
+
+            if (success) {
+                setTotalPoints((prev) => prev + 10);
+            }
+        } catch (error) {
+            console.error('만보기 오류:', error);
+            setAlertMessage('서버 오류로 인해 만보기 포인트 적립에 실패했습니다.');
+            alertRef.current.openModal();
+        }
     };
 
-    const goToQuizPage = () => {
-        navigate('/quiz');
+    const goToQuizPage = async () => {
+        try {
+            const response = await api.get('/point/quiz');
+            const { success, message } = response.data;
+
+            setAlertMessage(message);
+            alertRef.current.openModal();
+
+            if (success) {
+                navigate('/quiz');
+            }
+        } catch (error) {
+            console.error('환경 퀴즈 오류:', error);
+            setAlertMessage('서버 오류로 인해 퀴즈 로드에 실패했습니다.');
+            alertRef.current.openModal();
+        }
+    };
+
+    const handleHintClick = async (hintUrl) => {
+        try {
+            const response = await api.post('/point/quiz/hint');
+            const { message } = response.data;
+
+            setAlertMessage(message);
+            alertRef.current.openModal();
+
+            window.open(hintUrl, '_blank'); // 기사 URL 새 탭 열기
+        } catch (error) {
+            console.error('힌트 제공 오류:', error);
+        }
     };
 
     return (
@@ -125,7 +162,7 @@ const Point = () => {
             <Header title="포인트" />
             <div className="point-box">
                 <h2 className="point-title">
-                    보유 포인트: <br />
+                    보유 포인트 <br />
                     {totalPoints}P
                 </h2>
                 {points.map((point, index) => (
@@ -140,7 +177,7 @@ const Point = () => {
             </div>
             <AlertModal
                 ref={alertRef}
-                title="출석 체크 확인"
+                title="알림"
                 text={alertMessage}
                 onClick={() => alertRef.current.closeModal()}
             />
