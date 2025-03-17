@@ -41,7 +41,7 @@ const CustomTabs = ({ value, onChange }) => {
                     fontWeight: 'bold',
                 },
                 '& .Mui-selected': {
-                    backgroundColor: '#4CAF50',
+                    backgroundColor: '#4B9460',
                     color: 'white !important', // 왜인지 모르겠는데 글자색상 하얀색으로 적용안됨. . // !important를 추가해 우선순위 높였음
                 },
                 marginBottom: 2,
