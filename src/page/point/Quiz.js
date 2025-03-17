@@ -9,11 +9,14 @@ import BottomModal from '../../components/modal/BottomModal';
 import AlertModal from '../../components/modal/AlertModal';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import dayjs from 'dayjs';
-import Lottie from 'lottie-react';
 import correctEmoji from '../../image/point_correct.json';
 import wrongEmoji from '../../image/point_wrong.json';
 import { useNavigate } from 'react-router-dom';
 import ChallengeLoading from '../../components/loading/ChallengeLoading';
+// LottieFiles 애니메이션 사용 예시 START
+import Lottie from 'lottie-react';
+import RobotAnimation from '../../image/RobotAnimation.json'; // 로봇 애니메이션
+// LottieFiles 애니메이션 사용 예시 END
 
 const Quiz = () => {
     const navigate = useNavigate();
@@ -151,8 +154,15 @@ const Quiz = () => {
                 <div>
                     <div className="quiz-title">{dayjs().locale('ko').format('M월 D일')} QUIZ</div>{' '}
                     <>
-                        <div className="quiz-content">{quiz}</div>
-
+                        {/* 로봇 애니메이션 들어갈 자리 */}
+                        <div className="quiz-container2 mb-3">
+                            <Lottie
+                                animationData={RobotAnimation}
+                                loop={true}
+                                className="temination-check w-400"
+                            />
+                            {quiz}
+                        </div>
                         <div className="quiz-buttons">
                             <div
                                 className={`quiz-button ${answer === 'O' ? 'selected' : ''}`}
