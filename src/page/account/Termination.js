@@ -297,11 +297,16 @@ const Termination = () => {
                     variant="caption"
                     display="block"
                     color="text.secondary"
-                    sx={{ marginBottom: 0.5 }}
+                    sx={{ marginLeft: 2, marginBottom: 0, marginTop: 1 }}
                 >
                     * 중도해지 시 우대금리가 적용되지 않습니다.
                 </Typography>
-                <Typography variant="caption" display="block" color="text.secondary">
+                <Typography
+                    variant="caption"
+                    display="block"
+                    color="text.secondary"
+                    sx={{ marginLeft: 2, marginBottom: 2 }}
+                >
                     * 적금 해지 시, 원금과 이자가 연계카드로 입금됩니다.
                 </Typography>
                 <div>

@@ -8,7 +8,6 @@ import Button from '../../components/button/Button';
 import PwdModal6 from '../../components/modal/PwdModal6';
 import AlertModal from '../../components/modal/AlertModal';
 import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
-import axios from 'axios';
 
 // 계좌 정보 페이지
 const AccountInfoPage = ({ apiData }) => {
@@ -79,7 +78,7 @@ const AccountInfoPage = ({ apiData }) => {
     };
     const CloseCompleteModal = () => {
         if (completeModalRef.current) {
-            completeModalRef.current.closeModal(); // 해지 완료 모달 닫고
+            completeModalRef.current.closeModal(); // 변경완료 모달 닫고
             navigate('/manageAccount'); // 새로운 경로로 이동 (어디로 이동하지)
         }
     };
@@ -422,15 +421,17 @@ const AccountInfoPage = ({ apiData }) => {
 
                 {/* 납입금액 변경 완료 모달 START */}
                 <BottomModal ref={completeModalRef}>
-                    <Typography variant="h6" className="fw-bold m-4 ">
+                    <Typography variant="h6" className="fw-bold mt-3 m-4 ">
                         납입 금액이 변경되었습니다.
                     </Typography>
-                    <Button
-                        text="확인"
-                        onClick={(e) => {
-                            CloseCompleteModal();
-                        }}
-                    />
+                    <div className="p-3">
+                        <Button
+                            text="확인"
+                            onClick={(e) => {
+                                CloseCompleteModal();
+                            }}
+                        />
+                    </div>
                 </BottomModal>
                 {/* 납입금액 변경 완료 모달 END */}
 
