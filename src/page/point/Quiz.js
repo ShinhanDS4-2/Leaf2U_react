@@ -27,10 +27,7 @@ const Quiz = () => {
 
     // 모달의 동적 내용 관리
     const [modalContent, setModalContent] = useState({
-        text: (
-            <>
-            </>
-        ),
+        text: <></>,
         buttonText: '확인',
         onConfirm: () => {},
     });
@@ -51,7 +48,6 @@ const Quiz = () => {
     // Alert 참조용 ref 생성
     const alertRef = useRef();
 
-
     // alert open
     const handleOpenAlert = () => {
         if (alertRef.current) {
@@ -60,7 +56,7 @@ const Quiz = () => {
     };
 
     useEffect(() => {
-        setLoading(true); 
+        setLoading(true);
 
         api.get('/point/quiz')
             .then((res) => {
@@ -71,8 +67,9 @@ const Quiz = () => {
             })
             .catch((err) => {
                 console.log(err);
-            }).finally(() => {
-                setLoading(false); 
+            })
+            .finally(() => {
+                setLoading(false);
             });
     }, []);
 
@@ -84,33 +81,49 @@ const Quiz = () => {
 
         if (answer == correct) {
             api.post('/point/quiz/answer', { answer: answer })
-            .then((res) => {
-                setModalContent({
-                    text: (
-                        <>
-                            <div className='d-flex justify-content-center mb-4'>
-                                <Lottie animationData={correctEmoji} loop={true} className='point-modal-emoji'/>
-                            </div>
-                            <p>정답이에요!<br/>10 P를 획득합니다.</p>
-                        </>
-                    ),
-                    buttonText: '확인',
-                    onConfirm: () => {
-                        handleCloseBottomModal();
-                        navigate('/point');
-                    },
-                });
-                handleOpenBottomModal();
-            })
-            .catch((err) => alert(err.response?.data?.message || '정답 제출 오류'));
+                .then((res) => {
+                    setModalContent({
+                        text: (
+                            <>
+                                <div className="d-flex justify-content-center mb-4">
+                                    <Lottie
+                                        animationData={correctEmoji}
+                                        loop={true}
+                                        className="point-modal-emoji"
+                                    />
+                                </div>
+                                <p>
+                                    정답이에요!
+                                    <br />
+                                    10 P를 획득합니다.
+                                </p>
+                            </>
+                        ),
+                        buttonText: '확인',
+                        onConfirm: () => {
+                            handleCloseBottomModal();
+                            navigate('/point');
+                        },
+                    });
+                    handleOpenBottomModal();
+                })
+                .catch((err) => alert(err.response?.data?.message || '정답 제출 오류'));
         } else {
             setModalContent({
                 text: (
                     <>
-                        <div className='d-flex justify-content-center mb-4'>
-                            <Lottie animationData={wrongEmoji} loop={true} className='point-modal-emoji'/>
+                        <div className="d-flex justify-content-center mb-4">
+                            <Lottie
+                                animationData={wrongEmoji}
+                                loop={true}
+                                className="point-modal-emoji"
+                            />
                         </div>
-                        <p>오답이에요!<br/>다음에 다시 도전해봐요.</p>
+                        <p>
+                            오답이에요!
+                            <br />
+                            다음에 다시 도전해봐요.
+                        </p>
                     </>
                 ),
                 buttonText: '확인',
@@ -138,25 +151,44 @@ const Quiz = () => {
                 <div>
                     <div className="quiz-title">{dayjs().locale('ko').format('M월 D일')} QUIZ</div>{' '}
                     <>
-                        <div className="quiz-content">
-                            {quiz}
-                        </div>
+                        <div className="quiz-content">{quiz}</div>
 
                         <div className="quiz-buttons">
-                            <div className={`quiz-button ${answer === 'O' ? 'selected' : ''}`} onClick={() => setAnswer('O')} >
-                                <div className='o-button text-center'>
-                                    <Icon icon="ic:outline-circle" width="80px" height="80px" style={{color: '#fafafa'}} />
+                            <div
+                                className={`quiz-button ${answer === 'O' ? 'selected' : ''}`}
+                                onClick={() => setAnswer('O')}
+                            >
+                                <div className="o-button text-center">
+                                    <Icon
+                                        icon="ic:outline-circle"
+                                        width="80px"
+                                        height="80px"
+                                        style={{ color: '#fafafa' }}
+                                    />
                                 </div>
                             </div>
-                            <div className={`quiz-button ${answer === 'X' ? 'selected' : ''}`} onClick={() => setAnswer('X')} >
-                                <div className='x-button text-center'>
-                                    <Icon icon="majesticons:close" width="90px" height="90px" style={{color: '#DD2E44'}} />
+                            <div
+                                className={`quiz-button ${answer === 'X' ? 'selected' : ''}`}
+                                onClick={() => setAnswer('X')}
+                            >
+                                <div className="x-button text-center">
+                                    <Icon
+                                        icon="majesticons:close"
+                                        width="90px"
+                                        height="90px"
+                                        style={{ color: '#DD2E44' }}
+                                    />
                                 </div>
                             </div>
                         </div>
 
                         <div className="hint-container" onClick={handleHintClick}>
-                            <Icon icon="tabler:bulb" width="50px" height="50px"  style={{color: '#f0ad4e'}} />
+                            <Icon
+                                icon="tabler:bulb"
+                                width="50px"
+                                height="50px"
+                                style={{ color: '#f0ad4e' }}
+                            />
                             <div className="hint-content ms-3">
                                 <p className="point1-text-title">HINT</p>
                                 <p className="point1-text-description">
@@ -164,11 +196,8 @@ const Quiz = () => {
                                 </p>
                             </div>
                         </div>
-                        <div className='maturity-button-field'>
-                            <Button
-                                text='정답 확인'
-                                onClick={handleSubmitAnswer}
-                            />
+                        <div className="maturity-button-field">
+                            <Button text="정답 확인" onClick={handleSubmitAnswer} />
                         </div>
                     </>
                 </div>
