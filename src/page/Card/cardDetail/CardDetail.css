@@ -1,11 +1,8 @@
 .card-detail-container{
     padding-top: 100px;
-    padding-left: 30px;
-    padding-right: 30px;
 }
 .section-title{
     font-weight: bold;
-    padding-left: 20px;
     font-size: 18px;
 }
 .info-container{
@@ -15,6 +12,8 @@
 }
 
 .info-box {
+    margin-left: 30px;    
+    margin-right: 30px;
     background: #f7f7f7;
     border-radius: 10px;
     padding:20px 20px
@@ -42,7 +41,7 @@
     font-size: 12px;
     color: #888;
     margin-top: 10px;
-    padding-left: 30px;
+    padding-left: 70px;
 }
 .agree-item2{
     font-size: 20px;
@@ -52,3 +51,15 @@
     padding-top: 10px;
     padding-bottom: 45px;
 }
+.agree-item3{
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 10px;
+    padding-bottom: 45px;
+}
+.agree-item3 p{
+    padding-bottom: 30px;
+}
+
