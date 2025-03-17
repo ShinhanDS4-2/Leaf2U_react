@@ -5,7 +5,7 @@
     font-size: 10px;
     color: gray;
 }
-.payment-input {
+.card-payment-input {
     width: 120px;
     font-weight: bold;
     text-align: center;
@@ -15,7 +15,8 @@
     margin: 0 5px;
     background-color: transparent;
 }
-.payment-input::placeholder {
+
+.card-payment-input::placeholder {
     color: lightgray;
     opacity: 0.5; /* 투명도 조절 (0.1 ~ 1) */
     font-size: 25px;

@@ -16,6 +16,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import PwdModal from '../../components/modal/PwdModal6';
 import CustomConfetti from '../../components/effect/CustomConfetti';
 import CoinConfetti from '../../components/effect/CoinConfetti';
+import api from '../../utils/api';
 
 function Home() {
     const navigate = useNavigate();
@@ -120,39 +121,20 @@ function Home() {
         }, 10000);
     };
 
-    // axios 인스턴스
-    const api = axios.create({
-        baseURL: '/api',
-    });
-
-    // 인터셉터
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken');
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => {
-            return Promise.reject(error);
-        },
-    );
-
     // 비밀번호 검증 API 요청
-    const verifyPassword = async (inputPassword) => {
-        try {
-            const response = await fetch('api/saving/password', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ inputPassword }),
+    const verifyPassword = (inputPassword) => {
+        api.post('/saving/password', {
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ inputPassword }),
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                return result; // true (비밀번호 일치) / false (불일치)
+            })
+            .catch((error) => {
+                console.error('비밀번호 검증 실패:', error);
+                return false;
             });
-            const result = await response.json();
-            return result; // true (비밀번호 일치) / false (불일치)
-        } catch (error) {
-            console.error('비밀번호 검증 실패:', error);
-            return false;
-        }
     };
 
     // 챌린지 완료 후 적금 납입 체크 함수
@@ -314,7 +296,7 @@ function Home() {
     // 나무 클릭
     const handleAccountInfoClick = () => {
         CoinConfetti();
-        setIsInfoOpen(true); 
+        setIsInfoOpen(true);
         setTimeout(() => {
             setIsInfoOpen(false);
         }, 5000);

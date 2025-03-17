@@ -247,12 +247,12 @@ const CardHome = () => {
         <div className="card-container">
             <Header title={'한달적금 개설'} />
             <div className="card-field ps-0 pe-0">
-                <div className="payment">
+                <div className="card-payment">
                     <h3>
                         매일
                         <input
                             type="text"
-                            className="payment-input"
+                            className="card-payment-input"
                             value={formattedAmount}
                             readOnly
                         />
