@@ -12,8 +12,8 @@ import Footer from '../../components/footer/Footer';
 import AlertModal from '../../components/modal/AlertModal';
 import CustomCalendar from '../../components/calendar/CustomCalendar';
 import ChallengeItem from '../../components/item/ChallengeItem';
-import api from '../../utils/api';
 import { AnimatePresence, motion } from 'framer-motion';
+import PwdModal from '../../components/modal/PwdModal6';
 import CustomConfetti from '../../components/effect/CustomConfetti';
 import CoinConfetti from '../../components/effect/CoinConfetti';
 
@@ -57,6 +57,8 @@ function Home() {
     // 모달
     const bottomModalRef = useRef();
     const alertRef = useRef();
+    const pwdModalRef = useRef();
+    const alertRefPwd = useRef(); // 비밀번호 불일치 모달
 
     const handleOpenBottomModal = () => {
         if (bottomModalRef.current) {
@@ -82,6 +84,26 @@ function Home() {
         }
     };
 
+    // 비밀번호 입력 모달 열기
+    const openPwdModal = () => {
+        if (pwdModalRef.current) {
+            pwdModalRef.current.openModal();
+        }
+    };
+
+    // 비밀번호 입력 완료 후 검증
+    const handlePasswordSubmit = async (inputPwd) => {
+        const isMatch = await verifyPassword(inputPwd);
+        if (isMatch) {
+            console.log('비밀번호 일치! 입금 진행');
+            navigate('/deposit');
+            // TODO: 입금 API 호출 (납입 로직 연결)
+        } else {
+            pwdModalRef.current?.closeModal(); // 비밀번호 입력 모달 닫기
+            alertRefPwd.current?.openModal(); // 비밀번호 불일치 모달 띄우기
+        }
+    };
+
     // 챌린지 완료 후 확인 버튼 클릭 시 피드백 UI 실행
     const handleChallengeConfirm = () => {
         setIsChallengeCompleted(false); // 우대금리 UI 숨기기
@@ -96,6 +118,41 @@ function Home() {
             setIsFeedbackVisible(false);
             setIsFeedbackAllowed(false); // 피드백 UI 표시
         }, 10000);
+    };
+
+    // axios 인스턴스
+    const api = axios.create({
+        baseURL: '/api',
+    });
+
+    // 인터셉터
+    api.interceptors.request.use(
+        (config) => {
+            const token = localStorage.getItem('jwtToken');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        },
+    );
+
+    // 비밀번호 검증 API 요청
+    const verifyPassword = async (inputPassword) => {
+        try {
+            const response = await fetch('api/saving/password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ inputPassword }),
+            });
+            const result = await response.json();
+            return result; // true (비밀번호 일치) / false (불일치)
+        } catch (error) {
+            console.error('비밀번호 검증 실패:', error);
+            return false;
+        }
     };
 
     // 챌린지 완료 후 적금 납입 체크 함수
@@ -244,7 +301,8 @@ function Home() {
                 ),
                 buttonText: `${data?.accountDTO?.paymentAmount.toLocaleString() ?? 0}원 입금`,
                 onConfirm: () => {
-                    navigate('/deposit');
+                    handleCloseBottomModal(); // 버튼 모달 닫기
+                    openPwdModal(); // 비밀번호 입력 모달 열기
                 },
             });
             handleOpenBottomModal();
@@ -344,6 +402,18 @@ function Home() {
             <div className="tree-div">
                 <img src={Watering} className="watering-img" onClick={handleSavingOnClick} />
                 <img src={treeImage} className="tree-img" onClick={handleAccountInfoClick} />
+            </div>
+
+            <div>
+                {/* 비밀번호 입력 모달 */}
+                <PwdModal ref={pwdModalRef} onSubmit={handlePasswordSubmit} />
+
+                {/* 비밀번호 불일치 모달 */}
+                <AlertModal
+                    ref={alertRefPwd}
+                    text={'<span>비밀번호가 일치하지 않습니다.<br/>다시 시도해주세요.<span>'}
+                    onClick={handleCloseAlertModal}
+                />
             </div>
 
             {/* 챌린지 deposit */}
