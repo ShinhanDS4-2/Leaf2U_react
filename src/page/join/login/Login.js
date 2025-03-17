@@ -5,7 +5,6 @@ import { useNavigate,useLocation } from 'react-router-dom';
 import axios from 'axios';
 import mainImg from '../../../image/새싹-하양.png';
 
-
 function Login() {
 
     const navigate = useNavigate();

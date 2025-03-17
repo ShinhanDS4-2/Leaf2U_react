@@ -13,7 +13,6 @@ import HanaImg from '../../../image/hana.png';
 import WooriImg from '../../../image/woori.png';
 import KakaoImg from '../../../image/kakao.png';
 import PwdModal6 from '../../../components/modal/PwdModal6';
-import axios from 'axios';
 import AlertModal from '../../../components/modal/AlertModal';
 import PwdModal from '../../../components/modal/PwdModal';
 import { useRate } from '../../../context/RateContext';
