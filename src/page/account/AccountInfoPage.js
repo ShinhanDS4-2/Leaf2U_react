@@ -8,6 +8,7 @@ import Button from '../../components/button/Button';
 import PwdModal6 from '../../components/modal/PwdModal6';
 import AlertModal from '../../components/modal/AlertModal';
 import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
+import axios from 'axios';
 
 // 계좌 정보 페이지
 const AccountInfoPage = ({ apiData }) => {
@@ -24,6 +25,16 @@ const AccountInfoPage = ({ apiData }) => {
     const pwdFailAlertRef = useRef(); // 비밀번호 불일치 모달 ref
     const failAlertRef2 = useRef(); // 적금해지 실패 모달 ref
     const rangeAlertRef = useRef(); // 납입금액 범위 제어 모달
+
+    console.log('렌더링');
+    console.log(
+        paymentAmountModalRef,
+        pwdInputModalRef,
+        completeModalRef,
+        pwdFailAlertRef,
+        failAlertRef2,
+        rangeAlertRef,
+    );
 
     /* 클릭 이벤트 핸들러 START*/
     // 설정 > 이자조회 클릭 시
@@ -75,7 +86,7 @@ const AccountInfoPage = ({ apiData }) => {
     // 비번 불일치 알림 모달 Open, Close
     const OpenPwdFailAlert = () => {
         console.log('🚨 OpenPwdFailAlert 실행됨!');
-        console.log(pwdFailAlertRef.current);
+        console.log(pwdFailAlertRef);
         if (pwdFailAlertRef.current) {
             pwdFailAlertRef.current.openModal();
         } else {
@@ -165,6 +176,26 @@ const AccountInfoPage = ({ apiData }) => {
                 paymentAmount: amount, // 사용자가 입력한 납입금액 변경할 값
                 accountPassword: pwd, // 사용자가 입력한 간편비밀번호
             });
+            // const response = await // GET 요청
+            // axios({
+            //     method: 'patch',
+            //     url: '/api/account/update/paymentAmount',
+            //     data: {
+            //         paymentAmount: amount,
+            //         accountPassword: pwd,
+            //     },
+            //     headers: {
+            //         Authorization:
+            //             'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaW9uNjMzOUBuYXRlLmNvbSIsImlhdCI6MTc0MjE3MTUzNiwiZXhwIjoxNzQyMTg5NTM2fQ.y7sdxKjTFzUt6_jiRTeOHtZkPGqzzAekpKyKuSWtx8A',
+            //     },
+            // })
+            //     .then((res) => {
+            //         console.log(res.data);
+            //         return res;
+            //     })
+            //     .catch((err) => {
+            //         console.error(err);
+            //     });
             const result = response.data; // 백엔드에서 반환된 값 (1:성공, 0:실패, 401:비밀번호 불일치)
             console.log('✅ 납입금액 변경 API 성공값은???:', result); // 🔥 확인용 로그
             return result;
@@ -338,12 +369,6 @@ const AccountInfoPage = ({ apiData }) => {
                         <Divider sx={{ marginY: 1, border: 1 }} />
                     </CardContent>
                 </Card>
-                <Typography variant="body2" color="error">
-                    문제있는 부분. 다 완성했는데 납입금액 변경하는 부분에서 비밀번호 불일치
-                    모달알림창이랑, 변경완료후 모달알림창이 안뜸 API결과값은 제대로 찍히는데
-                    pwdFailAlertRef.current값이 null이 뜨는데 도대체 이유를 모르겠따 강사님께
-                    여쭤보기
-                </Typography>
                 {/* 계좌 설정 END */}
             </Box>
             <>

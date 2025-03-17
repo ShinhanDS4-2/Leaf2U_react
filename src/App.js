@@ -27,12 +27,12 @@ import CardDetail from './page/Card/cardDetail/CardDetail';
 import OrganizationList from './page/donation/OrganizationList';
 import HistoryList from './page/donation/HistoryList';
 import HistoryDetail from './page/donation/HistoryDetail';
+import CertificatePage from './page/donation/CertificatePage';
 import ManageAccount from './page/account/ManageAccount';
 import Termination from './page/account/Termination';
 import InterestMainPage from './page/interest/InterestMainPage';
 import PickerTest from './page/interest/PickerTest';
 import Aaa from './page/account/Aaa';
-import Paymentaaaaa from './page/account/Paymentaaaaa';
 import Deposit from './page/deposit/Deposit';
 import Image from './page/deposit/Image';
 
@@ -58,7 +58,7 @@ function AppContent() {
     return (
         <>
             {isLoading && <Loading />}
-            <div className="w-100 h-100" style={{backgroundColor: '#FAFAFA'}}>
+            <div className="w-100 h-100" style={{ backgroundColor: '#FAFAFA' }}>
                 <MaturityProvider>
                     <Routes>
                         <Route path="/home" element={<Home />} />
@@ -85,13 +85,13 @@ function AppContent() {
                         <Route path="/historyList" element={<HistoryList />} />
                         {/* 후원내역 상세 페이지 (동적 라우팅) */}
                         <Route path="/historyDetail/:idx" element={<HistoryDetail />} />
+                        <Route path="/certificatePage/:idx" element={<CertificatePage />} />
                         <Route path="/termination" element={<Termination />} />
                         <Route path="/interestMainPage" element={<InterestMainPage />} />
 
                         {/* 시온 해야함 */}
                         <Route path="/manageAccount" element={<ManageAccount />} />
                         <Route path="/aaa" element={<Aaa />} />
-                        <Route path="/paymentaaaaa" element={<Paymentaaaaa />} />
                         <Route path="/pickerTest" element={<PickerTest />} />
 
                         {/* 시온 페이지 END */}

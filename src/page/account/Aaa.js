@@ -1,182 +1,158 @@
-import React, { useState } from 'react';
-import {
-    Box,
-    Card,
-    CardContent,
-    Typography,
-    Divider,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    TextField,
-    FormControlLabel,
-    Checkbox,
-} from '@mui/material';
+// 기부
+import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
+import Header from '../../components/header/Header';
+import Content from '../../components/content/Content';
+import BottomModal from '../../components/modal/BottomModal';
+import Button from '../../components/button/Button';
+import Footer from '../../components/footer/Footer';
+import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
 
 const Aaa = () => {
-    // 상태 관리(필요 시 커스텀)
-    const [selectedCard, setSelectedCard] = useState('');
-    const [cardNumber, setCardNumber] = useState('');
-    const [isDonationCard, setIsDonationCard] = useState(false);
+    const { idx } = useParams(); // useParams()를 사용하여 URL에서 idx 값 가져오기
+    // ㄴ useParams()에서 가져오는 변수(idx)의 이름은 Route에서 지정한 :idx와 동일해야 한다.
+    console.log('useParams로 넘어오는 idx 값? ', idx); // 🔥 확인용 로그
+    const navigate = useNavigate(); // 페이지 이동을 위한 훅
+    const [data, setData] = useState({ donationOrganization: {}, donationHistory: {} }); // API로 불러온 데이터 상태관리
 
-    // 이벤트 핸들러
-    const handleSelectChange = (event) => {
-        setSelectedCard(event.target.value);
-    };
-    const handleCardNumberChange = (event) => {
-        setCardNumber(event.target.value);
-    };
-    const handleCheckboxChange = (event) => {
-        setIsDonationCard(event.target.checked);
+    const modalRef = useRef(); // 모달 ref
+    const OpenModal = () => {
+        if (modalRef.current) {
+            modalRef.current.openModal();
+        }
     };
 
+    // 후원내역 리스트 호출 API
+    const getHistoryDetail = () => {
+        api.get(`/donation/historyDetail/${idx}`)
+            .then((response) => {
+                const data = response.data; // donationHistory, donationOrganization
+                console.log('api 성공 data', data); // 🔥 확인용 로그
+                setData(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+    useEffect(() => {
+        getHistoryDetail(); // idx가 존재할 경우에만 API 호출
+        console.log('api 성공 data', data); // 🔥 확인용 로그
+    }, []); // ✅ idx가 변경될 때마다 실행됨
     return (
-        <Box sx={{ paddingTop:5, backgroundColor: '#FAFAFA' }}>
-            {/* 상단 제목 */}
-            <Typography variant="body1" fontWeight="bold" sx={{ marginBottom: 1 }}>
-                카드 연결
-            </Typography>
-
-            {/* 카드 선택 */}
-            <Box sx={{ marginBottom: 2 }}>
-                <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 0.5 }}>
-                    선택
-                </Typography>
-                <FormControl fullWidth variant="outlined">
-                    <InputLabel>선택</InputLabel>
-                    <Select value={selectedCard} onChange={handleSelectChange} label="선택">
-                        <MenuItem value="">
-                            <em>선택</em>
-                        </MenuItem>
-                        <MenuItem value="Leaf2U">신한 Leaf2U 카드</MenuItem>
-                        <MenuItem value="DonationCard">후불 기부동행카드</MenuItem>
-                    </Select>
-                </FormControl>
-            </Box>
-            {/* 카드번호 입력 */}
-            <Box sx={{ marginBottom: 2 }}>
-                <Typography variant="body2" color="text.secondary" sx={{ marginBottom: 0.5 }}>
-                    카드번호 ( - 없이 숫자만 )
-                </Typography>
-                <TextField
-                    fullWidth
-                    placeholder="카드번호를 입력해주세요"
+        <>
+            <Content>
+                {/* 기부증서 카드 START */}
+                <Card
                     variant="outlined"
-                    value={cardNumber}
-                    onChange={handleCardNumberChange}
-                />
-            </Box>
-            {/* 기부 동행 카드 체크박스 + 설명 */}
-            <Box>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={isDonationCard}
-                            onChange={handleCheckboxChange}
-                            sx={{
-                                color: '#5DB075',
-                                '&.Mui-checked': {
-                                    color: '#5DB075',
-                                },
-                            }}
-                        />
-                    }
-                    label={
-                        <Typography variant="body2" fontWeight="bold">
-                            기후 동행 카드
+                    sx={{ borderRadius: 2, paddingTop: 3, marginBottom: 3, height: 'auto' }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            marginBottom: 1,
+                        }}
+                    >
+                        <Typography variant="h4" fontWeight="bold">
+                            기부증서
                         </Typography>
-                    }
-                />
-            </Box>
-            <Typography
-                variant="caption"
-                display="block"
-                color="text.secondary"
-                sx={{ color: '#388E3C' }}
-            >
-                * 기존 보유하고 계신 신한 Leaf2U 카드 등록 시 우대금리 연 +2.00% <br />* 후불
-                기후동행카드 등록 시 우대금리 연 +1.00 %
-            </Typography>
-
-            {/* 카드 START */}
-            <Card
-                variant="outlined"
-                sx={{ borderRadius: 2, marginBottom: 2, marginTop: 4, height: 'auto' }}
-            >
-                <CardContent>
-                    {/* 내용 부분 */}
-                    <Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                marginBottom: 1,
-                                marginTop: 1,
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                매일 납입 금액
-                            </Typography>
-                            <Typography variant="body2">10,000원</Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                marginBottom: 1,
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                적금기간
-                            </Typography>
-                            <Typography variant="body2">30일</Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                marginBottom: 1,
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                적금방식
-                            </Typography>
-                            <Typography variant="body2">1일 1회 직접입금</Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                marginBottom: 1,
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                최고 적용 금리
-                            </Typography>
-                            <Typography variant="body2">연 8.00%</Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                marginBottom: 0,
-                            }}
-                        >
-                            <Typography variant="body2" color="text.secondary">
-                                만기설정
-                            </Typography>
-                            <Typography variant="body2">만기 시 직접 해지</Typography>
-                        </Box>
                     </Box>
-                </CardContent>
-            </Card>
-            {/* 카드 END */}
-            <Typography variant="caption" display="block" color="text.secondary">
-                * 최고 적용금리 6.00% = 기본금리 1.00% + 30일 성공 시 3.00% + 연속 보너스 2.00% +
-                최초 가입 2.00%
-            </Typography>
-        </Box>
+                    <CardContent>
+                        {/* 내용 부분 */}
+                        <Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    marginBottom: 1,
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary">
+                                    기관명, 후원금, 후원자
+                                </Typography>
+                                <Typography variant="body2">
+                                    {data.donationOrganization.name}
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    marginBottom: 2,
+                                }}
+                            >
+                                <Typography variant="body2" color="text.secondary">
+                                    기부금액
+                                </Typography>
+                                <Typography variant="body2">
+                                    {data.donationOrganization.telNumber}
+                                </Typography>
+                            </Box>
+                            <Divider sx={{ marginY: 1, borderColor: 'black' }} />
+
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column', // 한줄에 나오지 않도록 세로로 배치
+                                }}
+                            >
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{
+                                        marginBottom: 1,
+                                    }}
+                                >
+                                    위 사람은 (사)기관명에 소중한 후원을 해주셨기에 <br />
+                                    감사의 마음을 담아 후원증서를 드립니다.
+                                </Typography>
+                                <Typography variant="body2">
+                                    {data.donationOrganization.description}
+                                </Typography>
+                                <Typography variant="body2">
+                                    기부날짜 아래에 찍어주고 donationDate
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginTop: 2,
+                            }}
+                        >
+                            <Typography variant="h6" fontWeight="bold">
+                                후원금액
+                            </Typography>
+                            <Typography variant="h5" color="#5DB075" fontWeight="bold">
+                                {data?.donationHistory?.donationAmount?.toLocaleString()} 원
+                            </Typography>
+                        </Box>
+                    </CardContent>
+                </Card>
+                {/* 기부처 카드 END */}
+
+                <div>
+                    <Button
+                        text="pdf 다운로드 버튼"
+                        onClick={() => {
+                            OpenModal();
+                        }}
+                    />
+                    <BottomModal ref={modalRef}>
+                        <Typography variant="h6" className="fw-bold mb-2">
+                            기부증서 pdf 페이지 나와야함
+                        </Typography>
+                    </BottomModal>
+                </div>
+            </Content>
+            <Footer />
+        </>
     );
 };
 
