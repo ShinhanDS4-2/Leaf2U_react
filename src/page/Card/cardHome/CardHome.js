@@ -18,7 +18,6 @@ import AlertModal from '../../../components/modal/AlertModal';
 import PwdModal from '../../../components/modal/PwdModal';
 
 const CardHome = () => {
-
     const location = useLocation();
     const navigate = useNavigate();
     const leafRef = useRef();
@@ -30,56 +29,53 @@ const CardHome = () => {
     const cardPwdModalRef2 = useRef(null);
     const successModalRef = useRef();
     const alertRef = useRef();
-    const cardRef=useRef();
-    const cardSuccessModalRef=useRef();
+    const cardRef = useRef();
+    const cardSuccessModalRef = useRef();
 
     const cardYn = location.state?.cardYn || 'Y';
 
-    const amount=localStorage.getItem('amount');
+    const amount = localStorage.getItem('amount');
 
     const [maturityDate, setMaturityDate] = useState('');
-    const [accountNumber,setAccountNumber]=useState('');
-    const [bankName,setBankName]=useState('');
-    const [cardType,setCardType]=useState('C');
+    const [accountNumber, setAccountNumber] = useState('');
+    const [bankName, setBankName] = useState('');
+    const [cardType, setCardType] = useState('C');
 
     const handleChange = (e) => {
-        setAccountNumber(e.target.value);    };
-    
+        setAccountNumber(e.target.value);
+    };
+
     const handleCheckboxChange = (e) => {
         setCardType(e.target.checked ? 'E' : 'C');
     };
 
-    const handleBankSelect=(bank)=>{
+    const handleBankSelect = (bank) => {
         setBankName(bank);
         modalRef.current.closeModal();
-    }
+    };
 
-    const banks=[
-        { name: '신한', logo: ShinhanImg, className: "shinhan-logo" },
-        { name: '국민', logo: KookminImg, className: "kookmin-logo" },
-        { name: '농협', logo: NonghyubImg, className: "nonghyub-logo" },
-        { name: '하나', logo: HanaImg, className: "hana-logo" },
-        { name: '우리', logo: WooriImg, className: "woori-logo" },
-        { name: '카카오', logo: KakaoImg, className: "kakao-logo" },
+    const banks = [
+        { name: '신한', logo: ShinhanImg, className: 'shinhan-logo' },
+        { name: '국민', logo: KookminImg, className: 'kookmin-logo' },
+        { name: '농협', logo: NonghyubImg, className: 'nonghyub-logo' },
+        { name: '하나', logo: HanaImg, className: 'hana-logo' },
+        { name: '우리', logo: WooriImg, className: 'woori-logo' },
+        { name: '카카오', logo: KakaoImg, className: 'kakao-logo' },
     ];
 
     // 숫자 포맷
     const formattedAmount = amount ? Number(amount).toLocaleString() : '';
 
     useEffect(() => {
-
-        const fetchCardInfo=async()=>{
-
+        const fetchCardInfo = async () => {
             if (cardYn === 'N') {
                 leafRef.current.openModal();
             } else if (cardYn == 'Y') {
-                
                 getCardInfo();
                 modalRef2.current.openModal();
-                
             }
-        }
-        
+        };
+
         const today = new Date();
         today.setMonth(today.getMonth() + 1);
         const formattedDate = today.toISOString().split('T')[0];
@@ -88,16 +84,14 @@ const CardHome = () => {
         fetchCardInfo();
     }, [cardYn]);
 
-    const getCardInfo=async()=>{
-
+    const getCardInfo = async () => {
         //console.log("멤버 idx : ",localStorage.getItem('memberIdx'));
 
         try {
             const response = await axios.post(
-                'http://localhost:8090/api/card/card-info',
+                '/api/card/card-info',
                 {
                     memberIdx: localStorage.getItem('memberIdx'),
-                    
                 },
                 {
                     headers: {
@@ -108,17 +102,17 @@ const CardHome = () => {
 
             setBankName(response.data.cardName);
             setAccountNumber(response.data.accountNumber);
-
         } catch (error) {
             //console.error('카드 발급 실패:', error);
         }
-    }
+    };
 
     const [firstPwd, setFirstPwd] = useState('');
 
-    {/*카드 등록*/}
+    {
+        /*카드 등록*/
+    }
     const handleCardClick = () => {
-
         cardPwdModalRef1.current.openModal();
     };
 
@@ -127,9 +121,8 @@ const CardHome = () => {
         cardPwdModalRef1.current.closeModal();
         cardPwdModalRef2.current.openModal();
     };
-    
+
     const handleCardSecondPwdSubmit = async (pwd) => {
-        
         if (pwd == firstPwd) {
             cardPwdModalRef2.current.closeModal();
             cardRef.current.closeModal();
@@ -147,13 +140,13 @@ const CardHome = () => {
 
             try {
                 const response = await axios.post(
-                    'http://localhost:8090/api/card/exist',
+                    '/api/card/exist',
                     {
                         memberIdx: localStorage.getItem('memberIdx'),
                         accountNumber: accountNumber,
                         cardPassword: pwd,
                         cardName: bankName,
-                        cardType:cardType
+                        cardType: cardType,
                     },
                     {
                         headers: {
@@ -165,7 +158,6 @@ const CardHome = () => {
 
                 //console.log('카드 발급 성공:', response.data);
                 cardSuccessModalRef.current.openModal();
-
             } catch (error) {
                 //console.error('카드 발급 실패:', error);
             }
@@ -178,8 +170,9 @@ const CardHome = () => {
         }
     };
 
-
-    {/*적금 등록*/}
+    {
+        /*적금 등록*/
+    }
     const handleConfirmClick = () => {
         modalRef.current.closeModal();
         pwdModalRef1.current.openModal();
@@ -192,7 +185,6 @@ const CardHome = () => {
     };
 
     const handleSecondPwdSubmit = async (pwd) => {
-        
         if (pwd == firstPwd) {
             pwdModalRef2.current.closeModal();
             successModalRef.current.openModal();
@@ -210,11 +202,11 @@ const CardHome = () => {
 
             try {
                 const response = await axios.post(
-                    'http://localhost:8090/api/account/create',
+                    '/api/account/create',
                     {
                         memberIdx: localStorage.getItem('memberIdx'),
                         accountPassword: pwd,
-                        paymentAmount:amount,
+                        paymentAmount: amount,
                     },
                     {
                         headers: {
@@ -226,7 +218,6 @@ const CardHome = () => {
 
                 //console.log('적금 발급 성공:', response.data);
                 modalRef2.current.closeModal();
-
             } catch (error) {
                 //console.error('적금금 발급 실패:', error);
             }
@@ -256,12 +247,12 @@ const CardHome = () => {
         <div className="card-container">
             <Header title={'한달적금 개설'} />
             <div className="card-field ps-0 pe-0">
-                <div className="payment">
+                <div className="card-payment">
                     <h3>
                         매일
                         <input
                             type="text"
-                            className="payment-input"
+                            className="card-payment-input"
                             value={formattedAmount}
                             readOnly
                         />
@@ -275,19 +266,30 @@ const CardHome = () => {
                 {/*계좌*/}
                 <div className="input-container">
                     <label className="card-label">카드 연결</label>
-                    
+
                     {/* 은행 선택 */}
                     <div className="select-box" onClick={() => modalRef.current.openModal()}>
                         {bankName ? bankName : '은행 선택'}
                     </div>
 
-                    <input type="text" name="accountNumber" placeholder="계좌번호 (- 없이 숫자만)" value={accountNumber} onChange={handleChange}/>
+                    <input
+                        type="text"
+                        name="accountNumber"
+                        placeholder="계좌번호 (- 없이 숫자만)"
+                        value={accountNumber}
+                        onChange={handleChange}
+                    />
                 </div>
 
                 {/* 기후 동행 카드 옵션 */}
                 <div className="eco-card">
                     <div className="eco-card-in">
-                        <input type="checkbox" id="donation" className="checkbox" onChange={handleCheckboxChange}/>
+                        <input
+                            type="checkbox"
+                            id="donation"
+                            className="checkbox"
+                            onChange={handleCheckboxChange}
+                        />
                         <label htmlFor="donation" className="checkbox-label">
                             기후 동행 카드
                         </label>
@@ -301,11 +303,21 @@ const CardHome = () => {
                 {/* 적금 정보 요약 */}
                 <div className="summary-card">
                     <div className="summary">
-                        <p>매일 납입 금액 <span>{amount}원</span></p>
-                        <p>적금기간 <span>30일</span></p>
-                        <p>적금방식 <span>1일 1회 입금</span></p>
-                        <p>최고 적용금리 <span>연 9.00%</span></p>
-                        <p>만기설정 <span>만기 시 자동 해지</span></p>
+                        <p>
+                            매일 납입 금액 <span>{amount}원</span>
+                        </p>
+                        <p>
+                            적금기간 <span>30일</span>
+                        </p>
+                        <p>
+                            적금방식 <span>1일 1회 입금</span>
+                        </p>
+                        <p>
+                            최고 적용금리 <span>연 9.00%</span>
+                        </p>
+                        <p>
+                            만기설정 <span>만기 시 자동 해지</span>
+                        </p>
                     </div>
                 </div>
                 <div className="explain-card">
@@ -317,9 +329,9 @@ const CardHome = () => {
                     </ul>
                 </div>
 
-                <div className='p-3'>
-                <Button text={'다음'} onClick={handleNextClick}/>
-            </div>
+                <div className="p-3">
+                    <Button text={'다음'} onClick={handleNextClick} />
+                </div>
             </div>
 
             <BottomModal ref={modalRef} maxHeight="60%">
@@ -327,11 +339,11 @@ const CardHome = () => {
                     <div className="bank-select">
                         <h3>은행 선택</h3>
                     </div>
-                    
+
                     <div className="bank-list">
                         {banks.map((bank, index) => (
-                            <button 
-                                key={index} 
+                            <button
+                                key={index}
                                 className="bank-button"
                                 onClick={() => handleBankSelect(bank.name)}
                             >
@@ -340,7 +352,6 @@ const CardHome = () => {
                             </button>
                         ))}
                     </div>
-
                 </div>
             </BottomModal>
 
@@ -410,7 +421,9 @@ const CardHome = () => {
                         </div>
                         <div className="summary-row">
                             <span className="summary-label">연결계좌</span>
-                            <span className="summary-value">{bankName} {accountNumber}</span>
+                            <span className="summary-value">
+                                {bankName} {accountNumber}
+                            </span>
                         </div>
                         <div className="summary-row">
                             <span className="summary-label">적용금리</span>

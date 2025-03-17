@@ -1,6 +1,6 @@
 /*paymentAmount*/
-.payment {
-    padding-top: 130px;
+.card-payment {
+    padding-top: 30px;
     text-align: center;
 }
 
@@ -11,7 +11,7 @@
     color: red;
 }
 
-.payment-input {
+.card-payment-input {
     width: 120px;
     font-weight: bold;
     text-align: center;
@@ -23,7 +23,7 @@
     background-color: transparent;
 }
 
-.payment-input::placeholder {
+.card-payment-input::placeholder {
     color: lightgray;
     opacity: 0.5; /* 투명도 조절 (0.1 ~ 1) */
     font-size: 25px;

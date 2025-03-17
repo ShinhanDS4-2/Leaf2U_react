@@ -89,7 +89,7 @@ const Payment = () => {
             <Header title={'한달적금 개설'} />
 
             <div className="content ps-0 pe-0">
-                <div className="payment">
+                <div className="card-payment">
                     <h3>
                         매일{' '}
                         <input
@@ -97,7 +97,7 @@ const Payment = () => {
                             value={formattedAmount}
                             onChange={handleChange}
                             placeholder="1,000"
-                            className="payment-input"
+                            className="card-payment-input"
                         />
                         원씩 납입
                     </h3>
