@@ -73,7 +73,7 @@
 /* <p>사진 첨부 버튼 밑에 설명</p> */
 .image-upload-note {
     font-size: 8px; /* 글씨 크기 */
-    color: #999696; /* 글자 색색 */
+    color: #999696; /* 글자 색 */
     text-align: left; /* 좌측 정렬 */
     align-self: flex-start; /* 글자만 좌측 정렬 .image-upload-container 영향 받기때문에 text-align 안먹힘*/
     margin-top: 8px; /* 버튼과 간격 추가 */
