@@ -7,26 +7,9 @@ import Content from '../../components/content/Content';
 import BottomModal from '../../components/modal/BottomModal';
 import Button from '../../components/button/Button';
 import Footer from '../../components/footer/Footer';
-// axios 인스턴스
-const api = axios.create({
-    baseURL: '/api', // API 기본 URL
-});
-// 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
-api.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
-        console.log('현재 저장된 토큰:', token); // 🔥 확인용 로그
 
-        if (token) {
-            console.log('보내는 토큰:', token); // 🔥 확인용 로그
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    },
-);
+import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
+
 const HistoryDetail = () => {
     const { idx } = useParams(); // useParams()를 사용하여 URL에서 idx 값 가져오기
     // ㄴ useParams()에서 가져오는 변수(idx)의 이름은 Route에서 지정한 :idx와 동일해야 한다.
@@ -41,7 +24,7 @@ const HistoryDetail = () => {
         }
     };
 
-    // 후원내역 리스트 호출 API
+    // 후원 상세 호출 API
     const getHistoryDetail = () => {
         api.get(`/donation/historyDetail/${idx}`)
             .then((response) => {
@@ -296,6 +279,7 @@ const HistoryDetail = () => {
                     <Button
                         text="기부증서"
                         onClick={() => {
+                            navigate(`/certificatePage/${idx}`, { state: { data } }); // 페이지 이동하면서 API 데이터 함께 전달할 수 있음
                             OpenModal();
                         }}
                     />
