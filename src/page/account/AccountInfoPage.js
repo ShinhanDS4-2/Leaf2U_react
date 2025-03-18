@@ -7,7 +7,8 @@ import BottomModal from '../../components/modal/BottomModal';
 import Button from '../../components/button/Button';
 import PwdModal6 from '../../components/modal/PwdModal6';
 import AlertModal from '../../components/modal/AlertModal';
-import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
+import axios from 'axios';
+// import api from '../../utils/api'; // api 인터셉터((모든 요청에 자동으로 토큰 추가))
 
 // 계좌 정보 페이지
 const AccountInfoPage = ({ apiData }) => {
@@ -171,30 +172,30 @@ const AccountInfoPage = ({ apiData }) => {
     // 3. 납입금액 변경 API 호출
     const updatePaymentAmountAPI = async (pwd) => {
         try {
-            const response = await api.patch(`/account/update/paymentAmount`, {
-                paymentAmount: amount, // 사용자가 입력한 납입금액 변경할 값
-                accountPassword: pwd, // 사용자가 입력한 간편비밀번호
-            });
-            // const response = await // GET 요청
-            // axios({
-            //     method: 'patch',
-            //     url: '/api/account/update/paymentAmount',
-            //     data: {
-            //         paymentAmount: amount,
-            //         accountPassword: pwd,
-            //     },
-            //     headers: {
-            //         Authorization:
-            //             'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjaW9uNjMzOUBuYXRlLmNvbSIsImlhdCI6MTc0MjE3MTUzNiwiZXhwIjoxNzQyMTg5NTM2fQ.y7sdxKjTFzUt6_jiRTeOHtZkPGqzzAekpKyKuSWtx8A',
-            //     },
-            // })
-            //     .then((res) => {
-            //         console.log(res.data);
-            //         return res;
-            //     })
-            //     .catch((err) => {
-            //         console.error(err);
-            //     });
+            // const response = await api.patch(`/account/update/paymentAmount`, {
+            //     paymentAmount: amount, // 사용자가 입력한 납입금액 변경할 값
+            //     accountPassword: pwd, // 사용자가 입력한 간편비밀번호
+            // });
+            const token = localStorage.getItem('jwtToken'); // 🔥 토큰 동적으로 가져오기
+            const response = await // GET 요청
+            axios({
+                method: 'patch',
+                url: '/api/account/update/paymentAmount',
+                data: {
+                    paymentAmount: amount,
+                    accountPassword: pwd,
+                },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+                .then((res) => {
+                    console.log(res.data);
+                    return res;
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
             const result = response.data; // 백엔드에서 반환된 값 (1:성공, 0:실패, 401:비밀번호 불일치)
             console.log('✅ 납입금액 변경 API 성공값은???:', result); // 🔥 확인용 로그
             return result;
