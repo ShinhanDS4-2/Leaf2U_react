@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Point.css';
 import Header from '../../components/header/Header';
@@ -7,60 +8,59 @@ import CalendarImg from '../../image/Calendar.jpg';
 import PedometerImg from '../../image/Pedometer.jpg';
 import PointQuizImg from '../../image/PointQuiz.jpg';
 import ArrowImg from '../../image/Arrow.jpg';
-import { useNavigate } from 'react-router-dom';
 import AlertModal from '../../components/modal/AlertModal';
-import Pedometer from './Pedometer';
-import Quiz from './Quiz';
 
 const points = [
     {
-        pointImg: CalendarImg,
-        pointTitle: '출석체크',
-        pointDescription: `매일 10 포인트 획득`,
+        img: CalendarImg,
+        title: '출석체크',
+        description: `매일 10 포인트 획득`,
+        link: null, // 출석체크는 API 요청만 수행
         type: 'checkin',
     },
     {
-        pointImg: PedometerImg,
-        pointTitle: '만보기',
-        pointDescription: `1000걸음 당 10 포인트 획득`,
+        img: PedometerImg,
+        title: '만보기',
+        description: `1000걸음 당 10 포인트 획득`,
+        link: '/pedometer',
         type: 'pedometer',
     },
     {
-        pointImg: PointQuizImg,
-        pointTitle: '환경 퀴즈',
-        pointDescription: `기사를 읽으며 퀴즈를 맞추면 10 포인트 획득`,
+        img: PointQuizImg,
+        title: '환경 퀴즈',
+        description: `기사를 읽으며 퀴즈를 맞추면 10 포인트 획득`,
+        link: '/quiz',
         type: 'quiz',
     },
 ];
 
-const PointCard = ({
-    pointImg,
-    pointTitle,
-    pointDescription,
-    type,
-    onCheckIn,
-    onPedometer,
-    onQuiz,
-}) => (
-    <div
-        className="point-item"
-        onClick={type === 'checkin' ? onCheckIn : type === 'pedometer' ? onPedometer : onQuiz}
-        style={{ cursor: 'pointer' }}
-    >
-        <img src={pointImg} alt={pointTitle} className="point-icon" />
-        <div className="point-text">
-            <p className="point-text-title">{pointTitle}</p>
-            <p className="point-text-description">{pointDescription}</p>
+const PointCard = ({ img, title, description, link, type, onCheckIn }) => {
+    const navigate = useNavigate();
+
+    const handleClick = async () => {
+        if (type === 'checkin') {
+            await onCheckIn();
+        } else if (link) {
+            navigate(link);
+        }
+    };
+
+    return (
+        <div className="point-item" onClick={handleClick} style={{ cursor: 'pointer' }}>
+            <img src={img} alt={title} className="point-icon" />
+            <div className="point-text">
+                <p className="point-text-title">{title}</p>
+                <p className="point-text-description">{description}</p>
+            </div>
+            <img src={ArrowImg} alt="arrow" className="point-arrow" />
         </div>
-        <img src={ArrowImg} alt="arrow" className="point-arrow" />
-    </div>
-);
+    );
+};
 
 const Point = () => {
     const [totalPoints, setTotalPoints] = useState(0);
     const [alertMessage, setAlertMessage] = useState('');
     const alertRef = useRef();
-    const navigate = useNavigate();
 
     const api = axios.create({
         baseURL: '/api',
@@ -90,7 +90,7 @@ const Point = () => {
         fetchTotalPoints();
     }, []);
 
-    // 출석 체크
+    // 출석 체크 API 호출
     const checkIn = async () => {
         try {
             const response = await api.post('/point/checkin');
@@ -107,56 +107,6 @@ const Point = () => {
         }
     };
 
-    const goToPedometerPage = async () => {
-        try {
-            const response = await api.post('/point/pedometer');
-            const { success, message } = response.data;
-
-            setAlertMessage(message);
-            alertRef.current.openModal();
-
-            if (success) {
-                setTotalPoints((prev) => prev + 10);
-            }
-        } catch (error) {
-            console.error('만보기 오류:', error);
-            setAlertMessage('서버 오류로 인해 만보기 포인트 적립에 실패했습니다.');
-            alertRef.current.openModal();
-        }
-    };
-
-    const goToQuizPage = async () => {
-        try {
-            const response = await api.get('/point/quiz');
-            const { success, message } = response.data;
-
-            setAlertMessage(message);
-            alertRef.current.openModal();
-
-            if (success) {
-                navigate('/quiz');
-            }
-        } catch (error) {
-            console.error('환경 퀴즈 오류:', error);
-            setAlertMessage('서버 오류로 인해 퀴즈 로드에 실패했습니다.');
-            alertRef.current.openModal();
-        }
-    };
-
-    const handleHintClick = async (hintUrl) => {
-        try {
-            const response = await api.post('/point/quiz/hint');
-            const { message } = response.data;
-
-            setAlertMessage(message);
-            alertRef.current.openModal();
-
-            window.open(hintUrl, '_blank'); // 기사 URL 새 탭 열기
-        } catch (error) {
-            console.error('힌트 제공 오류:', error);
-        }
-    };
-
     return (
         <div className="point-container">
             <Header title="포인트" />
@@ -166,13 +116,7 @@ const Point = () => {
                     {totalPoints}P
                 </h2>
                 {points.map((point, index) => (
-                    <PointCard
-                        key={index}
-                        {...point}
-                        onCheckIn={checkIn}
-                        onPedometer={goToPedometerPage}
-                        onQuiz={goToQuizPage}
-                    />
+                    <PointCard key={index} {...point} onCheckIn={checkIn} />
                 ))}
             </div>
             <AlertModal
