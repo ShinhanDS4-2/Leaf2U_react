@@ -2,6 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import Lottie from 'lottie-react';
 import LoadingEmoji from '../../image/challenge_loading.json';
+import LoadingLeaf from '../../image/leaf_loading.json';
 
 const ChallengeLoading = () => {
     return (
@@ -19,7 +20,7 @@ const ChallengeLoading = () => {
                 justifyContent: 'center',
             }}
         >
-            <Lottie animationData={LoadingEmoji} loop={true}/>
+            <Lottie animationData={LoadingLeaf} loop={true} />
         </Box>
     );
 };

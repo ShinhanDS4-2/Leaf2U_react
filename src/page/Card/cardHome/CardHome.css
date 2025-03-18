@@ -132,6 +132,10 @@
     color: gray;
     font-size: 10px;
 }
+.highlight2 {
+    color: #1a8d34;
+    font-weight: bold;
+}
 
 /*리프 카드 모달창*/
 .agree-item-modal {
