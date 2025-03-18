@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Card, CardContent, Typography, Box, Divider } from '@mui/material';
+
 import Button from '../../../components/button/Button';
 import Header from '../../../components/header/Header';
 import BottomModal from '../../../components/modal/BottomModal';
@@ -85,18 +87,102 @@ const CardDetail = () => {
 
             <div className="card-detail-container">
                 <h3 className="section-title">가입 정보 확인</h3>
-                <div className="info-box">
-                    <p><strong>이름</strong> <span>{formData.name}</span></p>
-                    <p><strong>영문 성</strong> <span>{formData.lastName}</span></p>
-                    <p><strong>영문 이름</strong> <span>{formData.firstName}</span></p>
-                    <p><strong>연락처</strong> <span>{formData.phone}</span></p>
+                <Card
+                    variant="outlined"
+                    sx={{ borderRadius: 3, margin: 3, padding: 0, marginBottom: 2 }}
+                >
+                    <CardContent>
+                        <Box sx={{ padding: 2, backgroundColor: '#F7F7F7', borderRadius: 3 }}>
+                            <Box
+                                sx={{
+                                    marginBottom: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body" color="text.secondary">
+                                    이름
+                                </Typography>
+                                <Typography variant="body">{formData.name}</Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginBottom: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body" color="text.secondary">
+                                    영문 성
+                                </Typography>
+                                <Typography variant="body">{formData.lastName}</Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginBottom: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body" color="text.secondary">
+                                    영문 이름
+                                </Typography>
+                                <Typography variant="body">{formData.firstName}</Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginBottom: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body" color="text.secondary">
+                                    연락처
+                                </Typography>
+                                <Typography variant="body" sx={{ fontWeight: 'bold' }}>
+                                    {formData.phone}
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Typography variant="body" color="text.secondary">
+                                    계좌번호
+                                </Typography>
+                                <Box sx={{ textAlign: 'right' }}>
+                                    <Typography variant="body">
+                                        ({formData.selectedBank}) {formData.accountNumber}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </CardContent>
+                </Card>
+                {/* 삭제할 부분 */}
+                {/* <div className="info-box">
+                    <p>
+                        <strong>이름</strong> <span>{formData.name}</span>
+                    </p>
+                    <p>
+                        <strong>영문 성</strong> <span>{formData.lastName}</span>
+                    </p>
+                    <p>
+                        <strong>영문 이름</strong> <span>{formData.firstName}</span>
+                    </p>
+                    <p>
+                        <strong>연락처</strong> <span>{formData.phone}</span>
+                    </p>
                     <p>
                         <strong>계좌번호</strong>{' '}
                         <span>
                             ({formData.selectedBank}) {formData.accountNumber}
                         </span>
                     </p>
-                </div>
+                </div> */}
+                {/* 삭제할 부분 */}
 
                 <p className="notice">* 위 정보가 사실과 다름이 없음을 확인합니다.</p>
             </div>

@@ -80,7 +80,7 @@ const CertificatePage = () => {
                                             }}
                                         >
                                             <b>후원금액</b> &nbsp;&nbsp;&nbsp;
-                                            {donationHistory.donationAmount}원
+                                            {donationHistory?.donationAmount?.toLocaleString()}원
                                         </Typography>
                                         <Typography
                                             variant="body2"
@@ -91,7 +91,7 @@ const CertificatePage = () => {
                                                 marginBottom: 1,
                                             }}
                                         >
-                                            <b>후원일</b>&nbsp;&nbsp;&nbsp;
+                                            <b>후원일</b> &nbsp;&nbsp;&nbsp;
                                             {formatDate(donationHistory.donationDate)}
                                         </Typography>
                                         <Divider sx={{ marginY: 1, borderColor: 'black' }} />

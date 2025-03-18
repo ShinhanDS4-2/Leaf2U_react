@@ -11,9 +11,9 @@ const CardInfoPage = ({ apiData }) => {
     const cardDTO = apiData?.cardDTO;
     return (
         <>
-            <Box sx={{ padding: 2, marginTop: 3 }}>
+            <Box sx={{ padding: 2, marginTop: 0 }}>
                 {/* 제목 */}
-                <Typography variant="subtitle1" fontWeight="bold">
+                <Typography variant="h6" fontWeight="bold">
                     연결 카드/계좌
                 </Typography>
 
@@ -51,7 +51,7 @@ const CardInfoPage = ({ apiData }) => {
                     <Typography variant="subtitle1" fontWeight="bold" sx={{ marginLeft: 1 }}>
                         {cardDTO?.cardName} ({cardDTO?.cardNumber})
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ marginLeft: 1 }}>
+                    <Typography variant="body" color="text.secondary" sx={{ marginLeft: 1 }}>
                         {cardDTO?.accountNumber}
                     </Typography>
                     <Typography

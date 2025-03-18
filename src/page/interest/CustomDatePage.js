@@ -153,12 +153,17 @@ const CustomDatePage = ({ interestData }) => {
                 variant="caption"
                 display="block"
                 color="text.secondary"
-                sx={{ marginBottom: 1 }}
+                sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1 }}
             >
                 * 위 금액은 현재 납입한 총 원금을 기준으로 산출된 금액으로 향후 고객님의 거래내역
                 변동에 따라 실제 해지금액과 달라질 수 있습니다.
             </Typography>
-            <Typography variant="caption" display="block" color="text.secondary">
+            <Typography
+                variant="caption"
+                display="block"
+                color="text.secondary"
+                sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1 }}
+            >
                 * 중도해지 시 우대금리가 적용되지 않습니다.
             </Typography>
         </>

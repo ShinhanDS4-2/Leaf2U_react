@@ -216,7 +216,7 @@ const AccountInfoPage = ({ apiData }) => {
                 <Typography variant="h6" fontWeight="bold">
                     리프적금
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body" color="text.secondary">
                     {accountDTO?.accountNumber}
                 </Typography>
                 <Card
@@ -232,12 +232,10 @@ const AccountInfoPage = ({ apiData }) => {
                                     justifyContent: 'space-between',
                                 }}
                             >
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography variant="body" color="text.secondary">
                                     기본 금리
                                 </Typography>
-                                <Typography variant="body2">
-                                    {accountDTO?.interestRate} %
-                                </Typography>
+                                <Typography variant="body">{accountDTO?.interestRate} %</Typography>
                             </Box>
                             <Box
                                 sx={{
@@ -246,10 +244,10 @@ const AccountInfoPage = ({ apiData }) => {
                                     justifyContent: 'space-between',
                                 }}
                             >
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography variant="body" color="text.secondary">
                                     개설일
                                 </Typography>
-                                <Typography variant="body2">
+                                <Typography variant="body">
                                     {formatDate(accountDTO?.createDate)}
                                 </Typography>
                             </Box>
@@ -260,10 +258,10 @@ const AccountInfoPage = ({ apiData }) => {
                                     justifyContent: 'space-between',
                                 }}
                             >
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography variant="body" color="text.secondary">
                                     만기일
                                 </Typography>
-                                <Typography variant="body2">
+                                <Typography variant="body">
                                     {formatDate(accountDTO?.endDate)}
                                 </Typography>
                             </Box>
@@ -274,10 +272,10 @@ const AccountInfoPage = ({ apiData }) => {
                                     justifyContent: 'space-between',
                                 }}
                             >
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography variant="body" color="text.secondary">
                                     잔액
                                 </Typography>
-                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                <Typography variant="body" sx={{ fontWeight: 'bold' }}>
                                     {accountDTO?.balance.toLocaleString()}원
                                 </Typography>
                             </Box>
@@ -288,7 +286,7 @@ const AccountInfoPage = ({ apiData }) => {
                                     marginBottom: 1,
                                 }}
                             >
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography variant="body" color="text.secondary">
                                     적용금리
                                 </Typography>
                                 <Box sx={{ textAlign: 'right' }}>
@@ -302,15 +300,14 @@ const AccountInfoPage = ({ apiData }) => {
                             </Box>
                             <Box
                                 sx={{
-                                    marginBottom: 1,
                                     display: 'flex',
                                     justifyContent: 'space-between',
                                 }}
                             >
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography variant="body" color="text.secondary">
                                     과세구분
                                 </Typography>
-                                <Typography variant="body2">
+                                <Typography variant="body">
                                     {accountDTO?.taxationYn == 'Y' ? '일반과세' : '비과세'}
                                 </Typography>
                             </Box>
@@ -318,7 +315,7 @@ const AccountInfoPage = ({ apiData }) => {
                     </CardContent>
                 </Card>
                 {/* 계좌 설정 START */}
-                <Typography variant="body1" color="text.secondary">
+                <Typography variant="body" color="text.secondary">
                     설정
                 </Typography>
                 <Card variant="outlined" sx={{ borderRadius: 3, margin: 1, padding: 0 }}>
@@ -331,10 +328,10 @@ const AccountInfoPage = ({ apiData }) => {
                                 justifyContent: 'space-between',
                             }}
                         >
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="body" color="text.secondary">
                                 납입금액
                             </Typography>
-                            <Typography variant="body2">
+                            <Typography variant="body">
                                 매일 {accountDTO?.paymentAmount.toLocaleString()}원 &gt;
                             </Typography>
                         </Box>
@@ -347,10 +344,10 @@ const AccountInfoPage = ({ apiData }) => {
                                 justifyContent: 'space-between',
                             }}
                         >
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="body" color="text.secondary">
                                 이자조회
                             </Typography>
-                            <Typography variant="body2">&gt;</Typography>
+                            <Typography variant="body">&gt;</Typography>
                         </Box>
                         <Divider sx={{ marginY: 1, border: 1 }} />
                         <Box
@@ -361,10 +358,10 @@ const AccountInfoPage = ({ apiData }) => {
                                 justifyContent: 'space-between',
                             }}
                         >
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="body" color="text.secondary">
                                 해지
                             </Typography>
-                            <Typography variant="body2">&gt;</Typography>
+                            <Typography variant="body">&gt;</Typography>
                         </Box>
                         <Divider sx={{ marginY: 1, border: 1 }} />
                     </CardContent>

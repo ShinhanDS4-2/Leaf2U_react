@@ -252,12 +252,17 @@ const MaturityPage = ({ interestData }) => {
                 variant="caption"
                 display="block"
                 color="text.secondary"
-                sx={{ marginBottom: 1 }}
+                sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1 }}
             >
                 * 위 금리는 만기에 해지하는 경우 받을 수 있는 예상 금리이며, 중도해지 시 가입 시점
                 기본 금리가 적용됩니다.
             </Typography>
-            <Typography variant="caption" display="block" color="text.secondary">
+            <Typography
+                variant="caption"
+                display="block"
+                color="text.secondary"
+                sx={{ marginLeft: 2, marginRight: 2, marginBottom: 1 }}
+            >
                 * 위 금액은 현재 납입한 총 원금을 기준으로 산출된 금액으로 향후 고객님의 거래내역
                 변동에 따라 실제 해지금액과 달라질 수 있습니다.
             </Typography>

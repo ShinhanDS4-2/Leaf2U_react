@@ -32,8 +32,6 @@ import CertificatePage from './page/donation/CertificatePage';
 import ManageAccount from './page/account/ManageAccount';
 import Termination from './page/account/Termination';
 import InterestMainPage from './page/interest/InterestMainPage';
-import PickerTest from './page/interest/PickerTest';
-import Aaa from './page/account/Aaa';
 import Deposit from './page/deposit/Deposit';
 import Image from './page/deposit/Image';
 
@@ -84,17 +82,12 @@ function AppContent() {
 
                             {/* 시온 페이지 START */}
                             <Route path="/organizationList" element={<OrganizationList />} />
-                            <Route path="/historyList" element={<HistoryList />} />
-                            {/* 후원내역 상세 페이지 (동적 라우팅) */}
-                            <Route path="/historyDetail/:idx" element={<HistoryDetail />} />
                             <Route path="/certificatePage/:idx" element={<CertificatePage />} />
+                            <Route path="/historyList" element={<HistoryList />} />
+                            <Route path="/historyDetail/:idx" element={<HistoryDetail />} />
                             <Route path="/termination" element={<Termination />} />
                             <Route path="/interestMainPage" element={<InterestMainPage />} />
-
-                            {/* 시온 해야함 */}
                             <Route path="/manageAccount" element={<ManageAccount />} />
-                            <Route path="/aaa" element={<Aaa />} />
-                            <Route path="/pickerTest" element={<PickerTest />} />
 
                             {/* 동근 페이지 START */}
                             <Route path="/deposit" element={<Deposit />} />
