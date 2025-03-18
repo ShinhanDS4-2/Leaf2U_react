@@ -38,7 +38,7 @@ const PwdModal = forwardRef(({ onSubmit = () => {} }, ref) => {
     return (
         <BottomModal ref={pwdRef} maxHeight="70%">
             <div className="pin-modal">
-                <p className="pin-title">인증 비밀번호 6자리</p>
+                <p className="pin-title">계좌 비밀번호 6자리</p>
                 <div className="pin-display">
                     {[...Array(maxLength)].map((_, i) => (
                         <span key={i}>{i < pin.length ? '🌱' : '⚪'}</span>
