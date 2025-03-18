@@ -192,6 +192,7 @@ const Quiz = () => {
                             </div>
                         </div>
 
+                        {/* HINT 영역 */}
                         <div className="hint-container" onClick={handleHintClick}>
                             <Icon
                                 icon="tabler:bulb"
@@ -206,6 +207,7 @@ const Quiz = () => {
                                 </p>
                             </div>
                         </div>
+                        {/* HINT 영역 */}
                         <div className="maturity-button-field">
                             <Button text="정답 확인" onClick={handleSubmitAnswer} />
                         </div>

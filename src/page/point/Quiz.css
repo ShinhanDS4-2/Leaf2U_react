@@ -75,7 +75,8 @@
     display: flex;
     align-items: center;
     background-color: #ffffff;
-    border: 2px solid #f0ad4e;
+    /* border: 2px solid #f0ad4e; 노란테두리*/
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     padding: 0.8rem;
     width: 100%;
