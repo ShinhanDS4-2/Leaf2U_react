@@ -33,7 +33,8 @@ const CardHome = () => {
     const cardRef = useRef();
     const cardSuccessModalRef = useRef();
 
-    const amount = localStorage.getItem('amount');
+    const amount = Number(localStorage.getItem('amount')); // 숫자로 변환
+
 
     const [maturityDate, setMaturityDate] = useState('');
     // const [accountNumber, setAccountNumber] = useState('');
