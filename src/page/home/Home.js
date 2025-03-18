@@ -17,6 +17,8 @@ import PwdModal from '../../components/modal/PwdModal6';
 import CustomConfetti from '../../components/effect/CustomConfetti';
 import CoinConfetti from '../../components/effect/CoinConfetti';
 import api from '../../utils/api';
+import Lottie from 'lottie-react';
+import Feedback from '../../image/feedback.json';
 
 function Home() {
     const navigate = useNavigate();
@@ -425,21 +427,23 @@ function Home() {
             <AnimatePresence>
                 {isFeedbackAllowed && isFeedbackVisible && (
                     <motion.div
-                        className="feedback-box"
+                        className="feedback-container"
                         initial={{ opacity: 0, y: -10 }} // 처음에는 살짝 위에 있고 투명한 상태
                         animate={{ opacity: 1, y: 0 }} // 부드럽게 내려오면서 투명도 증가
                         exit={{ opacity: 0, y: -10, transition: { duration: 0.5 } }} // 부드럽게 사라짐
                         transition={{ duration: 0.5 }} // 애니메이션 속도 설정
                     >
-                        {/* 새싹 이미지 영역 */}
-                        <div className="feedback-icon-box">
-                            <img src={Tree} className="feedback-icon" alt="tree icon" />
+                        {/* AI 피드백 내용 */}
+                        <div className="feedback-box">
+                            <Typography className="feedback-text">
+                                {feedback || '피드백 생성 중...'} {/* 피드백 없으면 기본 메시지 */}
+                            </Typography>
                         </div>
 
-                        {/* AI 피드백 내용 */}
-                        <Typography className="feedback-text">
-                            {feedback || '피드백 생성 중...'} {/* 피드백 없으면 기본 메시지 */}
-                        </Typography>
+                        {/* AI 로봇 이미지지 */}
+                        <div className="robot-ani">
+                            <Lottie animationData={Feedback} loop={true} />
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

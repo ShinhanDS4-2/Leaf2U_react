@@ -199,37 +199,48 @@
     justify-content: center;
 }
 
-/* 피드백 박스 스타일 */
-.feedback-box {
+/* 피드백 영역 */
+.feedback-container {
     position: absolute;
-    top: 10px;
+    top: 12%; /* 아래로 이동 */
     left: 12%;
-    background-color: white;
-    padding: 24px 12px; /* 내부 여백 증가 // 박스 크기 */
-    margin-top: 100px; /* 위치 조정 */
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: flex-start; /* 새싹 이미지 텍스트 첫 줄 맞춤 */
     width: 80%;
     max-width: 300px;
+    display: flex;
     z-index: 1000; /* 화면의 가장 앞쪽 배치 (구름보다 우선) */
+    flex-direction: row; /* 세로 정렬 */
+    align-items: flex-start; /* 중앙 정렬 */
     transition: opacity 1s ease-in-out; /* 부드러운 사라짐 효과 */
 }
 
-/* 피드백 아이콘 박스 영역 */
-.feedback-icon-box {
-    display: flex;
-    align-items: center; /* 아이콘을 텍스트 첫 줄과 맞춤 */
-    flex-shrink: 0; /* 아이콘 크기 고정 */
-    margin-right: 8px; /* 텍스트와 간격 조정 */
+/* 피드백 박스 스타일 */
+.feedback-box {
+    background-color: white;
+    padding: 24px 12px; /* 내부 여백 증가 // 박스 크기 */
+    border-radius: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* 피드백 아이콘 (트리) */
-.feedback-icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
+/* 말풍선 꼬리 추가 */
+.feedback-box::after {
+    content: '';
+    position: absolute;
+    bottom: -10px; /* 아래쪽에 위치 */
+    left: 25px; /* 왼쪽에서 살짝 떨어진 곳에 */
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid white; /* 삼각형 만들기 */
+}
+
+/* 로봇 애니메이션 */
+.robot-ani {
+    width: 130px;
+    height: 130px;
+    margin-top: 15px; /* 로봇과 텍스트 사이 간격 */
+    position: absolute;
+    top: 100%;
 }
 
 /* 피드백 텍스트 */
@@ -237,10 +248,11 @@
     font-size: 14px;
     font-weight: bold;
     color: black;
+    text-align: left;
 }
 
 .termication-home {
-    background-color: #FAFAFA;
+    background-color: #fafafa;
 }
 
 .check-div {
