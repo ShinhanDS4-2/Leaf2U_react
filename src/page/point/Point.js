@@ -15,33 +15,30 @@ const points = [
         img: CalendarImg,
         title: '출석체크',
         description: `매일 10 포인트 획득`,
-        link: null, // 출석체크는 API 요청만 수행
         type: 'checkin',
     },
     {
         img: PedometerImg,
         title: '만보기',
         description: `1000걸음 당 10 포인트 획득`,
-        link: '/pedometer',
         type: 'pedometer',
     },
     {
         img: PointQuizImg,
         title: '환경 퀴즈',
         description: `기사를 읽으며 퀴즈를 맞추면 10 포인트 획득`,
-        link: '/quiz',
         type: 'quiz',
     },
 ];
 
-const PointCard = ({ img, title, description, link, type, onCheckIn }) => {
-    const navigate = useNavigate();
-
+const PointCard = ({ img, title, description, type, onCheckIn, onPedometer, onQuiz }) => {
     const handleClick = async () => {
         if (type === 'checkin') {
             await onCheckIn();
-        } else if (link) {
-            navigate(link);
+        } else if (type === 'pedometer') {
+            await onPedometer();
+        } else if (type === 'quiz') {
+            await onQuiz();
         }
     };
 
@@ -61,6 +58,7 @@ const Point = () => {
     const [totalPoints, setTotalPoints] = useState(0);
     const [alertMessage, setAlertMessage] = useState('');
     const alertRef = useRef();
+    const navigate = useNavigate();
 
     const api = axios.create({
         baseURL: '/api',
@@ -107,6 +105,59 @@ const Point = () => {
         }
     };
 
+    // 만보기 API 호출
+    const goToPedometerPage = async () => {
+        try {
+            const response = await api.post('/point/pedometer');
+            const { success, message } = response.data;
+
+            setAlertMessage(message);
+            alertRef.current.openModal();
+
+            if (success) {
+                setTotalPoints((prev) => prev + 10);
+            }
+        } catch (error) {
+            console.error('만보기 오류:', error);
+            setAlertMessage('서버 오류로 인해 만보기 포인트 적립에 실패했습니다.');
+            alertRef.current.openModal();
+        }
+    };
+
+    // 퀴즈 API 호출
+    const goToQuizPage = async () => {
+        try {
+            const response = await api.get('/point/quiz');
+            const { success, message } = response.data;
+
+            setAlertMessage(message);
+            alertRef.current.openModal();
+
+            if (success) {
+                navigate('/quiz');
+            }
+        } catch (error) {
+            console.error('환경 퀴즈 오류:', error);
+            setAlertMessage('서버 오류로 인해 퀴즈 로드에 실패했습니다.');
+            alertRef.current.openModal();
+        }
+    };
+
+    // 퀴즈 힌트 API 호출
+    const handleHintClick = async (hintUrl) => {
+        try {
+            const response = await api.post('/point/quiz/hint');
+            const { message } = response.data;
+
+            setAlertMessage(message);
+            alertRef.current.openModal();
+
+            window.open(hintUrl, '_blank'); // 기사 URL 새 탭 열기
+        } catch (error) {
+            console.error('힌트 제공 오류:', error);
+        }
+    };
+
     return (
         <div className="point-container">
             <Header title="포인트" />
@@ -116,7 +167,13 @@ const Point = () => {
                     {totalPoints}P
                 </h2>
                 {points.map((point, index) => (
-                    <PointCard key={index} {...point} onCheckIn={checkIn} />
+                    <PointCard
+                        key={index}
+                        {...point}
+                        onCheckIn={checkIn}
+                        onPedometer={goToPedometerPage}
+                        onQuiz={goToQuizPage}
+                    />
                 ))}
             </div>
             <AlertModal
