@@ -383,7 +383,7 @@ const AccountInfoPage = ({ apiData }) => {
                                         type="number"
                                         value={amount}
                                         onChange={handleChange}
-                                        placeholder={accountDTO?.paymentAmount}
+                                        placeholder={accountDTO?.paymentAmount.toLocaleString()}
                                         className="payment-input"
                                     />
                                     원
