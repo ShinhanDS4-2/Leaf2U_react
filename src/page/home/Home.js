@@ -193,8 +193,7 @@ function Home() {
             .then((response) => {
                 setData(response.data);
 
-                const diffAmount =
-                    (response.data.diff - 1) * response.data.accountDTO.paymentAmount;
+                const diffAmount = response.data.diff * response.data.accountDTO.paymentAmount;
                 setTargetAmount(response.data.accountDTO.balance + diffAmount);
 
                 if (response.data.maturity_yn == 'Y') {
