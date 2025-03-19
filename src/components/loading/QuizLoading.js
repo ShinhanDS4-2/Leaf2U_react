@@ -16,16 +16,21 @@ const QuizLoading = () => {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        background: 'rgba(211, 211, 211, 1)',
+                        background: 'rgba(232, 232, 232, 1)',
                         zIndex: 999,
                         display: 'flex',
+                        flexDirection: 'column', // 세로 방향으로 정렬
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}
                 >
-                    {/* <Typography variant="subtitle1" fontWeight="bold" sx={{ marginBottom: 3 }}>
-                        퀴즈 생성중입니다(●'◡'●)
-                    </Typography> */}
+                    <Typography
+                        variant="h5"
+                        fontWeight="bold"
+                        sx={{ marginBottom: -3, textAlign: 'center' }}
+                    >
+                        퀴즈 생성중. . . <br /> 잠시만 기다려주세요😚
+                    </Typography>
                     <Lottie animationData={RobotAnimation} loop={true} />
                 </Box>
             </Content>
