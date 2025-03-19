@@ -464,7 +464,7 @@ function Home() {
                             </Typography>
                         </div>
 
-                        {/* AI 로봇 이미지지 */}
+                        {/* AI 로봇 이미지 */}
                         <div className="robot-ani">
                             <Lottie animationData={Feedback} loop={true} />
                         </div>

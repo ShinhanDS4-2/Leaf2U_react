@@ -68,3 +68,24 @@
     font-size: 1.5rem;
     font-weight: 900;
 }
+
+.alert-modal-animation {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    left: 80px;
+    top: -10px;
+}
+
+.alert-modal-content {
+    text-align: center;
+}
+
+.alert-modal-pig {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    left: 30px;
+    top: -20px;
+    margin-bottom: -40px;
+}
