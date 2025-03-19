@@ -1,5 +1,4 @@
 import './Quiz.css';
-import api from '../../utils/api';
 import React, { useState, useEffect, useRef } from 'react';
 import Header from '../../components/header/Header';
 import Content from '../../components/content/Content';
@@ -17,6 +16,7 @@ import ChallengeLoading from '../../components/loading/ChallengeLoading';
 import Lottie from 'lottie-react';
 import RobotAnimation from '../../image/RobotAnimation.json'; // 로봇 애니메이션
 // LottieFiles 애니메이션 사용 예시 END
+import axios from 'axios';
 
 const Quiz = () => {
     const navigate = useNavigate();
@@ -58,15 +58,32 @@ const Quiz = () => {
         }
     };
 
+    const api = axios.create({
+        baseURL: '/api',
+        headers: { 'Content-Type': 'application/json' },
+    });
+
+    api.interceptors.request.use(
+        (config) => {
+            const token = localStorage.getItem('jwtToken');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => Promise.reject(error),
+    );
+
     useEffect(() => {
         setLoading(true);
 
         api.get('/point/quiz')
             .then((res) => {
-                setQuiz(res.data.question.quiz);
-                setSection(res.data.question.section);
-                setCorrect(res.data.question.answer);
-                setHintUrl(res.data.newsId);
+                const data = res.data;
+                setQuiz(data.question.quiz);
+                setSection(data.question.section);
+                setCorrect(data.question.answer);
+                setHintUrl(data.newsId);
             })
             .catch((err) => {
                 console.log(err);

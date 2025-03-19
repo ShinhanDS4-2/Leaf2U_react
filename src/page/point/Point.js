@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './Point.css';
 import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
@@ -9,6 +8,7 @@ import PedometerImg from '../../image/Pedometer.jpg';
 import PointQuizImg from '../../image/PointQuiz.jpg';
 import ArrowImg from '../../image/Arrow.jpg';
 import AlertModal from '../../components/modal/AlertModal';
+import api from '../../utils/api';
 
 const points = [
     {
@@ -60,22 +60,6 @@ const Point = () => {
     const alertRef = useRef();
     const navigate = useNavigate();
 
-    const api = axios.create({
-        baseURL: '/api',
-        headers: { 'Content-Type': 'application/json' },
-    });
-
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken');
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => Promise.reject(error),
-    );
-
     useEffect(() => {
         const fetchTotalPoints = async () => {
             try {
@@ -107,55 +91,12 @@ const Point = () => {
 
     // 만보기 API 호출
     const goToPedometerPage = async () => {
-        try {
-            const response = await api.post('/point/pedometer');
-            const { success, message } = response.data;
-
-            setAlertMessage(message);
-            alertRef.current.openModal();
-
-            if (success) {
-                setTotalPoints((prev) => prev + 10);
-            }
-        } catch (error) {
-            console.error('만보기 오류:', error);
-            setAlertMessage('서버 오류로 인해 만보기 포인트 적립에 실패했습니다.');
-            alertRef.current.openModal();
-        }
+        navigate('/pedometer');
     };
 
     // 퀴즈 API 호출
     const goToQuizPage = async () => {
-        try {
-            const response = await api.get('/point/quiz');
-            const { success, message } = response.data;
-
-            setAlertMessage(message);
-            alertRef.current.openModal();
-
-            if (success) {
-                navigate('/quiz');
-            }
-        } catch (error) {
-            console.error('환경 퀴즈 오류:', error);
-            setAlertMessage('서버 오류로 인해 퀴즈 로드에 실패했습니다.');
-            alertRef.current.openModal();
-        }
-    };
-
-    // 퀴즈 힌트 API 호출
-    const handleHintClick = async (hintUrl) => {
-        try {
-            const response = await api.post('/point/quiz/hint');
-            const { message } = response.data;
-
-            setAlertMessage(message);
-            alertRef.current.openModal();
-
-            window.open(hintUrl, '_blank'); // 기사 URL 새 탭 열기
-        } catch (error) {
-            console.error('힌트 제공 오류:', error);
-        }
+        navigate('/quiz');
     };
 
     return (
