@@ -312,7 +312,7 @@ const CardHome = () => {
                     <ul className="explain">
                         <li>
                             최고 적용금리 {rate}.00% = 기본금리 1.00% + 30일 성공 시 3.00% + 연속 보너스 2.00%
-                            {firstYN === 'N' && (<span className="highlight2"> + 최초 가입 2.00%'</span>)}
+                            {firstYN === 'N' && (<span className="highlight2"> + 최초 가입 2.00%</span>)}
                             {cardYN === 'Y' && prevCardYN === 'Y' && (
                                 <span className="highlight2"> + Leaf 카드 2.00%</span>
                             )}
