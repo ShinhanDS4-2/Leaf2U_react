@@ -684,11 +684,11 @@ const Tap2Page = () => {
                     </Box>
                     <Typography
                         color="green"
-                        variant="caption"
-                        sx={{ marginLeft: 3 }}
+                        variant="body2"
+                        sx={{ marginLeft: 2, marginTop: 1 }}
                         onClick={clickHistoryList}
                     >
-                        내 후원내역 보러가기 {/* ❤️ */}
+                        Click! 후원내역 보러가기 {/* ❤️ */}
                     </Typography>
                     {/* 통계 */}
                     <Box
