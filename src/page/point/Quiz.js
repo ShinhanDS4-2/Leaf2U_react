@@ -16,7 +16,7 @@ import ChallengeLoading from '../../components/loading/ChallengeLoading';
 import Lottie from 'lottie-react';
 import RobotAnimation from '../../image/RobotAnimation.json'; // 로봇 애니메이션
 // LottieFiles 애니메이션 사용 예시 END
-import axios from 'axios';
+import api from '../../utils/api';
 
 const Quiz = () => {
     const navigate = useNavigate();
@@ -35,6 +35,8 @@ const Quiz = () => {
         onConfirm: () => {},
     });
     const bottomModalRef = useRef();
+
+    const [alertText, setAlertText] = useState('');
 
     const handleOpenBottomModal = () => {
         if (bottomModalRef.current) {
@@ -58,22 +60,6 @@ const Quiz = () => {
         }
     };
 
-    const api = axios.create({
-        baseURL: '/api',
-        headers: { 'Content-Type': 'application/json' },
-    });
-
-    api.interceptors.request.use(
-        (config) => {
-            const token = localStorage.getItem('jwtToken');
-            if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
-            }
-            return config;
-        },
-        (error) => Promise.reject(error),
-    );
-
     useEffect(() => {
         setLoading(true);
 
@@ -95,6 +81,7 @@ const Quiz = () => {
 
     const handleSubmitAnswer = () => {
         if (!answer) {
+            setAlertText('정답을 선택해주세요.');
             handleOpenAlert();
             return;
         }
@@ -158,8 +145,15 @@ const Quiz = () => {
 
     const handleHintClick = () => {
         api.post('/point/quiz/hint')
-            .then(() => {
-                window.open(hintUrl, '_blank'); // 힌트 기사 원문 열기
+            .then((response) => {
+                if (response.data) {
+                    setAlertText('힌트를 확인하고 5P 적립!');
+                    handleOpenAlert();
+                    window.open(hintUrl, '_blank'); // 힌트 기사 원문 열기
+                } else {
+                    setAlertText('이미 힌트를 확인하였습니다.');
+                    handleOpenAlert();
+                }
             })
             .catch((err) => alert(err.response?.data?.message || '힌트 제공 오류'));
     };
@@ -243,13 +237,13 @@ const Quiz = () => {
                     </div>
                 </div>
             </BottomModal>
-            <AlertModal
+            {/* <AlertModal
                 ref={alertRef}
                 text={'<span>정답을 선택해 주세요.</span>'}
                 onClick={() => {}}
-            />
-            {/* 로딩 화면 */}
-            {loading && <ChallengeLoading />}
+            /> */}
+            {/* Alert Modal */}
+            <AlertModal ref={alertRef} text={alertText} onClick={() => {}} />
         </div>
     );
 };
