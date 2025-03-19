@@ -91,12 +91,38 @@ const Point = () => {
 
     // 만보기 API 호출
     const goToPedometerPage = async () => {
-        navigate('/pedometer');
+        try {
+            const res = await api.post('/point/check/today', null, {
+                params: { activityType: 'S' },
+            });
+
+            if (res.data) {
+                setAlertMessage('이미 오늘의 만보기를 참여하였습니다.');
+                alertRef.current.openModal();
+            } else {
+                navigate('/pedometer');
+            }
+        } catch (error) {
+            console.error('API 호출 오류:', error);
+        }
     };
 
     // 퀴즈 API 호출
     const goToQuizPage = async () => {
-        navigate('/quiz');
+        try {
+            const res = await api.post('/point/check/today', null, {
+                params: { activityType: 'Q' },
+            });
+
+            if (res.data) {
+                setAlertMessage('이미 오늘의 퀴즈를 참여하였습니다.');
+                alertRef.current.openModal();
+            } else {
+                navigate('/quiz');
+            }
+        } catch (error) {
+            console.error('API 호출 오류:', error);
+        }
     };
 
     return (

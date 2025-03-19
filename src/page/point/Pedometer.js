@@ -57,13 +57,13 @@ const Pedometer = () => {
         );
 
         try {
-            setLoading(true); 
+            setLoading(true);
 
             const response = await api.post('/pedometer', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
-            setLoading(false); 
+            setLoading(false);
 
             const { message, earnedPoints } = response.data;
             setAlertText(
@@ -114,7 +114,13 @@ const Pedometer = () => {
             <Footer />
 
             {/* Alert Modal */}
-            <AlertModal ref={alertRef} text={alertText} />
+            <AlertModal
+                ref={alertRef}
+                text={alertText}
+                onClick={() => {
+                    navigate('/point');
+                }}
+            />
 
             {/* 로딩 화면 */}
             {loading && <ChallengeLoading />}
