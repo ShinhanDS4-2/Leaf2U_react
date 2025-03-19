@@ -79,7 +79,7 @@ const Image = () => {
         );
 
         try {
-            setLoading(true); 
+            setLoading(true);
 
             const response = await api.post(apiUrl, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
@@ -102,7 +102,7 @@ const Image = () => {
             }
         } catch (error) {
             console.error('API 요청 실패:', error);
-            setLoading(false); 
+            setLoading(false);
             setAlertText('<span>이미지 인증에 실패했습니다.</span>'); // 모달 메시지 설정
             alertRef.current.openModal(); // 모달 열기
         }
@@ -132,11 +132,12 @@ const Image = () => {
                         <p className="image-upload-text">사진 첨부</p>
                     </label>
 
+                    {/* 사진 첨부 밑에 설명 */}
                     <p className="image-upload-note">{notice}</p>
                 </div>
                 <div className="maturity-button-field">
                     <Button
-                        text="다음"
+                        text="인증하기"
                         bgColor="#5DB075"
                         textColor="white"
                         onClick={handleSubmit}

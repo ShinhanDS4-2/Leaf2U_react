@@ -62,7 +62,7 @@
 .card-title {
     font-size: 0.9rem;
     font-weight: 600;
-    margin-bottom: 0.8rem; /* 제목과 설명 사이 간격*/
+    margin-bottom: 0.5rem !important; /* 제목과 설명 사이 간격*/
 }
 
 /* 카드 설명 */
