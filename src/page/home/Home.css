@@ -208,7 +208,7 @@
     max-width: 300px;
     display: flex;
     z-index: 1000; /* 화면의 가장 앞쪽 배치 (구름보다 우선) */
-    flex-direction: row; /* 세로 정렬 */
+    flex-direction: row;
     align-items: flex-start; /* 중앙 정렬 */
     transition: opacity 1s ease-in-out; /* 부드러운 사라짐 효과 */
 }
@@ -291,4 +291,24 @@
     display: flex;
     justify-content: center;
     left: 78px;
+}
+
+.target {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 9999;
+    margin-left: 20px;
+}
+
+.target-coin {
+    width: 40px;
+    margin-right: 5px;
+}
+
+.target span {
+    color: white;
+    text-shadow: -1px -1px 0 #6cbcef, 1px -1px 0 #6cbcef, -1px 1px 0 #6cbcef, 1px 1px 0 #6cbcef;
+    font-weight: bold;
+    font-size: 20px;
 }

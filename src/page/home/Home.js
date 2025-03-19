@@ -20,6 +20,7 @@ import api from '../../utils/api';
 import Lottie from 'lottie-react';
 import Feedback from '../../image/feedback.json';
 import Tropyh from '../../image/trophy.json';
+import Coin from '../../image/coin.json';
 
 function Home() {
     const navigate = useNavigate();
@@ -36,6 +37,8 @@ function Home() {
     const [isChallengeCompleted, setIsChallengeCompleted] = useState(false); // 챌린지 완료 여부
     const [challengeCount, setChallengeCount] = useState(0); // 챌린지 완료 횟수
     const [bonusRate, setBonusRate] = useState(0); // 우대 금리
+
+    const [targetAmount, setTargetAmount] = useState(0);
 
     // 모달의 동적 내용 관리
     const [modalContent, setModalContent] = useState({
@@ -101,7 +104,6 @@ function Home() {
         if (isMatch) {
             console.log('비밀번호 일치! 입금 진행');
             navigate('/deposit');
-            // TODO: 입금 API 호출 (납입 로직 연결)
         } else {
             pwdModalRef.current?.closeModal(); // 비밀번호 입력 모달 닫기
             alertRefPwd.current?.openModal(); // 비밀번호 불일치 모달 띄우기
@@ -188,6 +190,9 @@ function Home() {
         api.post('/account/saving/info')
             .then((response) => {
                 setData(response.data);
+
+                const diffAmount = response.data.diff * response.data.accountDTO.paymentAmount;
+                setTargetAmount(response.data.accountDTO.balance + diffAmount);
 
                 if (response.data.maturity_yn == 'Y') {
                     setModalContent({
@@ -382,7 +387,12 @@ function Home() {
             <div className="cloud1"></div>
             <div className="cloud2"></div>
             <HomeHeader listClick={handleListOnClick} calendarClick={handleCalendarOnClick} />
+            {/* 목표 금액 */}
             <div className="tree-div">
+                <div className="target">
+                    <Lottie animationData={Coin} loop={true} className="target-coin" />
+                    <span>목표금액 : {targetAmount.toLocaleString()}원</span>
+                </div>
                 <img src={Watering} className="watering-img" onClick={handleSavingOnClick} />
                 <img src={treeImage} className="tree-img" onClick={handleAccountInfoClick} />
             </div>
