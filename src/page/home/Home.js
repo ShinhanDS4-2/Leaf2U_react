@@ -19,6 +19,7 @@ import CoinConfetti from '../../components/effect/CoinConfetti';
 import api from '../../utils/api';
 import Lottie from 'lottie-react';
 import Feedback from '../../image/feedback.json';
+import Tropyh from '../../image/trophy.json';
 
 function Home() {
     const navigate = useNavigate();
@@ -192,6 +193,9 @@ function Home() {
                     setModalContent({
                         text: (
                             <>
+                                <div className="trophy">
+                                    <Lottie animationData={Tropyh} loop={true} />
+                                </div>
                                 만기가 되었어요!
                                 <br />
                                 이자가 얼만큼 쌓였을까요?
