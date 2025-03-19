@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import correctEmoji from '../../image/point_correct.json';
 import wrongEmoji from '../../image/point_wrong.json';
 import { useNavigate } from 'react-router-dom';
-import ChallengeLoading from '../../components/loading/ChallengeLoading';
+import QuizLoading from '../../components/loading/QuizLoading';
 // LottieFiles 애니메이션 사용 예시 START
 import Lottie from 'lottie-react';
 import RobotAnimation from '../../image/RobotAnimation.json'; // 로봇 애니메이션
@@ -237,13 +237,9 @@ const Quiz = () => {
                     </div>
                 </div>
             </BottomModal>
-            {/* <AlertModal
-                ref={alertRef}
-                text={'<span>정답을 선택해 주세요.</span>'}
-                onClick={() => {}}
-            /> */}
-            {/* Alert Modal */}
             <AlertModal ref={alertRef} text={alertText} onClick={() => {}} />
+            {/* 로딩 화면 */}
+            {loading && <QuizLoading />}
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
     Tabs,
@@ -14,6 +14,9 @@ import {
     IconButton,
     Divider,
 } from '@mui/material';
+import Lottie from 'lottie-react'; // 애니메이션
+import CrownAnimation from '../../image/CrownAnimation.json'; // 왕관 애니메이션
+
 import CloseIcon from '@mui/icons-material/Close';
 import Content from '../../components/content/Content';
 import Footer from '../../components/footer/Footer';
@@ -125,6 +128,12 @@ const Tap1Page = ({ selectedOrganizationIdx }) => {
     const [donations, setDonations] = useState([]); // donations 상태 관리
     const [selectedDonation, setSelectedDonation] = useState(null); // 선택된 donation 데이터
 
+    const navigate = useNavigate(); // ❤️
+    // 후원내역 보러가기 버튼 클릭 시
+    const clickHistoryList = () => {
+        navigate('/historyList');
+    }; // ❤️
+
     const handleOpenModal = (donation) => {
         setSelectedDonation(donation); // 선택된 donation 저장
         setOpenModal(true); // 모달 열기
@@ -167,7 +176,7 @@ const Tap1Page = ({ selectedOrganizationIdx }) => {
 
     return (
         <>
-            <Box className="p-0 mt-4">
+            <Box className="p-0 mt-4 mb-5">
                 {donations.map((donation) => (
                     <Card
                         key={donation.organizationIdx}
@@ -244,7 +253,11 @@ const Tap1Page = ({ selectedOrganizationIdx }) => {
                     </Card>
                 ))}
             </Box>
-
+            <div
+                sx={{
+                    marginTop: '50px', // 왼쪽 여백 추가
+                }}
+            ></div>
             <div>
                 {/* 후원기관 상세 모달 컴포넌트 */}
                 <OrganizationDetailModal
@@ -261,6 +274,11 @@ const Tap1Page = ({ selectedOrganizationIdx }) => {
 const Tap2Page = () => {
     const [rankingInfo, setRankingInfo] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate(); // ❤️
+    // 후원내역 보러가기 버튼 클릭 시
+    const clickHistoryList = () => {
+        navigate('/historyList');
+    }; // ❤️
 
     useEffect(() => {
         getRankingInfo();
@@ -285,7 +303,7 @@ const Tap2Page = () => {
     return (
         <>
             {!isLoading && (
-                <Box sx={{ margin: '10px', marginTop: '40px' }}>
+                <Box sx={{ margin: '10px', marginTop: '20px' }}>
                     {/* 랭킹 */}
                     <Box>
                         <Box sx={{ display: 'flex', justifyContent: 'start' }}>
@@ -299,11 +317,16 @@ const Tap2Page = () => {
                                 후원 랭킹
                             </Typography>
                         </Box>
+                        {/* 왕관 애니메이션 */}
+                        <Box className="CrownAnimation">
+                            <Lottie animationData={CrownAnimation} loop={true} />
+                        </Box>
+                        {/* 왕관 애니메이션 */}
                         <Box
                             display="flex"
                             justifyContent="center"
                             alignItems="flex-end"
-                            height={250}
+                            // height={250}
                             gap={0}
                         >
                             {/* 2등 */}
@@ -347,7 +370,6 @@ const Tap2Page = () => {
                                     </Box>
                                 </motion.div>
                             </Box>
-
                             {/* 1등 */}
                             <Box
                                 width={100}
@@ -359,7 +381,7 @@ const Tap2Page = () => {
                                 <Icon
                                     icon="noto:1st-place-medal"
                                     width="50px"
-                                    height="50px"
+                                    // height="50px"
                                     style={{ position: 'absolute', top: -20 }}
                                 />
                                 <motion.div
@@ -389,7 +411,6 @@ const Tap2Page = () => {
                                     </Box>
                                 </motion.div>
                             </Box>
-
                             {/* 3등 */}
                             <Box
                                 width={100}
@@ -435,7 +456,8 @@ const Tap2Page = () => {
                     </Box>
 
                     {/* 후원 기여도 */}
-                    <Box sx={{ marginTop: '30px' }}>
+                    {/* ❤️ */}
+                    <Box onClick={clickHistoryList} sx={{ marginTop: '30px' }}>
                         <Box
                             sx={{ display: 'flex', justifyContent: 'start', marginBottom: '50px' }}
                         >
@@ -445,8 +467,10 @@ const Tap2Page = () => {
                                 height="20px"
                                 style={{ color: '#4B9460' }}
                             />
-                            <Typography sx={{ marginLeft: '5px', fontWeight: 'bold' }}>
-                                이만큼 후원했어요!
+                            <Typography
+                                sx={{ marginLeft: '5px', marginRight: '20px', fontWeight: 'bold' }}
+                            >
+                                이만큼 후원했어요!{' '}
                             </Typography>
                         </Box>
                         <Box
@@ -656,9 +680,16 @@ const Tap2Page = () => {
                                     }}
                                 />
                             </Box>
-                        </Box>
+                        </Box>{' '}
                     </Box>
-
+                    <Typography
+                        color="green"
+                        variant="body2"
+                        sx={{ marginLeft: 2, marginTop: 1 }}
+                        onClick={clickHistoryList}
+                    >
+                        Click! 후원내역 보러가기 {/* ❤️ */}
+                    </Typography>
                     {/* 통계 */}
                     <Box
                         sx={{
