@@ -17,6 +17,7 @@ const AccountInfoPage = ({ apiData }) => {
 
     const navigate = useNavigate(); // useNavigate 훅 사용
     const [amount, setAmount] = useState(''); // 납입금액 변경 금액 저장
+    const [viewAmount, setViewAmount] = useState(accountDTO?.paymentAmount || 0);
 
     // 🟢 모달 참조용 ref 생성
     const paymentAmountModalRef = useRef(); // 납입금액 변경 모달 ref
@@ -132,6 +133,8 @@ const AccountInfoPage = ({ apiData }) => {
     const handleKeypadDelete = () => {
         setAmount((prev) => prev.slice(0, -1));
     };
+
+    const formattedAmount = amount ? Number(amount).toLocaleString() : '';
     /* 납입금액 변경 모달 및 키패드 관련 END */
 
     /*  납입금액 변경 프로세스 START */
@@ -154,7 +157,6 @@ const AccountInfoPage = ({ apiData }) => {
     // 2. 간편 비밀번호 입력 후 프로세스
     const inputPwdProcess = async (pwd) => {
         ClosePwdInputModal(); // 비밀번호 입력창 close
-        console.log('입력된 pwd값!!!!!!!!', pwd); // 🔥 확인용 로그
         const result = await updatePaymentAmountAPI(pwd); // 납입금액 변경 API 실행하고 await 결과 기다리기
         if (result === 1) {
             // 비밀번호 맞으면
@@ -191,6 +193,7 @@ const AccountInfoPage = ({ apiData }) => {
             })
                 .then((res) => {
                     console.log(res.data);
+                    setViewAmount(amount);
                     return res;
                 })
                 .catch((err) => {
@@ -332,7 +335,7 @@ const AccountInfoPage = ({ apiData }) => {
                                 납입금액
                             </Typography>
                             <Typography variant="body">
-                                매일 {accountDTO?.paymentAmount.toLocaleString()}원 &gt;
+                                매일 {viewAmount.toLocaleString()}원 &gt;
                             </Typography>
                         </Box>
                         <Divider sx={{ marginY: 1, border: 1 }} />
@@ -380,8 +383,8 @@ const AccountInfoPage = ({ apiData }) => {
                             <div className="">
                                 <h3>
                                     <input
-                                        type="number"
-                                        value={amount}
+                                        type="text"
+                                        value={formattedAmount}
                                         onChange={handleChange}
                                         placeholder={accountDTO?.paymentAmount.toLocaleString()}
                                         className="payment-input"
