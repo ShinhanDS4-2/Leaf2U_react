@@ -167,11 +167,7 @@ const Point = () => {
                     setShowAnimation(false);
                 }}
             />
-            {/* {showAnimation && (
-                <div className="alert-modal-content">
-                    <Lottie animationData={Pigcoin} loop={true} />
-                </div>
-            )} */}
+
             <Footer />
         </div>
     );
