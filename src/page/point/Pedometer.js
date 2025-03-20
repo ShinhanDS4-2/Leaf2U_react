@@ -9,6 +9,9 @@ import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 import AlertModal from '../../components/modal/AlertModal';
 import ChallengeLoading from '../../components/loading/ChallengeLoading';
+import Lottie from 'lottie-react';
+import Pigcoin from '../../image/pigcoin.json';
+import wrongEmoji from '../../image/point_wrong.json';
 
 const api = axios.create({
     baseURL: '/api/point',
@@ -23,6 +26,7 @@ const Pedometer = () => {
     // 모달 관련 상태 및 ref 생성
     const alertRef = useRef();
     const [alertText, setAlertText] = useState('');
+    const [alertCallback, setAlertCallback] = useState(() => {});
 
     // 이미지 파일 선택
     const handleImageUpload = (event) => {
@@ -65,14 +69,39 @@ const Pedometer = () => {
 
             setLoading(false);
 
-            const { message, earnedPoints } = response.data;
-            setAlertText(
-                `<span>${message} ${earnedPoints ? `(${earnedPoints}P 적립)` : ''}</span>`,
-            );
+            const data = response.data;
+            if (data.result) {
+                setAlertText(
+                    <div className="alert-modal-content">
+                        <div className="alert-modal-pig">
+                            <Lottie animationData={Pigcoin} loop={true} />
+                        </div>
+                        <span>
+                            {data.message} {data.point}P 적립!
+                        </span>
+                    </div>,
+                );
+                setAlertCallback(() => () => navigate('/point'));
+            } else {
+                setAlertText(
+                    <div className="alert-modal-content">
+                        <div className="alert-modal-animation">
+                            <Lottie animationData={wrongEmoji} loop={true} />
+                        </div>
+                        <span>{data.message}</span>
+                    </div>,
+                );
+            }
             alertRef.current.openModal();
         } catch (error) {
-            console.error('API 요청 실패:', error);
-            setAlertText('<span>이미지 인증에 실패했습니다.</span>');
+            setAlertText(
+                <div className="alert-modal-content">
+                    <div className="alert-modal-animation">
+                        <Lottie animationData={wrongEmoji} loop={true} />
+                    </div>
+                    <span>이미지 인증에 실패하였습니다.</span>
+                </div>,
+            );
             alertRef.current.openModal();
         }
     };
@@ -114,13 +143,7 @@ const Pedometer = () => {
             <Footer />
 
             {/* Alert Modal */}
-            <AlertModal
-                ref={alertRef}
-                text={alertText}
-                onClick={() => {
-                    navigate('/point');
-                }}
-            />
+            <AlertModal ref={alertRef} text={alertText} onClick={alertCallback} />
 
             {/* 로딩 화면 */}
             {loading && <ChallengeLoading />}

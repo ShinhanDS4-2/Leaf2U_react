@@ -16,7 +16,8 @@ import QuizLoading from '../../components/loading/QuizLoading';
 import Lottie from 'lottie-react';
 import RobotAnimation from '../../image/RobotAnimation.json'; // 로봇 애니메이션
 // LottieFiles 애니메이션 사용 예시 END
-import api from '../../utils/api';
+import axios from 'axios';
+import Pigcoin from '../../image/pigcoin.json';
 
 const Quiz = () => {
     const navigate = useNavigate();
@@ -59,6 +60,26 @@ const Quiz = () => {
             alertRef.current.openModal();
         }
     };
+
+    // axios 인스턴스
+    const api = axios.create({
+        baseURL: '/api',
+    });
+
+    // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
+    api.interceptors.request.use(
+        (config) => {
+            const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
+
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error) => {
+            return Promise.reject(error);
+        },
+    );
 
     useEffect(() => {
         setLoading(true);
@@ -129,14 +150,13 @@ const Quiz = () => {
                         <p>
                             오답이에요!
                             <br />
-                            다음에 다시 도전해봐요.
+                            다시 한 번 생각해 보세요.
                         </p>
                     </>
                 ),
                 buttonText: '확인',
                 onConfirm: () => {
                     handleCloseBottomModal();
-                    navigate('/point');
                 },
             });
             handleOpenBottomModal();
@@ -147,11 +167,25 @@ const Quiz = () => {
         api.post('/point/quiz/hint')
             .then((response) => {
                 if (response.data) {
-                    setAlertText('힌트를 확인하고 5P 적립!');
+                    setAlertText(
+                        <div className="alert-modal-content">
+                            <div className="alert-modal-pig">
+                                <Lottie animationData={Pigcoin} loop={true} />
+                            </div>
+                            <span>힌트를 확인하고 5P 적립!</span>
+                        </div>,
+                    );
                     handleOpenAlert();
                     window.open(hintUrl, '_blank'); // 힌트 기사 원문 열기
                 } else {
-                    setAlertText('이미 힌트를 확인하였습니다.');
+                    setAlertText(
+                        <div className="alert-modal-content">
+                            <div className="alert-modal-animation">
+                                <Lottie animationData={wrongEmoji} loop={true} />
+                            </div>
+                            <span>힌트를 이미 확인하였습니다.</span>
+                        </div>,
+                    );
                     handleOpenAlert();
                 }
             })

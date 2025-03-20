@@ -57,7 +57,6 @@ const PointCard = ({ img, title, description, type, onCheckIn, onPedometer, onQu
 const Point = () => {
     const [totalPoints, setTotalPoints] = useState(0);
     const [alertMessage, setAlertMessage] = useState('');
-    const [showAnimation, setShowAnimation] = useState(false);
     const alertRef = useRef();
     const navigate = useNavigate();
     useEffect(() => {
@@ -115,7 +114,14 @@ const Point = () => {
                 params: { activityType: 'S' },
             });
             if (res.data) {
-                setAlertMessage('이미 오늘의 만보기를 참여하였습니다.');
+                setAlertMessage(
+                    <div className="alert-modal-content">
+                        <div className="alert-modal-animation">
+                            <Lottie animationData={wrongEmoji} loop={true} />
+                        </div>
+                        <span>오늘의 만보기를 완료하였습니다.</span>
+                    </div>,
+                );
                 alertRef.current.openModal();
             } else {
                 navigate('/pedometer');
@@ -131,7 +137,14 @@ const Point = () => {
                 params: { activityType: 'Q' },
             });
             if (res.data) {
-                setAlertMessage('이미 오늘의 퀴즈를 참여하였습니다.');
+                setAlertMessage(
+                    <div className="alert-modal-content">
+                        <div className="alert-modal-animation">
+                            <Lottie animationData={wrongEmoji} loop={true} />
+                        </div>
+                        <span>오늘의 퀴즈를 완료하였습니다.</span>
+                    </div>,
+                );
                 alertRef.current.openModal();
             } else {
                 navigate('/quiz');
@@ -164,14 +177,8 @@ const Point = () => {
                 text={alertMessage}
                 onClick={() => {
                     alertRef.current.closeModal();
-                    setShowAnimation(false);
                 }}
             />
-            {/* {showAnimation && (
-                <div className="alert-modal-content">
-                    <Lottie animationData={Pigcoin} loop={true} />
-                </div>
-            )} */}
             <Footer />
         </div>
     );
