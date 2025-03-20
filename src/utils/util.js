@@ -32,7 +32,7 @@ export const koreanSeperate = (name) => {
 /** 로마자 표기법으로 변환 */
 export const koreanToRomanization = (text) => {
     const initialConsonantsArray = [
-        'g',
+        'k',
         'kk',
         'n',
         'd',
