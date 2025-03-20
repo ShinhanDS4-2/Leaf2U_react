@@ -41,6 +41,8 @@ import Point from './page/point/Point';
 import Pedometer from './page/point/Pedometer';
 import Quiz from './page/point/Quiz';
 
+import Kakao from './page/join/kakao';
+
 const theme = createTheme({
     typography: {
         fontFamily: 'MapoPeacefull, sans-serif',
@@ -98,6 +100,8 @@ function AppContent() {
                             <Route path="/pedometer" element={<Pedometer />} />
                             <Route path="/quiz" element={<Quiz />} />
                             <Route path="/topic" element={<Topic />} />
+
+                            <Route path="/auth/kakao/callback" element={<Kakao />} />
 
                             <Route path="/example" element={<Example />} />
                         </Routes>
