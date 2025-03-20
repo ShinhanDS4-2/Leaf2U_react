@@ -293,7 +293,7 @@ const Termination = () => {
                                 받으실금액
                             </Typography>
                             <Typography variant="h5" color="#5DB075" fontWeight="bold">
-                                {(data.balance + data.interestAmount)?.toLocaleString()}원
+                                {(data?.balance + data?.interestAmount)?.toLocaleString()}원
                                 {/* 계좌원금balance + 세후이자interestAmount */}
                             </Typography>
                         </Box>
@@ -333,10 +333,9 @@ const Termination = () => {
                         정말 적금 해지를 <br /> 신청하시겠습니까?
                     </Typography>
                     <Typography variant="caption" display="block" color="text.secondary">
-                        만기일까지{' '}
+                        만기일까지&nbsp;
                         {Math.floor(
-                            (new Date('2025-03-24T00:15:20') -
-                                new Date('2025-03-11T20:48:04.6781052')) /
+                            (new Date(data?.maturityDate) - new Date(data?.endDate)) /
                                 (1000 * 3600 * 24),
                         )}
                         일 남았습니다.
