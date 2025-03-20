@@ -117,6 +117,7 @@ const CardJoin = () => {
                             position: 'relative',
                             right: '5px',
                             padding: '5px 10px',
+                            marginBottom: '-30px',
                             fontSize: '12px',
                             background: '#e8e8e8',
                             color: 'black',
