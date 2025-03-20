@@ -494,9 +494,9 @@ const Tap2Page = () => {
                                 <motion.div
                                     initial={{ left: '0%' }}
                                     animate={{
-                                        left: `${
-                                            (rankingInfo.my_total / rankingInfo.all_total) * 100
-                                        }%`,
+                                        left: `${Math.floor(
+                                            (rankingInfo.my_total / rankingInfo.all_total) * 100,
+                                        )}%`,
                                     }}
                                     transition={{ duration: 1.5, ease: 'easeOut' }}
                                     style={{
@@ -526,7 +526,7 @@ const Tap2Page = () => {
                                             fontWeight="bold"
                                             sx={{ fontSize: '12px' }}
                                         >
-                                            {rankingInfo.my_total.toLocaleString()}원
+                                            {Math.floor(rankingInfo.my_total).toLocaleString()}원
                                         </Typography>
                                         <Typography variant="caption" sx={{ fontSize: '10px' }}>
                                             {(
@@ -584,7 +584,7 @@ const Tap2Page = () => {
                                             fontWeight="bold"
                                             sx={{ fontSize: '12px' }}
                                         >
-                                            {rankingInfo.age_total.toLocaleString()}원
+                                            {Math.floor(rankingInfo.age_total).toLocaleString()}원
                                         </Typography>
                                         <Typography variant="caption" sx={{ fontSize: '10px' }}>
                                             {(
