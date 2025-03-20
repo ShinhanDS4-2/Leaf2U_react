@@ -73,7 +73,7 @@ const AlertModal = React.forwardRef(
             >
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description" className="p-2">
+                    <div id="alert-dialog-slide-description" className="p-2">
                         {typeof text === 'string' ? (
                             <span
                                 dangerouslySetInnerHTML={{ __html: text }}
@@ -82,7 +82,7 @@ const AlertModal = React.forwardRef(
                         ) : (
                             text
                         )}
-                    </DialogContentText>
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button
