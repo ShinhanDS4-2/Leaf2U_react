@@ -92,7 +92,7 @@ const Image = () => {
 
             if (type === 'tumblr' && result.includes('yes')) {
                 navigate('/home', { state: { deposit: 'Y', type } }); // 타입을 여기서 넘겨줘야함 밑에도 마찬가지
-            } else if (type === 'bicycle' && /^\d{2}-\d{2}$/.test(result)) {
+            } else if (type === 'bicycle' && result.includes('yes')) {
                 navigate('/home', { state: { deposit: 'Y', type } });
             } else if (type === 'receipt' && result.includes('yes')) {
                 navigate('/home', { state: { deposit: 'Y', type } });
