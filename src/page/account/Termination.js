@@ -189,7 +189,7 @@ const Termination = () => {
                                 이자 계산 기간
                             </Typography>
                             <Typography variant="body2">
-                                {formatDate(data.createDate)}~ {formatDate(data.endDate)}
+                                {formatDate(data.createDate)} ~ {formatDate(data.endDate)}
                             </Typography>
                         </Box>
                         <Box
