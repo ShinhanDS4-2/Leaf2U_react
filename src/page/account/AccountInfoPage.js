@@ -213,6 +213,10 @@ const AccountInfoPage = ({ apiData }) => {
         if (date != null) return date.substring(0, 10);
     };
 
+    // 금리 형식 변환 1인경우 1.0으로
+    const formatValue = (value) =>
+        value != null ? (Number.isInteger(value) ? value.toFixed(1) : value) : '0.0';
+
     return (
         <>
             <Box sx={{ padding: 0, marginTop: 3 }}>
@@ -238,7 +242,9 @@ const AccountInfoPage = ({ apiData }) => {
                                 <Typography variant="body" color="text.secondary">
                                     기본 금리
                                 </Typography>
-                                <Typography variant="body">{accountDTO?.interestRate} %</Typography>
+                                <Typography variant="body">
+                                    {formatValue(accountDTO?.interestRate)}%
+                                </Typography>
                             </Box>
                             <Box
                                 sx={{
@@ -294,10 +300,10 @@ const AccountInfoPage = ({ apiData }) => {
                                 </Typography>
                                 <Box sx={{ textAlign: 'right' }}>
                                     <Typography variant="body2">
-                                        기본금리 {accountDTO?.interestRate}%
+                                        기본금리 {formatValue(accountDTO?.interestRate)}%
                                     </Typography>
                                     <Typography variant="body2">
-                                        우대금리 {accountDTO?.primeRate}%
+                                        우대금리 {formatValue(accountDTO?.primeRate)}%
                                     </Typography>
                                 </Box>
                             </Box>
