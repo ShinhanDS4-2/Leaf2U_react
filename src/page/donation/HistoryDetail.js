@@ -41,6 +41,11 @@ const HistoryDetail = () => {
         getHistoryDetail(); // idx가 존재할 경우에만 API 호출
         console.log('api 성공 data', data); // 🔥 확인용 로그
     }, []); // ✅ idx가 변경될 때마다 실행됨
+
+    // 금리 형식 변환 1인경우 1.0으로
+    const formatValue = (value) =>
+        value != null ? (Number.isInteger(value) ? value.toFixed(1) : value) : '0.0';
+
     return (
         <>
             <Header title="후원 내역 조회" />
@@ -165,7 +170,7 @@ const HistoryDetail = () => {
                                 </Typography>
                                 <Typography variant="body2">
                                     {/* 최종금리 */}
-                                    {data.donationHistory.finalInterestRate} %
+                                    {formatValue(data.donationHistory.finalInterestRate)}%
                                 </Typography>
                             </Box>
 
@@ -190,7 +195,7 @@ const HistoryDetail = () => {
                                         기본 금리
                                     </Typography>
                                     <Typography variant="body2">
-                                        {data.donationHistory.interestRate} %
+                                        {formatValue(data.donationHistory.interestRate)}%
                                     </Typography>
                                 </Box>
                                 <Box
@@ -203,7 +208,7 @@ const HistoryDetail = () => {
                                         우대 금리
                                     </Typography>
                                     <Typography variant="body2">
-                                        {data.donationHistory.primeRate} %
+                                        {formatValue(data.donationHistory.primeRate)}%
                                     </Typography>
                                 </Box>
                             </Box>

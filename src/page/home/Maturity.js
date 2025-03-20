@@ -40,6 +40,9 @@ const Maturity = () => {
         // 컴포넌트 처음 렌더링될때만 실행
         getMaturityInterest();
     }, []);
+    // 금리 형식 변환 1인경우 1.0으로
+    const formatValue = (value) =>
+        value != null ? (Number.isInteger(value) ? value.toFixed(1) : value) : '0.0';
 
     return (
         <div>
@@ -97,7 +100,7 @@ const Maturity = () => {
                                     기본 금리
                                 </Typography>
                                 <Typography variant="body2">
-                                    {accountDTO?.interestRate} %
+                                    {formatValue(accountDTO?.interestRate)}%
                                 </Typography>
                             </Box>
 
@@ -113,8 +116,7 @@ const Maturity = () => {
                                     우대 금리
                                 </Typography>
                                 <Typography variant="body2">
-                                    {' '}
-                                    연 {accountDTO?.primeRate}% 반영
+                                    연 {formatValue(accountDTO?.primeRate)}% 반영
                                 </Typography>
                             </Box>
 
@@ -142,7 +144,7 @@ const Maturity = () => {
                                             카드 발급
                                         </Typography>
                                         <Typography variant="body2">
-                                            {rateSumMap?.rateC} %
+                                            {formatValue(rateSumMap?.rateC)}%
                                         </Typography>
                                     </Box>
                                 )}
@@ -157,7 +159,7 @@ const Maturity = () => {
                                             카드 발급
                                         </Typography>
                                         <Typography variant="body2">
-                                            {rateSumMap?.rateE} %
+                                            {formatValue(rateSumMap?.rateE)}%
                                         </Typography>
                                     </Box>
                                 )}
@@ -173,7 +175,7 @@ const Maturity = () => {
                                             최초 가입
                                         </Typography>
                                         <Typography variant="body2">
-                                            {rateSumMap?.rateF} %
+                                            {formatValue(rateSumMap?.rateF)}%
                                         </Typography>
                                     </Box>
                                 )}
@@ -189,7 +191,7 @@ const Maturity = () => {
                                             매일 우대금리
                                         </Typography>
                                         <Typography variant="body2">
-                                            {rateSumMap?.rateD} %
+                                            {formatValue(rateSumMap?.rateD)}%
                                         </Typography>
                                     </Box>
                                 )}
@@ -205,7 +207,7 @@ const Maturity = () => {
                                             연속 보너스 우대금리
                                         </Typography>
                                         <Typography variant="body2">
-                                            {rateSumMap?.rateW} %
+                                            {formatValue(rateSumMap?.rateW)}%
                                         </Typography>
                                     </Box>
                                 )}

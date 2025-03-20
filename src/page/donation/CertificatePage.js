@@ -164,7 +164,7 @@ const CertificatePage = () => {
                     </div>
                     {/* PNG로 저장할 영역 END*/}
 
-                    <Button text="❤️ 다운로드 ❤️" onClick={handleDownloadPng} />
+                    <Button text="다운로드" onClick={handleDownloadPng} />
                 </div>
             </Content>
         </>

@@ -146,6 +146,10 @@ const Termination = () => {
         return Math.floor(diff / (1000 * 3600 * 24)); // 일 단위로 차이 계산
     };
 
+    // 금리 형식 변환 1인경우 1.0으로
+    const formatValue = (value) =>
+        value != null ? (Number.isInteger(value) ? value.toFixed(1) : value) : '0.0';
+
     return (
         <>
             <Header title="계좌 해지" />
@@ -198,7 +202,10 @@ const Termination = () => {
                             <Typography variant="body2" color="text.secondary">
                                 기본 금리
                             </Typography>
-                            <Typography variant="body2"> {data.interestRate} %</Typography>
+                            <Typography variant="body2">
+                                {' '}
+                                {formatValue(data.interestRate)}%
+                            </Typography>
                         </Box>
                         <Box
                             sx={{

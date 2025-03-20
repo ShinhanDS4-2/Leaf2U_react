@@ -4,6 +4,9 @@ import { Box, Card, CardContent, Divider, Typography } from '@mui/material';
 const formatDate = (date) => {
     if (date != null) return date.substring(0, 10);
 };
+// 금리 형식 변환 1인경우 1.0으로
+const formatValue = (value) =>
+    value != null ? (Number.isInteger(value) ? value.toFixed(1) : value) : '0.0';
 
 // (3) 직접입력 탭 페이지
 const CustomDatePage = ({ interestData }) => {
@@ -54,7 +57,10 @@ const CustomDatePage = ({ interestData }) => {
                         <Typography variant="body2" color="text.secondary">
                             기본 금리
                         </Typography>
-                        <Typography variant="body2"> {accountDTO?.interestRate} %</Typography>
+                        <Typography variant="body2">
+                            {' '}
+                            {formatValue(accountDTO?.interestRate)}%
+                        </Typography>
                     </Box>
 
                     <Box

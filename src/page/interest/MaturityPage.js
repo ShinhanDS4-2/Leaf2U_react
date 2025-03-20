@@ -4,6 +4,9 @@ import { Box, Card, CardContent, Divider, Typography } from '@mui/material';
 const formatDate = (date) => {
     if (date != null) return date.substring(0, 10);
 };
+// 금리 형식 변환 1인경우 1.0으로
+const formatValue = (value) =>
+    value != null ? (Number.isInteger(value) ? value.toFixed(1) : value) : '0.0';
 
 // (1) 만기일 탭 페이지
 const MaturityPage = ({ interestData }) => {
@@ -55,7 +58,9 @@ const MaturityPage = ({ interestData }) => {
                         <Typography variant="body2" color="text.secondary">
                             기본 금리
                         </Typography>
-                        <Typography variant="body2">{accountDTO?.interestRate} %</Typography>
+                        <Typography variant="body2">
+                            {formatValue(accountDTO?.interestRate)}%
+                        </Typography>
                     </Box>
 
                     {/* [추가] START - 적용금리에 대한 세부 항목을 보여줄 작은 박스 */}
@@ -69,7 +74,9 @@ const MaturityPage = ({ interestData }) => {
                         <Typography variant="body2" color="text.secondary">
                             우대 금리
                         </Typography>
-                        <Typography variant="body2"> 연 {accountDTO?.primeRate}% 반영</Typography>
+                        <Typography variant="body2">
+                            연 {formatValue(accountDTO?.primeRate)}% 반영
+                        </Typography>
                     </Box>
 
                     {/* [우대금리에 대한 세부 항목을 보여줄 작은 박스 START */}
@@ -95,7 +102,9 @@ const MaturityPage = ({ interestData }) => {
                                 <Typography variant="body2" color="text.secondary">
                                     카드 발급
                                 </Typography>
-                                <Typography variant="body2">{rateSumMap?.rateC} %</Typography>
+                                <Typography variant="body2">
+                                    {formatValue(rateSumMap?.rateC)}%
+                                </Typography>
                             </Box>
                         )}
                         {rateSumMap?.rateE != null && rateSumMap?.rateE !== 0 && (
@@ -108,7 +117,9 @@ const MaturityPage = ({ interestData }) => {
                                 <Typography variant="body2" color="text.secondary">
                                     카드 발급
                                 </Typography>
-                                <Typography variant="body2">{rateSumMap?.rateE} %</Typography>
+                                <Typography variant="body2">
+                                    {formatValue(rateSumMap?.rateE)}%
+                                </Typography>
                             </Box>
                         )}
                         {/* F:최초금리 */}
@@ -122,7 +133,9 @@ const MaturityPage = ({ interestData }) => {
                                 <Typography variant="body2" color="text.secondary">
                                     최초 가입
                                 </Typography>
-                                <Typography variant="body2">{rateSumMap?.rateF} %</Typography>
+                                <Typography variant="body2">
+                                    {formatValue(rateSumMap?.rateF)}%
+                                </Typography>
                             </Box>
                         )}
                         {/* D: 매일금리 */}
@@ -136,7 +149,9 @@ const MaturityPage = ({ interestData }) => {
                                 <Typography variant="body2" color="text.secondary">
                                     매일 우대금리
                                 </Typography>
-                                <Typography variant="body2">{rateSumMap?.rateD} %</Typography>
+                                <Typography variant="body2">
+                                    {formatValue(rateSumMap?.rateD)}%
+                                </Typography>
                             </Box>
                         )}
                         {/* W:연속금리 */}
@@ -150,7 +165,9 @@ const MaturityPage = ({ interestData }) => {
                                 <Typography variant="body2" color="text.secondary">
                                     연속 보너스 우대금리
                                 </Typography>
-                                <Typography variant="body2">{rateSumMap?.rateW} %</Typography>
+                                <Typography variant="body2">
+                                    {formatValue(rateSumMap?.rateW)}%
+                                </Typography>
                             </Box>
                         )}
                     </Box>
