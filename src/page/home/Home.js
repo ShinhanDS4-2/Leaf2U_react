@@ -193,8 +193,19 @@ function Home() {
             .then((response) => {
                 setData(response.data);
 
-                const diffAmount = response.data.diff * response.data.accountDTO.paymentAmount;
-                setTargetAmount(response.data.accountDTO.balance + diffAmount);
+                const remainingPayments = response.data.diff - 1; // 남은 납입 횟수
+                const diffAmount = remainingPayments * response.data.accountDTO.paymentAmount;
+
+                // 가입 직후(balance = 0)일 경우 추가 납입 금액을 반영하지 않음
+                const shouldAddPayment =
+                    response.data.saving_yn === 0 && response.data.accountDTO.balance > 0;
+
+                const finalAmount =
+                    response.data.accountDTO.balance +
+                    diffAmount +
+                    (shouldAddPayment ? response.data.accountDTO.paymentAmount : 0);
+
+                setTargetAmount(finalAmount);
 
                 if (response.data.maturity_yn == 'Y') {
                     setModalContent({
