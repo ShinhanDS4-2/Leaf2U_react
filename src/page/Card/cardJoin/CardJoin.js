@@ -12,6 +12,7 @@ import HanaImg from '../../../image/hana.png';
 import WooriImg from '../../../image/woori.png';
 import KakaoImg from '../../../image/kakao.png';
 import { useRate } from '../../../context/RateContext';
+import { koreanToRomanization, formatPhoneNumber } from '../../../utils/util';
 
 const CardJoin = () => {
     const navigate = useNavigate();
@@ -41,15 +42,37 @@ const CardJoin = () => {
         { name: '카카오', logo: KakaoImg, className: 'kakao-logo' },
     ];
 
-    // 입력값 변경 핸들러
-    // const handleChange = (e) => {
-    //     const formattedNumber = formatCardNumber(e.target.value);
-    //     setAccountNumber(formattedNumber);
-    // };
+    // 이름 영문 변환
+    const convertToRoman = () => {
+        const { name } = form;
+
+        // 성(첫 글자)과 이름(나머지 2글자) 분리
+        const lastNameKor = name.charAt(0);
+        const firstNameKor = name.substring(1, 3);
+
+        // 한글을 로마자로 변환하는 함수 호출
+        const lastNameEng = koreanToRomanization(lastNameKor);
+        const firstNameEng = koreanToRomanization(firstNameKor);
+
+        // 상태 업데이트
+        setForm((prev) => ({
+            ...prev,
+            lastName: lastNameEng.charAt(0).toUpperCase() + lastNameEng.slice(1), // 첫 글자 대문자
+            firstName: firstNameEng.charAt(0).toUpperCase() + firstNameEng.slice(1), // 첫 글자 대문자
+        }));
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
+
+        let newValue = value;
+
+        // 전화번호 필드라면 포맷
+        if (name === 'phone') {
+            newValue = formatPhoneNumber(value);
+        }
+
+        setForm((prev) => ({ ...prev, [name]: newValue }));
     };
 
     const handleNext = () => {
@@ -87,9 +110,9 @@ const CardJoin = () => {
                         onChange={handleChange}
                     />
 
-                    {/* <button
+                    <button
                         type="button"
-                        onClick={convertToEnglish}
+                        onClick={convertToRoman}
                         style={{
                             position: 'relative',
                             right: '5px',
@@ -105,7 +128,7 @@ const CardJoin = () => {
                         }}
                     >
                         영문 변환
-                    </button> */}
+                    </button>
                 </div>
 
                 {/* 영문 성 */}
@@ -138,7 +161,7 @@ const CardJoin = () => {
                     <input
                         type="text"
                         name="phone"
-                        placeholder="010-0000-0000"
+                        placeholder="숫자만 입력해 주세요."
                         value={form.phone}
                         onChange={handleChange}
                     />
