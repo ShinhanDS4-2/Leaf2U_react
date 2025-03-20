@@ -317,16 +317,12 @@ const Tap2Page = () => {
                                 후원 랭킹
                             </Typography>
                         </Box>
-                        {/* 왕관 애니메이션 */}
-                        <Box className="CrownAnimation">
-                            <Lottie animationData={CrownAnimation} loop={true} />
-                        </Box>
-                        {/* 왕관 애니메이션 */}
+
                         <Box
                             display="flex"
                             justifyContent="center"
                             alignItems="flex-end"
-                            // height={250}
+                            height={250}
                             gap={0}
                         >
                             {/* 2등 */}
@@ -370,6 +366,7 @@ const Tap2Page = () => {
                                     </Box>
                                 </motion.div>
                             </Box>
+
                             {/* 1등 */}
                             <Box
                                 width={100}
@@ -381,9 +378,14 @@ const Tap2Page = () => {
                                 <Icon
                                     icon="noto:1st-place-medal"
                                     width="50px"
-                                    // height="50px"
+                                    height="50px"
                                     style={{ position: 'absolute', top: -20 }}
                                 />
+                                {/* 왕관 애니메이션 */}
+                                <Box className="CrownAnimation">
+                                    <Lottie animationData={CrownAnimation} loop={true} />
+                                </Box>
+                                {/* 왕관 애니메이션 */}
                                 <motion.div
                                     initial={{ height: 0 }}
                                     animate={{ height: 200 }}
