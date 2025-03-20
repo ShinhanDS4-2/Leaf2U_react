@@ -49,7 +49,7 @@ const CardInfoPage = ({ apiData }) => {
                 {/* 카드 정보 */}
                 <CardContent sx={{ padding: 0, marginTop: 1 }}>
                     <Typography variant="subtitle1" fontWeight="bold" sx={{ marginLeft: 1 }}>
-                        {cardDTO?.cardName} ({cardDTO?.cardNumber})
+                        {cardDTO?.cardName} ({cardDTO?.cardNumber?.slice(-4)})
                     </Typography>
                     <Typography variant="body" color="text.secondary" sx={{ marginLeft: 1 }}>
                         {cardDTO?.accountNumber}
