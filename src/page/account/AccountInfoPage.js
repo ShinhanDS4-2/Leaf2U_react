@@ -265,7 +265,7 @@ const AccountInfoPage = ({ apiData }) => {
                                     만기일
                                 </Typography>
                                 <Typography variant="body">
-                                    {formatDate(accountDTO?.endDate)}
+                                    {formatDate(accountDTO?.maturityDate)}
                                 </Typography>
                             </Box>
                             <Box

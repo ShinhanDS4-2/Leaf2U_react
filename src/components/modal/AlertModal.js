@@ -73,12 +73,16 @@ const AlertModal = React.forwardRef(
             >
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-slide-description" className="p-2">
-                        <span
-                            dangerouslySetInnerHTML={{ __html: text }}
-                            style={{ whiteSpace: 'pre-line' }}
-                        />
-                    </DialogContentText>
+                    <div id="alert-dialog-slide-description" className="p-2">
+                        {typeof text === 'string' ? (
+                            <span
+                                dangerouslySetInnerHTML={{ __html: text }}
+                                style={{ whiteSpace: 'pre-line' }}
+                            />
+                        ) : (
+                            text
+                        )}
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button

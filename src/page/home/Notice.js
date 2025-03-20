@@ -4,6 +4,8 @@ import Footer from '../../components/footer/Footer';
 import NoticeBox from '../../components/box/NoticeBox';
 import React, { useState, useEffect } from 'react';
 import api from '../../utils/api';
+import confetti from 'canvas-confetti';
+import SnowConfetti from '../../components/effect/SnowConfetti';
 
 const Notice = () => {
     const [prevList, setPrevList] = useState([]);

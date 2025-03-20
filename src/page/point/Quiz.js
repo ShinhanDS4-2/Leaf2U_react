@@ -17,6 +17,7 @@ import Lottie from 'lottie-react';
 import RobotAnimation from '../../image/RobotAnimation.json'; // 로봇 애니메이션
 // LottieFiles 애니메이션 사용 예시 END
 import axios from 'axios';
+import Pigcoin from '../../image/pigcoin.json';
 
 const Quiz = () => {
     const navigate = useNavigate();
@@ -35,6 +36,8 @@ const Quiz = () => {
         onConfirm: () => {},
     });
     const bottomModalRef = useRef();
+
+    const [alertText, setAlertText] = useState('');
 
     const handleOpenBottomModal = () => {
         if (bottomModalRef.current) {
@@ -58,20 +61,24 @@ const Quiz = () => {
         }
     };
 
+    // axios 인스턴스
     const api = axios.create({
         baseURL: '/api',
-        headers: { 'Content-Type': 'application/json' },
     });
 
+    // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
     api.interceptors.request.use(
         (config) => {
-            const token = localStorage.getItem('jwtToken');
+            const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
+
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
             }
             return config;
         },
-        (error) => Promise.reject(error),
+        (error) => {
+            return Promise.reject(error);
+        },
     );
 
     useEffect(() => {
@@ -95,6 +102,7 @@ const Quiz = () => {
 
     const handleSubmitAnswer = () => {
         if (!answer) {
+            setAlertText('정답을 선택해주세요.');
             handleOpenAlert();
             return;
         }
@@ -142,14 +150,13 @@ const Quiz = () => {
                         <p>
                             오답이에요!
                             <br />
-                            다음에 다시 도전해봐요.
+                            다시 한 번 생각해 보세요.
                         </p>
                     </>
                 ),
                 buttonText: '확인',
                 onConfirm: () => {
                     handleCloseBottomModal();
-                    navigate('/point');
                 },
             });
             handleOpenBottomModal();
@@ -158,8 +165,29 @@ const Quiz = () => {
 
     const handleHintClick = () => {
         api.post('/point/quiz/hint')
-            .then(() => {
-                window.open(hintUrl, '_blank'); // 힌트 기사 원문 열기
+            .then((response) => {
+                if (response.data) {
+                    setAlertText(
+                        <div className="alert-modal-content">
+                            <div className="alert-modal-pig">
+                                <Lottie animationData={Pigcoin} loop={true} />
+                            </div>
+                            <span>힌트를 확인하고 5P 적립!</span>
+                        </div>,
+                    );
+                    handleOpenAlert();
+                    window.open(hintUrl, '_blank'); // 힌트 기사 원문 열기
+                } else {
+                    setAlertText(
+                        <div className="alert-modal-content">
+                            <div className="alert-modal-animation">
+                                <Lottie animationData={wrongEmoji} loop={true} />
+                            </div>
+                            <span>힌트를 이미 확인하였습니다.</span>
+                        </div>,
+                    );
+                    handleOpenAlert();
+                }
             })
             .catch((err) => alert(err.response?.data?.message || '힌트 제공 오류'));
     };
@@ -243,11 +271,7 @@ const Quiz = () => {
                     </div>
                 </div>
             </BottomModal>
-            <AlertModal
-                ref={alertRef}
-                text={'<span>정답을 선택해 주세요.</span>'}
-                onClick={() => {}}
-            />
+            <AlertModal ref={alertRef} text={alertText} onClick={() => {}} />
             {/* 로딩 화면 */}
             {loading && <QuizLoading />}
         </div>

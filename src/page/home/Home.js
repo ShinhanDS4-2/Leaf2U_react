@@ -16,11 +16,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import PwdModal from '../../components/modal/PwdModal6';
 import CustomConfetti from '../../components/effect/CustomConfetti';
 import CoinConfetti from '../../components/effect/CoinConfetti';
+import SnowConfetti from '../../components/effect/SnowConfetti';
 import api from '../../utils/api';
 import Lottie from 'lottie-react';
 import Feedback from '../../image/feedback.json';
 import Tropyh from '../../image/trophy.json';
 import Coin from '../../image/coin.json';
+import confetti from 'canvas-confetti';
 
 function Home() {
     const navigate = useNavigate();
@@ -363,6 +365,9 @@ function Home() {
     const treeImage = require(`../../image/tree_${data.account_step ?? 1}.png`);
 
     useEffect(() => {
+        const snowInstance = SnowConfetti();
+        snowInstance.frame();
+
         if (deposit == 'Y') {
             CustomConfetti();
             setIsChallengeCompleted(true); // 우대금리 UI 보이기
@@ -380,10 +385,15 @@ function Home() {
                 getFeedback();
             }, 500);
         }
+
+        return () => {
+            snowInstance.stopConfetti();
+            confetti.reset();
+        };
     }, [deposit]);
 
     return (
-        <div className="backgrung-img">
+        <div className="background-img">
             <div className="cloud1"></div>
             <div className="cloud2"></div>
             <HomeHeader listClick={handleListOnClick} calendarClick={handleCalendarOnClick} />
@@ -454,7 +464,7 @@ function Home() {
                             </Typography>
                         </div>
 
-                        {/* AI 로봇 이미지지 */}
+                        {/* AI 로봇 이미지 */}
                         <div className="robot-ani">
                             <Lottie animationData={Feedback} loop={true} />
                         </div>
