@@ -10,8 +10,27 @@ function Login() {
     const location = useLocation(); // URL 파라미터를 가져오기 위해 추가
 
     const getKakaoLoginUrl = async () => {
+        const api = axios.create({
+            baseURL: '/api',
+        });
+
+        // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
+        api.interceptors.request.use(
+            (config) => {
+                const token = localStorage.getItem('jwtToken'); // 로컬 스토리지에서 토큰 가져오기
+
+                if (token) {
+                    config.headers.Authorization = `Bearer ${token}`;
+                }
+                return config;
+            },
+            (error) => {
+                return Promise.reject(error);
+            },
+        );
+
         try {
-            const response = await axios.get('/auth/kakao/login-url');
+            const response = await api.get('/auth/kakao/login-url');
             window.location.replace(response.data);
         } catch (error) {
             console.error('Kakao 로그인 URL 요청 실패:', error);

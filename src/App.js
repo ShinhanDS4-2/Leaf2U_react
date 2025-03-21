@@ -101,7 +101,7 @@ function AppContent() {
                             <Route path="/quiz" element={<Quiz />} />
                             <Route path="/topic" element={<Topic />} />
 
-                            <Route path="/auth/kakao/callback" element={<Kakao />} />
+                            <Route path="/api/auth/kakao/callback" element={<Kakao />} />
 
                             <Route path="/example" element={<Example />} />
                         </Routes>
