@@ -13,9 +13,7 @@ const OAuthRedirect = () => {
         console.log(code);
 
         // axios 인스턴스
-        const api = axios.create({
-            baseURL: '/api',
-        });
+        const api = axios.create({});
 
         // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)
         api.interceptors.request.use(
@@ -36,7 +34,7 @@ const OAuthRedirect = () => {
             code: code,
         };
 
-        api.post('http://localhost:8090/auth/kakao/token', param)
+        api.post('/auth/kakao/token', param)
             .then((response) => {
                 localStorage.setItem('jwtToken', response.data.token);
                 navigate('/start');
