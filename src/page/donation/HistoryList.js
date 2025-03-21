@@ -9,7 +9,7 @@ import Footer from '../../components/footer/Footer';
 
 // axios 인스턴스
 const api = axios.create({
-    baseURL: '/api', // API 기본 URL
+    baseURL: 'http://192.168.0.170:8090/api', // API 기본 URL
 });
 
 // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)

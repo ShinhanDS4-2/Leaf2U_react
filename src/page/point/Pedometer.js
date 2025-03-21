@@ -14,7 +14,7 @@ import Pigcoin from '../../image/pigcoin.json';
 import wrongEmoji from '../../image/point_wrong.json';
 
 const api = axios.create({
-    baseURL: '/api/point',
+    baseURL: 'http://192.168.0.170:8090/api/point',
 });
 
 const Pedometer = () => {
