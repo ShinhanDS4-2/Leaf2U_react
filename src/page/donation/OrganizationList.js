@@ -112,7 +112,7 @@ const OrganizationDetailModal = ({ open, onClose, donation }) => {
                                 text="홈페이지 바로가기"
                                 onClick={() =>
                                     // donation.url이 null, undefined가 아닐때만 처리
-                                    donation.url && (window.location.href = donation.url)
+                                    donation.url && window.open(donation.url, '_blank')
                                 }
                             />
                         </CardContent>

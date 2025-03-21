@@ -61,18 +61,18 @@ const Topic = () => {
         }
     };
 
-    // 오늘 날짜 
+    // 오늘 날짜
     const getFormattedDate = () => {
         const now = new Date();
-        
+
         const year = now.getFullYear();
         const month = now.getMonth() + 1;
         const day = now.getDate();
         const hours = now.getHours();
         const minutes = now.getMinutes();
-        
+
         return `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
-    }
+    };
 
     return (
         <div>
@@ -81,57 +81,75 @@ const Topic = () => {
             <Content>
                 {fineDust && (
                     <div className={`fine-dust ${fineDust.pm10Status}`}>
-                        <div className='d-flex justify-content-between row'>
-                            <div className='col-8 ps-3'>
-                                <div className='text-start'>
-                                    <span className='dust-title'>현재 미세먼지 정보</span>
+                        <div className="d-flex justify-content-between row">
+                            <div className="col-8 ps-3">
+                                <div className="text-start">
+                                    <span className="dust-title">현재 미세먼지 정보</span>
                                 </div>
-                                <div className='text-end pe-1 pt-0 mt-0 dust-date-div'>
-                                    <span className='dust-date'>{getFormattedDate()}</span>
+                                <div className="text-end pe-1 pt-0 mt-0 dust-date-div">
+                                    <span className="dust-date">{getFormattedDate()}</span>
                                 </div>
-                                <div className='d-flex justify-content-start'>
-                                    <div className='text-start'>
-                                        <span className='dust-subtitle'>미세먼지</span>
-                                        <span className='dust-num'>{fineDust.pm10} µg/m³</span>
+                                <div className="d-flex justify-content-start">
+                                    <div className="text-start">
+                                        <span className="dust-subtitle">미세먼지</span>
+                                        <span className="dust-num">{fineDust.pm10} µg/m³</span>
                                     </div>
-                                    <div className='text-start ps-4'>
-                                        <span className='dust-subtitle'>초미세먼지</span>
-                                        <span className='dust-num'>{fineDust.pm25} µg/m³</span>
+                                    <div className="text-start ps-4">
+                                        <span className="dust-subtitle">초미세먼지</span>
+                                        <span className="dust-num">{fineDust.pm25} µg/m³</span>
                                     </div>
                                 </div>
                             </div>
                             <div className="col-4 p-1">
-                                {fineDust.pm10Status === 'good'
-                                    ? <Icon icon="icon-park-outline:grinning-face" width="100px" height="100px"  style={{color: '#fdfdfd'}} />
-                                    : fineDust.pm10Status === 'moderate'
-                                    ? <Icon icon="icon-park-outline:confused-face" width="100px" height="100px"  style={{color: '#fdfdfd'}} />
-                                    : <Icon icon="akar-icons:face-very-sad" width="100px" height="100px"  style={{color: '#fdfdfd'}} />
-                                }
+                                {fineDust.pm10Status === 'good' ? (
+                                    <Icon
+                                        icon="icon-park-outline:grinning-face"
+                                        width="100px"
+                                        height="100px"
+                                        style={{ color: '#fdfdfd' }}
+                                    />
+                                ) : fineDust.pm10Status === 'moderate' ? (
+                                    <Icon
+                                        icon="icon-park-outline:confused-face"
+                                        width="100px"
+                                        height="100px"
+                                        style={{ color: '#fdfdfd' }}
+                                    />
+                                ) : (
+                                    <Icon
+                                        icon="akar-icons:face-very-sad"
+                                        width="100px"
+                                        height="100px"
+                                        style={{ color: '#fdfdfd' }}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>
                 )}
 
                 <div className="news-section">
-                    <span className='news-main ps-1'>오늘의 녹색 뉴스</span>
+                    <span className="news-main ps-1">오늘의 녹색 뉴스</span>
 
-                    <div className='mt-2'>
+                    <div className="mt-2">
                         {news.map((news, index) => (
-                            <div key={index} className="news-item" onClick={() => {window.location.href = news.url}}>
-                                <div className='row d-flex'>
-                                    <div className='col-3 align-content-center'>
-                                        <div className='news-img'>
-                                            <img src={news.urlToImage}/>
+                            <div
+                                key={index}
+                                className="news-item"
+                                onClick={() => {
+                                    window.open(news.url, '_blank');
+                                }}
+                            >
+                                <div className="row d-flex">
+                                    <div className="col-3 align-content-center">
+                                        <div className="news-img">
+                                            <img src={news.urlToImage} />
                                         </div>
                                     </div>
-                                    <div className='col-9'>
-                                        <span className='news-title'>
-                                            {news.title}
-                                        </span>
-                                        <span className='news-date'>
-                                            {news.date}
-                                        </span>
-                                        <p className='news-desc'>{news.description}</p>
+                                    <div className="col-9">
+                                        <span className="news-title">{news.title}</span>
+                                        <span className="news-date">{news.date}</span>
+                                        <p className="news-desc">{news.description}</p>
                                     </div>
                                 </div>
                             </div>
@@ -142,9 +160,14 @@ const Topic = () => {
                 <div className="eco-tips mt-3">
                     {ecoTips.map((tip, index) => (
                         <div key={index} className="eco-tip-item" onClick={() => openModal(tip)}>
-                            <Icon icon="mdi:sprout" width="2em" height="2em"  style={{color: '#5DB075'}} />
-                            <p className='ms-2 me-2'>TIP</p>
-                            <span className='tip-title'>{tip.title}</span>
+                            <Icon
+                                icon="mdi:sprout"
+                                width="2em"
+                                height="2em"
+                                style={{ color: '#5DB075' }}
+                            />
+                            <p className="ms-2 me-2">TIP</p>
+                            <span className="tip-title">{tip.title}</span>
                         </div>
                     ))}
                 </div>
@@ -152,8 +175,8 @@ const Topic = () => {
 
             <BottomModal ref={modalRef}>
                 {modalContent && (
-                    <div className='p-3'>
-                        <p className='pt-4 pb-5'>{modalContent.content}</p>
+                    <div className="p-3">
+                        <p className="pt-4 pb-5">{modalContent.content}</p>
                         <Button text={'확인'} onClick={() => modalRef.current.closeModal()}>
                             닫기
                         </Button>
