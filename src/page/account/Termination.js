@@ -119,7 +119,7 @@ const Termination = () => {
     // 사용자가 입력한 pwd값을 넘겨줘야함@@@@@@@@
     const termination = async (pwd) => {
         try {
-            const response = await api.patch(`/account/termination`, {
+            const response = await api.post(`/account/termination`, {
                 accountPassword: pwd, // 사용자가 입력한 간편비밀번호 같이 넘겨줌
             });
             const result = response.data; // 백엔드에서 반환된 값 (1:성공, 0:실패, 401:비밀번호 불일치)

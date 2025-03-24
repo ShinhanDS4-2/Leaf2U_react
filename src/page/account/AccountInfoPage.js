@@ -181,7 +181,7 @@ const AccountInfoPage = ({ apiData }) => {
             const token = localStorage.getItem('jwtToken'); // 🔥 토큰 동적으로 가져오기
             const response = await // GET 요청
             axios({
-                method: 'patch',
+                method: 'post',
                 url: 'http://192.168.0.170:8090/api/account/update/paymentAmount',
                 data: {
                     paymentAmount: amount,
