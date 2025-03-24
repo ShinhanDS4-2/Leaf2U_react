@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // axios 인스턴스
 const api = axios.create({
-    baseURL: 'http://leaf2u.shinhanacademy.co.kr:8090/api',
+    baseURL: 'http://192.168.0.170:8090/api',
 });
 
 // 요청 인터셉터 설정 (모든 요청에 자동으로 토큰 추가)

@@ -11,7 +11,7 @@ import AlertModal from '../../components/modal/AlertModal'; // AlertModal import
 import ChallengeLoading from '../../components/loading/ChallengeLoading';
 
 const api = axios.create({
-    baseURL: 'http://leaf2u.shinhanacademy.co.kr:8090/api/openai',
+    baseURL: 'http://192.168.0.170:8090/api/openai',
 });
 
 const Image = () => {
