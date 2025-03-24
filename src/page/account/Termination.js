@@ -60,7 +60,7 @@ const Termination = () => {
     const CloseCompleteModal = () => {
         if (completeModalRef.current) {
             completeModalRef.current.closeModal(); // 해지 완료 모달 닫고
-            navigate('/home'); // 새로운 경로로 이동 (어디로 이동하지)
+            navigate('/start'); // 새로운 경로로 이동 (어디로 이동하지)
         }
     };
 
