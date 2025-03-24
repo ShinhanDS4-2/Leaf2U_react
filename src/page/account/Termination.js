@@ -104,7 +104,7 @@ const Termination = () => {
 
     // 예상이자조회(오늘해지) API 호출 -> 오늘 중도해지 시 예상이자 먼저 보여줘야함
     const interestToday = () => {
-        api.get('/account/interest/today')
+        api.get('http://leaf2u.shinhanacademy.co.kr:8090/api/account/interest/today')
             .then((response) => {
                 const data = response.data;
                 setData(data.accountDTO);

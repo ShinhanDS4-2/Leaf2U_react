@@ -182,7 +182,7 @@ const AccountInfoPage = ({ apiData }) => {
             const response = await // GET 요청
             axios({
                 method: 'patch',
-                url: '/api/account/update/paymentAmount',
+                url: 'http://leaf2u.shinhanacademy.co.kr:8090/api/account/update/paymentAmount',
                 data: {
                     paymentAmount: amount,
                     accountPassword: pwd,
